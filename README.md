@@ -2,5 +2,6 @@
 Правила написания кода и утилиты, помогающие их поддерживать
 
 # Содержание
-1. [Kotlin style guide](docs/kotlin-style-guide.md)
-2. [XML style guide](docs/xml-style-guide.md)
+1. [Стандарт оформления кода на языке Kotlin](docs/kotlin-style-guide.md)
+2. [Стандарт оформления кода на языке XML](docs/xml-style-guide.md)
+3. [Правила настройки IDE](docs/ide-settings.md)
