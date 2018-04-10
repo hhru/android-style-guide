@@ -23,7 +23,7 @@
 | ------ | ------ |
 | view | View |
 | text | TextView |
-| edit | EditText |
+| edit_text | EditText |
 | recycler | RecyclerView |
 | button | Button |
 | container | ViewGroup и все его наследники контейнеры |
@@ -32,7 +32,7 @@
 
 ```xml
     <EditText
-        android:id="@+id/fragment_discard_edit_phone"
+        android:id="@+id/fragment_discard_edit_text_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="phone"/>
