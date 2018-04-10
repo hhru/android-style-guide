@@ -18,14 +18,17 @@
 - Имя записано в стиле lower_snake_case
 - Имя имеет маску (название файла)(сокращенное название виджета)(название элемента) 
 - Сокращенное название виджета:
-**view** — View 
-**tex**t — TextView
-**edit** — EditText
-**list** — ListView
-**recycler** — RecyclerView
-**button** — Button
-**container** — ViewGroup и все его наследники контейнеры
+
+| Сокращенное название | Виджет |
+| ------ | ------ |
+| view | View |
+| text | TextView |
+| edit | EditText |
+| recycler | RecyclerView |
+| button | Button |
+| container | ViewGroup и все его наследники контейнеры |
 - Название элемента отражает его предназначение. 
+
 
 ```xml
     <EditText
