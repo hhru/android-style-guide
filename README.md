@@ -1,2 +1,2 @@
-# android-style-guide
+# Android Style Guide
 Правила написания кода и утилиты, помогающие их поддерживать
