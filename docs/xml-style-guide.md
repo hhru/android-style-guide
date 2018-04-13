@@ -22,7 +22,7 @@
 | Сокращенное название | Виджет |
 | ------ | ------ |
 | view | View |
-| text | TextView |
+| text_view | TextView |
 | edit_text | EditText |
 | recycler | RecyclerView |
 | button | Button |
