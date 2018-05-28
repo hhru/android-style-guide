@@ -1,0 +1,117 @@
+def getServerProjectSources
+def getAndroidProjectSources
+
+apply from: "${rootDir}/tools/static-analysis/gradle/commonHttpStaticAnalysis.gradle"
+apply from: "${rootDir}/tools/static-analysis/gradle/commonConsoleStaticAnalysis.gradle"
+
+gradle.projectsEvaluated {
+
+    tasks.withType(JavaCompile) {
+        options.compilerArgs <<
+                "-Xlint:cast" <<
+                "-Xlint:divzero" <<
+                "-Xlint:empty" <<
+                "-Xlint:deprecation" <<
+                "-Xlint:finally" <<
+                "-Xlint:overrides" <<
+                "-Xlint:path" <<
+                "-Werror"
+    }
+
+    def excludes = rootProject.extensions.findByName("staticAnalysisExcludes")
+
+    def androidStaticAnalysisTasks = getStaticAnalysisTaskNames(true, getAndroidProjectSources(excludes))
+    def androidIdeaFormatTask = getIdeaFormatTask(true, getAndroidProjectSources(excludes))
+    task staticAnalysis {
+        group = 'headhunter'
+
+        androidStaticAnalysisTasks.each { task ->
+            tasks.findByName(task).mustRunAfter(androidIdeaFormatTask)
+        }
+        dependsOn androidIdeaFormatTask
+        dependsOn androidStaticAnalysisTasks
+        doFirst {
+            generateHtmlReport(true)
+        }
+    }
+
+    task staticAnalysisWithoutFormatting {
+        group = 'headhunter'
+
+        dependsOn androidStaticAnalysisTasks
+        doFirst {
+            generateHtmlReport(true)
+        }
+    }
+
+    def serverStaticAnalysisTasks = getStaticAnalysisTaskNames(false, getServerProjectSources(excludes))
+    def serverIdeaFormatTask = getIdeaFormatTask(false, getServerProjectSources(excludes))
+    task serverStaticAnalysis {
+        group = 'headhunter'
+
+        serverStaticAnalysisTasks.each { task ->
+            tasks.findByName(task).mustRunAfter(serverIdeaFormatTask)
+        }
+        dependsOn serverIdeaFormatTask
+        dependsOn serverStaticAnalysisTasks
+        doFirst {
+            generateReport(false)
+        }
+    }
+
+    task serverStaticAnalysisWithoutFormatting {
+        group = 'headhunter'
+
+        dependsOn serverStaticAnalysisTasks
+        doFirst {
+            generateReport(false)
+        }
+    }
+}
+
+getServerProjectSources = { excludes ->
+    def sources = new ArrayList<String>()
+    def sourcesDirectory = new File(project.projectDir.path, 'src')
+
+    for (def sourceFlavorDirectory : sourcesDirectory.listFiles()) {
+        def javaSourceDirectory = new File(sourceFlavorDirectory.path, 'java')
+        def kotlinSourceDirectory = new File(sourceFlavorDirectory.path, 'kotlin')
+
+        if (javaSourceDirectory.exists() && javaSourceDirectory.isDirectory()) {
+            sources.add(javaSourceDirectory.absolutePath)
+        }
+        if (kotlinSourceDirectory.exists() && kotlinSourceDirectory.isDirectory()) {
+            sources.add(kotlinSourceDirectory.absolutePath)
+        }
+    }
+    return sources
+}
+
+getAndroidProjectSources = { excludes ->
+    def sources = new ArrayList<String>()
+    for (def project : rootProject.subprojects) {
+        if (!project.subprojects.isEmpty() || (excludes != null && excludes.contains(project.path))) {
+            continue
+        }
+
+        def sourcesDirectory = new File(project.projectDir.path, 'src')
+        if (!sourcesDirectory.exists() || !sourcesDirectory.isDirectory()) {
+            continue
+        }
+
+        for (def sourceFlavorDirectory : sourcesDirectory.listFiles()) {
+            def javaSourceDirectory = new File(sourceFlavorDirectory.path, 'java')
+            def kotlinSourceDirectory = new File(sourceFlavorDirectory.path, 'kotlin')
+
+            if (javaSourceDirectory.exists() && javaSourceDirectory.isDirectory()) {
+                sources.add(javaSourceDirectory.absolutePath)
+            }
+            if (kotlinSourceDirectory.exists() && kotlinSourceDirectory.isDirectory()) {
+                sources.add(kotlinSourceDirectory.absolutePath)
+            }
+        }
+    }
+    return sources
+}
+
+
