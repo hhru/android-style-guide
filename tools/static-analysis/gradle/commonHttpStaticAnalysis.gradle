@@ -17,6 +17,11 @@ def appendLintErrors
 
 def normalizeFileUrl
 
+repositories {
+    maven { url "http://dl.bintray.com/touchin/touchin-tools" }
+    jcenter()
+}
+
 configurations {
     pngtastic
     detekt
@@ -346,16 +351,10 @@ getPmdTask = { sources ->
 getLintTasks = {
     def lintTaskNames = new ArrayList<String>()
 
-    def lintReleaseTask = tasks.matching {
-        it.getName().contains("lint") && it.getName().contains("Release")
-    }.first()
-    //TODO return on jack lintReleaseTask.dependsOn.clear()
-    lintTaskNames.add(lintReleaseTask.getName())
-
     def lintDebugTask = tasks.matching {
         it.getName().contains("lint") && it.getName().contains("Debug")
     }.first()
-    //TODO return on jack lintDebugTask.dependsOn.clear()
+    lintDebugTask.dependsOn.clear()
     lintTaskNames.add(lintDebugTask.getName())
 
     android.lintOptions.abortOnError = false
@@ -419,7 +418,7 @@ dependencies {
     pmd 'net.sourceforge.pmd:pmd-core:5.5.3'
     pmd 'net.sourceforge.pmd:pmd-java:5.5.3'
 
-    checkstyle fileTree(dir: 'libs', include: ['*.jar'])
+    checkstyle 'ru.touchin:checkstyle:7.6.2-fork'
 
     cpd 'de.aaschmid:gradle-cpd-plugin:1.0'
 
