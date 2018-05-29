@@ -2,7 +2,6 @@ def getServerProjectSources
 def getAndroidProjectSources
 
 apply from: "${rootDir}/android-style-guide/tools/static-analysis/gradle/commonHttpStaticAnalysis.gradle"
-apply from: "${rootDir}/android-style-guide/tools/static-analysis/gradle/commonConsoleStaticAnalysis.gradle"
 
 gradle.projectsEvaluated {
 

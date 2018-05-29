@@ -325,7 +325,7 @@ getPmdTask = { sources ->
     def taskName = "pmd_${project.name}"
     tasks.create(taskName, Pmd) {
         pmdClasspath = configurations.pmd.asFileTree
-        ruleSetFiles = files("${rootDir}/android-style-guide/android-style-guide/tools/static-analysis/pmd/rulesets/java/android.xml")
+        ruleSetFiles = files("${rootDir}/android-style-guide/tools/static-analysis/pmd/rulesets/java/android.xml")
         ruleSets = []
         source files(sources)
         ignoreFailures = true
@@ -365,7 +365,7 @@ getLintTasks = {
     android.lintOptions.xmlOutput = file("${project.buildDir}/reports/lint_report.xml")
     android.lintOptions.htmlReport = true
     android.lintOptions.htmlOutput = file("${project.buildDir}/reports/lint_report.html")
-    android.lintOptions.lintConfig = file("${rootDir}/android-style-guide/android-style-guide/tools/static-analysis/lint/lint.xml")
+    android.lintOptions.lintConfig = file("${rootDir}/android-style-guide/tools/static-analysis/lint/lint.xml")
     return lintTaskNames
 }
 
@@ -378,7 +378,7 @@ getCheckstyleTask = { sources ->
         ignoreFailures = true
         showViolations = false
         source files(sources)
-        configFile file("${rootDir}/android-style-guide/android-style-guide/tools/static-analysis/checkstyle/configuration/touchin_checkstyle.xml")
+        configFile file("${rootDir}/android-style-guide/tools/static-analysis/checkstyle/configuration/touchin_checkstyle.xml")
         checkstyleClasspath = configurations.checkstyle.asFileTree
         classpath = files(System.getenv("ANDROID_HOME") + "/platforms/" + android.compileSdkVersion + "/android.jar") +
                 files(System.properties.'java.home' + "/lib/rt.jar") +
@@ -401,7 +401,7 @@ getKotlinDetektTask = { isAndroidProject ->
         def input = "${rootDir}"
         def output = "${project.buildDir}/reports"
         def outputName = "kotlin-detekt"
-        def config = "${rootDir}/android-style-guide/android-style-guide/tools/static-analysis/kotlin/detekt-config.yml"
+        def config = "${rootDir}/android-style-guide/tools/static-analysis/kotlin/detekt-config.yml"
 
         // TODO add excludes from rootProject.extensions.findByName("staticAnalysisExcludes")
         def filters = ".*src/test.*,.*/resources/.*,.*/tmp/.*"
