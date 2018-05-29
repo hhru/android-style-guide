@@ -17,6 +17,16 @@
     <!-- todo: lint bug? -->
     <issue id="MissingSuperCall" severity="ignore"/>
 
+    <!-- Jake Wharton's bug https://github.com/JakeWharton/timber/issues/292? -->
+    <issue id="StringFormatInTimber" severity="ignore"/>
+    <issue id="TimberExceptionLogging" severity="ignore"/>
+    <issue id="ThrowableNotAtBeginning" severity="ignore"/>
+    <issue id="LogNotTimber" severity="ignore"/>
+    <issue id="BinaryOperationInTimber" severity="ignore"/>
+    <issue id="TimberArgCount" severity="ignore"/>
+    <issue id="TimberArgTypes" severity="ignore"/>
+    <issue id="TimberTagLength" severity="ignore"/>
+
     <issue id="AllowAllHostnameVerifier" severity="error"/>
     <issue id="InvalidUsesTagAttribute" severity="error"/>
     <issue id="MissingIntentFilterForMediaSearch" severity="error"/>
