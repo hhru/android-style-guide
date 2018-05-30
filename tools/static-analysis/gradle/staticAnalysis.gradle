@@ -3,6 +3,22 @@ def getAndroidProjectSources
 
 apply from: "${rootDir}/android-style-guide/tools/static-analysis/gradle/commonHttpStaticAnalysis.gradle"
 
+repositories {
+    maven { url "http://dl.bintray.com/touchin/touchin-tools" }
+    jcenter()
+}
+
+dependencies {
+    pmd 'net.sourceforge.pmd:pmd-core:5.5.3'
+    pmd 'net.sourceforge.pmd:pmd-java:5.5.3'
+
+    checkstyle 'ru.touchin:checkstyle:7.6.2-fork'
+
+//    cpd 'de.aaschmid:gradle-cpd-plugin:1.0'
+
+    detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.RC7'
+}
+
 gradle.projectsEvaluated {
 
     tasks.withType(JavaCompile) {
@@ -17,9 +33,10 @@ gradle.projectsEvaluated {
                 "-Werror"
     }
 
-    def excludes = rootProject.extensions.findByName("staticAnalysisExcludes")
+    def excludesAnalysers = rootProject.hasProperty("staticAnalysisExcludes") ? rootProject.ext.staticAnalysisExcludes : []
+    def excludes = rootProject.extensions.findByName("pathExludes")
 
-    def androidStaticAnalysisTasks = getStaticAnalysisTaskNames(true, getAndroidProjectSources(excludes))
+    def androidStaticAnalysisTasks = getStaticAnalysisTaskNames(true, excludesAnalysers, getAndroidProjectSources(excludes))
     def androidIdeaFormatTask = getIdeaFormatTask(true, getAndroidProjectSources(excludes))
     task staticAnalysis {
         group = 'headhunter'
@@ -30,8 +47,12 @@ gradle.projectsEvaluated {
         dependsOn androidIdeaFormatTask
         dependsOn androidStaticAnalysisTasks
         doFirst {
-            generateHtmlReport(true)
+            generateHtmlReport(true, excludesAnalysers)
         }
+    }
+
+    task checkMyScript {
+        println("ALL EXCLUSED: ${excludesAnalysers.toString()}")
     }
 
     task staticAnalysisWithoutFormatting {
@@ -39,11 +60,11 @@ gradle.projectsEvaluated {
 
         dependsOn androidStaticAnalysisTasks
         doFirst {
-            generateHtmlReport(true)
+            generateHtmlReport(true, excludesAnalysers)
         }
     }
 
-    def serverStaticAnalysisTasks = getStaticAnalysisTaskNames(false, getServerProjectSources(excludes))
+    def serverStaticAnalysisTasks = getStaticAnalysisTaskNames(true, excludesAnalysers, getAndroidProjectSources(excludes))
     def serverIdeaFormatTask = getIdeaFormatTask(false, getServerProjectSources(excludes))
     task serverStaticAnalysis {
         group = 'headhunter'
@@ -54,7 +75,7 @@ gradle.projectsEvaluated {
         dependsOn serverIdeaFormatTask
         dependsOn serverStaticAnalysisTasks
         doFirst {
-            generateHtmlReport(false)
+            generateHtmlReport(false, excludesAnalysers)
         }
     }
 

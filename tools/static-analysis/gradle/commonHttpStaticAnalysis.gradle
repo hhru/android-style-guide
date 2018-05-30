@@ -5,7 +5,7 @@ apply plugin: 'cpd'
 def getCpdTask
 def getPmdTask
 def getCheckstyleTask
-def getLintTasks
+def getLintTask
 def getKotlinDetektTask
 
 def appendError
@@ -16,11 +16,6 @@ def appendPmdErrors
 def appendLintErrors
 
 def normalizeFileUrl
-
-repositories {
-    maven { url "http://dl.bintray.com/touchin/touchin-tools" }
-    jcenter()
-}
 
 configurations {
     pngtastic
@@ -57,15 +52,15 @@ ext.getIdeaFormatTask = { isAndroidProject, sources ->
     }
 }
 
-ext.getStaticAnalysisTaskNames = { isAndroidProject, sources ->
+ext.getStaticAnalysisTaskNames = { isAndroidProject, excludes, sources ->
     def tasksNames = new ArrayList<String>()
     try {
-        tasksNames.add(getCpdTask(isAndroidProject, sources))
-        tasksNames.add(getKotlinDetektTask(isAndroidProject))
+        if (!excludes.contains("cpd")) tasksNames.add(getCpdTask(isAndroidProject, sources))
+        if (!excludes.contains("detekt")) tasksNames.add(getKotlinDetektTask(isAndroidProject))
         if (isAndroidProject) {
-            tasksNames.add(getCheckstyleTask(sources))
-            tasksNames.add(getPmdTask(sources))
-            tasksNames.addAll(getLintTasks())
+            if (!excludes.contains("checkstyle")) tasksNames.add(getCheckstyleTask(sources))
+            if (!excludes.contains("pmd")) tasksNames.add(getPmdTask(sources))
+            if (!excludes.contains("lint")) tasksNames.add(getLintTask())
         }
     } catch (Exception exception) {
         println(exception.toString())
@@ -73,7 +68,7 @@ ext.getStaticAnalysisTaskNames = { isAndroidProject, sources ->
     return tasksNames
 }
 
-ext.generateHtmlReport = { isAndroidProject ->
+ext.generateHtmlReport = { isAndroidProject, excludes ->
     StringBuilder fullReport = new StringBuilder()
 
     fullReport.append("<table cellpadding='10px' border='2px' cellspacing='0px' cols='4'>");
@@ -81,51 +76,70 @@ ext.generateHtmlReport = { isAndroidProject ->
     StringBuilder consoleReport = new StringBuilder()
     consoleReport.append("STATIC ANALYSIS RESULTS:")
     def count = 0
-
     def previousCount = count
-    count = appendCpdErrors(fullReport, count, new File("${project.buildDir}/reports/cpd.xml"))
-    if (count - previousCount > 0) {
-        consoleReport.append("\n\u001B[31mCPD: FAILED (" + (count - previousCount) + " errors)\u001B[0m " +
-                normalizeFileUrl("file://${project.buildDir}/reports/cpd.xml"))
-    } else {
-        consoleReport.append("\n\u001B[32mCPD: PASSED\u001B[0m")
+
+    if (!excludes.contains("cpd")) {
+        count = appendCpdErrors(fullReport, count, new File("${project.buildDir}/reports/cpd.xml"))
+        if (count - previousCount > 0) {
+            consoleReport.append(
+                    "\n\u001B[31mCPD: FAILED (" + (count - previousCount) + " errors)\u001B[0m " +
+                            normalizeFileUrl("file://${project.buildDir}/reports/cpd.xml"))
+        } else {
+            consoleReport.append("\n\u001B[32mCPD: PASSED\u001B[0m")
+        }
     }
 
-    previousCount = count
-    count = appendKotlinErrors(fullReport, count, new File("${project.buildDir}/reports/kotlin-detekt.xml"))
-    if (count - previousCount > 0) {
-        consoleReport.append("\n\u001B[31mKotlin-detekt: FAILED (" + (count - previousCount) + " errors)\u001B[0m " +
-                normalizeFileUrl("file://${project.buildDir}/reports/kotlin-detekt.xml"))
-    } else {
-        consoleReport.append("\n\u001B[32mKotlin-detekt: PASSED\u001B[0m")
+    if (!excludes.contains("detekt")) {
+        previousCount = count
+        count = appendKotlinErrors(fullReport, count,
+                new File("${project.buildDir}/reports/kotlin-detekt.xml"))
+        if (count - previousCount > 0) {
+            consoleReport.append("\n\u001B[31mKotlin-detekt: FAILED (" + (count - previousCount) +
+                    " errors)\u001B[0m " +
+                    normalizeFileUrl("file://${project.buildDir}/reports/kotlin-detekt.xml"))
+        } else {
+            consoleReport.append("\n\u001B[32mKotlin-detekt: PASSED\u001B[0m")
+        }
     }
 
     if (isAndroidProject) {
-        previousCount = count
-        count = appendPmdErrors(fullReport, count, new File("${project.buildDir}/reports/pmd.xml"))
-        if (count - previousCount > 0) {
-            consoleReport.append("\n\u001B[31mPMD: FAILED (" + (count - previousCount) + " errors)\u001B[0m " +
-                    normalizeFileUrl("file://${project.buildDir}/reports/pmd.html"))
-        } else {
-            consoleReport.append("\n\u001B[32mPMD: PASSED\u001B[0m")
+        if (!excludes.contains("pmd")) {
+            previousCount = count
+            count = appendPmdErrors(fullReport, count,
+                    new File("${project.buildDir}/reports/pmd.xml"))
+            if (count - previousCount > 0) {
+                consoleReport.append("\n\u001B[31mPMD: FAILED (" + (count - previousCount) +
+                        " errors)\u001B[0m " +
+                        normalizeFileUrl("file://${project.buildDir}/reports/pmd.html"))
+            } else {
+                consoleReport.append("\n\u001B[32mPMD: PASSED\u001B[0m")
+            }
         }
 
-        previousCount = count
-        count = appendLintErrors(fullReport, count, new File("${project.buildDir}/reports/lint_report.xml"))
-        if (count - previousCount > 0) {
-            consoleReport.append("\n\u001B[31mLint: FAILED (" + (count - previousCount) + " errors)\u001B[0m " +
-                    normalizeFileUrl("file://${project.buildDir}/reports/lint.html"))
-        } else {
-            consoleReport.append("\n\u001B[32mLint: PASSED\u001B[0m")
+        if (!excludes.contains("lint")) {
+            previousCount = count
+            count = appendLintErrors(fullReport, count,
+                    new File("${project.buildDir}/reports/lint_report.xml"))
+            if (count - previousCount > 0) {
+                consoleReport.append("\n\u001B[31mLint: FAILED (" + (count - previousCount) +
+                        " errors)\u001B[0m " +
+                        normalizeFileUrl("file://${project.buildDir}/reports/lint.html"))
+            } else {
+                consoleReport.append("\n\u001B[32mLint: PASSED\u001B[0m")
+            }
         }
 
-        previousCount = count
-        count = appendCheckstyleErrors(fullReport, count, new File("${project.buildDir}/reports/checkstyle.xml"))
-        if (count - previousCount > 0) {
-            consoleReport.append("\n\u001B[31mCheckstyle: FAILED (" + (count - previousCount) + " errors)\u001B[0m " +
-                    normalizeFileUrl("file://${project.buildDir}/reports/checkstyle.xml"))
-        } else {
-            consoleReport.append("\n\u001B[32mCheckstyle: PASSED\u001B[0m")
+        if (!excludes.contains("checkstyle")) {
+            previousCount = count
+            count = appendCheckstyleErrors(fullReport, count,
+                    new File("${project.buildDir}/reports/checkstyle.xml"))
+            if (count - previousCount > 0) {
+                consoleReport.append("\n\u001B[31mCheckstyle: FAILED (" + (count - previousCount) +
+                        " errors)\u001B[0m " +
+                        normalizeFileUrl("file://${project.buildDir}/reports/checkstyle.xml"))
+            } else {
+                consoleReport.append("\n\u001B[32mCheckstyle: PASSED\u001B[0m")
+            }
         }
     }
 
@@ -348,14 +362,11 @@ getPmdTask = { sources ->
     return taskName
 }
 
-getLintTasks = {
-    def lintTaskNames = new ArrayList<String>()
-
+getLintTask = {
     def lintDebugTask = tasks.matching {
         it.getName().contains("lint") && it.getName().contains("Debug")
     }.first()
     lintDebugTask.dependsOn.clear()
-    lintTaskNames.add(lintDebugTask.getName())
 
     android.lintOptions.abortOnError = false
     android.lintOptions.checkAllWarnings = true
@@ -365,7 +376,7 @@ getLintTasks = {
     android.lintOptions.htmlReport = true
     android.lintOptions.htmlOutput = file("${project.buildDir}/reports/lint_report.html")
     android.lintOptions.lintConfig = file("${rootDir}/android-style-guide/tools/static-analysis/lint/lint.xml")
-    return lintTaskNames
+    return lintDebugTask.getName()
 }
 
 getCheckstyleTask = { sources ->
@@ -412,15 +423,4 @@ getKotlinDetektTask = { isAndroidProject ->
         args(params)
     }
     return taskName
-}
-
-dependencies {
-    pmd 'net.sourceforge.pmd:pmd-core:5.5.3'
-    pmd 'net.sourceforge.pmd:pmd-java:5.5.3'
-
-    checkstyle 'ru.touchin:checkstyle:7.6.2-fork'
-
-    cpd 'de.aaschmid:gradle-cpd-plugin:1.0'
-
-    detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.RC7'
 }
