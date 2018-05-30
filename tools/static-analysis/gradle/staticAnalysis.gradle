@@ -33,10 +33,11 @@ gradle.projectsEvaluated {
                 "-Werror"
     }
 
-    def excludesAnalysers = rootProject.hasProperty("staticAnalysisExcludes") ? rootProject.ext.staticAnalysisExcludes : []
     def excludes = rootProject.extensions.findByName("pathExludes")
+    def analysatorParameters = rootProject.hasProperty("anlysators") ? rootProject.ext.anlysators : null
+    def excludesAnalysers = analysatorParameters ? analysatorParameters["staticAnalysisExcludes"] : []
 
-    def androidStaticAnalysisTasks = getStaticAnalysisTaskNames(true, excludesAnalysers, getAndroidProjectSources(excludes))
+    def androidStaticAnalysisTasks = getStaticAnalysisTaskNames(true, analysatorParameters, getAndroidProjectSources(excludes))
     def androidIdeaFormatTask = getIdeaFormatTask(true, getAndroidProjectSources(excludes))
     task staticAnalysis {
         group = 'headhunter'
@@ -52,7 +53,7 @@ gradle.projectsEvaluated {
     }
 
     task checkMyScript {
-        println("ALL EXCLUSED: ${excludesAnalysers.toString()}")
+        println("ALL EXCLUSED: ${analysatorParameters.toString()}")
     }
 
     task staticAnalysisWithoutFormatting {
@@ -64,47 +65,6 @@ gradle.projectsEvaluated {
         }
     }
 
-    def serverStaticAnalysisTasks = getStaticAnalysisTaskNames(true, excludesAnalysers, getAndroidProjectSources(excludes))
-    def serverIdeaFormatTask = getIdeaFormatTask(false, getServerProjectSources(excludes))
-    task serverStaticAnalysis {
-        group = 'headhunter'
-
-        serverStaticAnalysisTasks.each { task ->
-            tasks.findByName(task).mustRunAfter(serverIdeaFormatTask)
-        }
-        dependsOn serverIdeaFormatTask
-        dependsOn serverStaticAnalysisTasks
-        doFirst {
-            generateHtmlReport(false, excludesAnalysers)
-        }
-    }
-
-    task serverStaticAnalysisWithoutFormatting {
-        group = 'headhunter'
-
-        dependsOn serverStaticAnalysisTasks
-        doFirst {
-            generateHtmlReport(false)
-        }
-    }
-}
-
-getServerProjectSources = { excludes ->
-    def sources = new ArrayList<String>()
-    def sourcesDirectory = new File(project.projectDir.path, 'src')
-
-    for (def sourceFlavorDirectory : sourcesDirectory.listFiles()) {
-        def javaSourceDirectory = new File(sourceFlavorDirectory.path, 'java')
-        def kotlinSourceDirectory = new File(sourceFlavorDirectory.path, 'kotlin')
-
-        if (javaSourceDirectory.exists() && javaSourceDirectory.isDirectory()) {
-            sources.add(javaSourceDirectory.absolutePath)
-        }
-        if (kotlinSourceDirectory.exists() && kotlinSourceDirectory.isDirectory()) {
-            sources.add(kotlinSourceDirectory.absolutePath)
-        }
-    }
-    return sources
 }
 
 getAndroidProjectSources = { excludes ->

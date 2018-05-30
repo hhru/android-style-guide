@@ -52,11 +52,13 @@ ext.getIdeaFormatTask = { isAndroidProject, sources ->
     }
 }
 
-ext.getStaticAnalysisTaskNames = { isAndroidProject, excludes, sources ->
+ext.getStaticAnalysisTaskNames = { isAndroidProject, parameters, sources ->
     def tasksNames = new ArrayList<String>()
+    def excludes = parameters ? parameters["staticAnalysisExcludes"] : []
+    def detektBaselinePath = parameters ? parameters["detektBaselinePath"] : ""
     try {
         if (!excludes.contains("cpd")) tasksNames.add(getCpdTask(isAndroidProject, sources))
-        if (!excludes.contains("detekt")) tasksNames.add(getKotlinDetektTask(isAndroidProject))
+        if (!excludes.contains("detekt")) tasksNames.add(getKotlinDetektTask(isAndroidProject, detektBaselinePath))
         if (isAndroidProject) {
             if (!excludes.contains("checkstyle")) tasksNames.add(getCheckstyleTask(sources))
             if (!excludes.contains("pmd")) tasksNames.add(getPmdTask(sources))
@@ -403,7 +405,7 @@ getCheckstyleTask = { sources ->
     return taskName
 }
 
-getKotlinDetektTask = { isAndroidProject ->
+getKotlinDetektTask = { isAndroidProject, baselinePath ->
     def taskName = (isAndroidProject ? "android" : "server") + "detektCheck_${project.name}"
     tasks.create(taskName, JavaExec) {
         main = "io.gitlab.arturbosch.detekt.cli.Main"
@@ -419,7 +421,9 @@ getKotlinDetektTask = { isAndroidProject ->
                       '-o', output,
                       '-c', config,
                       '-f', filters,
-                      '--output-name', outputName]
+                      '-b', baselinePath,
+                      '--output-name', outputName
+        ]
         args(params)
     }
     return taskName
