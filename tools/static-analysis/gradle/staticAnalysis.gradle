@@ -1,4 +1,3 @@
-def getServerProjectSources
 def getAndroidProjectSources
 
 apply from: "${rootDir}/android-style-guide/tools/static-analysis/gradle/commonHttpStaticAnalysis.gradle"
@@ -43,7 +42,7 @@ gradle.projectsEvaluated {
         group = 'headhunter'
 
         androidStaticAnalysisTasks.each { task ->
-            tasks.findByName(task).mustRunAfter(androidIdeaFormatTask)
+            task.mustRunAfter(androidIdeaFormatTask)
         }
         dependsOn androidIdeaFormatTask
         dependsOn androidStaticAnalysisTasks
@@ -53,7 +52,6 @@ gradle.projectsEvaluated {
     }
 
     task checkMyScript {
-        println("ALL EXCLUSED: ${analysatorParameters.toString()}")
     }
 
     task staticAnalysisWithoutFormatting {

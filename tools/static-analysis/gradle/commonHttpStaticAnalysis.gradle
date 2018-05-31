@@ -5,7 +5,7 @@ apply plugin: 'cpd'
 def getCpdTask
 def getPmdTask
 def getCheckstyleTask
-def getLintTask
+def getLintTasks
 def getKotlinDetektTask
 
 def appendError
@@ -53,21 +53,23 @@ ext.getIdeaFormatTask = { isAndroidProject, sources ->
 }
 
 ext.getStaticAnalysisTaskNames = { isAndroidProject, parameters, sources ->
-    def tasksNames = new ArrayList<String>()
+    def tasks = []
     def excludes = parameters ? parameters["staticAnalysisExcludes"] : []
     def detektBaselinePath = parameters ? parameters["detektBaselinePath"] : ""
+    def lintBaselinePath = parameters ? parameters["lintBaselinePath"] : ""
+
     try {
-        if (!excludes.contains("cpd")) tasksNames.add(getCpdTask(isAndroidProject, sources))
-        if (!excludes.contains("detekt")) tasksNames.add(getKotlinDetektTask(isAndroidProject, detektBaselinePath))
+        if (!excludes.contains("cpd")) tasks.add(getCpdTask(isAndroidProject, sources))
+        if (!excludes.contains("detekt")) tasks.add(getKotlinDetektTask(isAndroidProject, detektBaselinePath))
         if (isAndroidProject) {
-            if (!excludes.contains("checkstyle")) tasksNames.add(getCheckstyleTask(sources))
-            if (!excludes.contains("pmd")) tasksNames.add(getPmdTask(sources))
-            if (!excludes.contains("lint")) tasksNames.add(getLintTask())
+            if (!excludes.contains("checkstyle")) tasks.add(getCheckstyleTask(sources))
+            if (!excludes.contains("pmd")) tasks.add(getPmdTask(sources))
+            if (!excludes.contains("lint")) tasks.addAll(getLintTasks(lintBaselinePath))
         }
     } catch (Exception exception) {
         println(exception.toString())
     }
-    return tasksNames
+    return tasks
 }
 
 ext.generateHtmlReport = { isAndroidProject, excludes ->
@@ -121,7 +123,7 @@ ext.generateHtmlReport = { isAndroidProject, excludes ->
         if (!excludes.contains("lint")) {
             previousCount = count
             count = appendLintErrors(fullReport, count,
-                    new File("${project.buildDir}/reports/lint_report.xml"))
+                    file("${project.buildDir}/reports/lint").listFiles())
             if (count - previousCount > 0) {
                 consoleReport.append("\n\u001B[31mLint: FAILED (" + (count - previousCount) +
                         " errors)\u001B[0m " +
@@ -172,33 +174,6 @@ ext.generateHtmlReport = { isAndroidProject, excludes ->
 
 normalizeFileUrl = { url ->
     return url.replace("\\", "/")
-}
-
-appendError = { report, number, analyzer, file, line, errorId, errorLink, description ->
-    report.append("\n\t<tr>")
-
-    report.append("\n\t\t<td>" + number + "</td>")
-
-    report.append("\n\t\t<td>" + analyzer + "</td>")
-
-    report.append("\n\t\t<td>")
-    if (analyzer == "Lint") {
-        report.append("\n\t\t\t<a href='javascript:alert(\"" + errorLink.replace("'", "&apos;") + "\")'>" + description + " (" + errorId + ")</a>")
-    } else if (analyzer == "Detekt") {
-        report.append("\n\t\t\t" + description + " (" + errorId + ")")
-    } else {
-        report.append("\n\t\t\t<a target='_blank' href='" + errorLink + "'>" + description + " (" + errorId + ")</a>")
-    }
-    report.append("\n\t\t</td>")
-
-    def indexOfSrc = file.indexOf("src")
-    def deeplink = (indexOfSrc > 0 ? file.substring(indexOfSrc) : file).replace('\\', '/')
-    report.append("\n\t\t<td>")
-    report.append("\n\t\t\t<a href='javascript:visitPage(\"" + deeplink + "\", " + line + ")'>" + file + ":" + line + "</a>")
-    report.append("\n\t\t</td>")
-
-    report.append("\n\t</tr>")
-    println("\n\u001B[31m" + number + " " + analyzer + ": " + description + " (" + errorId + ")\n\tat " + file + ":" + line + "\u001B[0m")
 }
 
 appendKotlinErrors = { report, count, checkstyleFile ->
@@ -307,44 +282,57 @@ appendPmdErrors = { report, count, pmdFile ->
     return count
 }
 
-appendLintErrors = { report, count, lintFile ->
-    def rootNode = new XmlParser().parse(lintFile)
-    for (def issueNode : rootNode.children()) {
-        if (!issueNode.name().equals("issue")
-                || !issueNode.attribute("severity").equals("Error")) {
-            continue
-        }
-        for (def locationNode : issueNode.children()) {
-            if (!locationNode.name().equals("location")) {
+appendLintErrors = { report, count, lintFiles ->
+    lintFiles.each { lintFile ->
+        def rootNode = new XmlParser().parse(lintFile)
+        for (def issueNode : rootNode.children()) {
+            if (!issueNode.name().equals("issue") || issueNode.attribute("id").equals("LintBaseline")
+                    || !issueNode.attribute("severity").equals("Error")) {
                 continue
             }
-            count++
-            appendError(report, count, "Lint", locationNode.attribute("file"), locationNode.attribute("line"),
-                    issueNode.attribute("id"), issueNode.attribute("explanation"), issueNode.attribute("message"))
+            for (def locationNode : issueNode.children()) {
+                if (!locationNode.name().equals("location")) {
+                    continue
+                }
+                count++
+                appendError(report, count, "Lint", locationNode.attribute("file"), locationNode.attribute("line"),
+                        issueNode.attribute("id"), issueNode.attribute("explanation"), issueNode.attribute("message"))
+            }
         }
     }
     return count
 }
 
-getCpdTask = { isAndroidProject, sources ->
-    def taskName = (isAndroidProject ? "android" : "server") + "cpd_${project.name}"
-    tasks.create(taskName, tasks.findByName('cpdCheck').getClass().getSuperclass()) {
-        minimumTokenCount = 60
-        source = files(sources)
-        ignoreFailures = true
-        reports {
-            xml {
-                enabled = true
-                destination = file("${project.buildDir}/reports/cpd.xml")
-            }
-        }
+appendError = { report, number, analyzer, file, line, errorId, errorLink, description ->
+    report.append("\n\t<tr>")
+
+    report.append("\n\t\t<td>" + number + "</td>")
+
+    report.append("\n\t\t<td>" + analyzer + "</td>")
+
+    report.append("\n\t\t<td>")
+    if (analyzer == "Lint") {
+        report.append("\n\t\t\t<a href='javascript:alert(\"" + errorLink.replace("'", "&apos;") + "\")'>" + description + " (" + errorId + ")</a>")
+    } else if (analyzer == "Detekt") {
+        report.append("\n\t\t\t" + description + " (" + errorId + ")")
+    } else {
+        report.append("\n\t\t\t<a target='_blank' href='" + errorLink + "'>" + description + " (" + errorId + ")</a>")
     }
-    return taskName
+    report.append("\n\t\t</td>")
+
+    def indexOfSrc = file.indexOf("src")
+    def deeplink = (indexOfSrc > 0 ? file.substring(indexOfSrc) : file).replace('\\', '/')
+    report.append("\n\t\t<td>")
+    report.append("\n\t\t\t<a href='javascript:visitPage(\"" + deeplink + "\", " + line + ")'>" + file + ":" + line + "</a>")
+    report.append("\n\t\t</td>")
+
+    report.append("\n\t</tr>")
+    println("\n\u001B[31m" + number + " " + analyzer + ": " + description + " (" + errorId + ")\n\tat " + file + ":" + line + "\u001B[0m")
 }
 
 getPmdTask = { sources ->
     def taskName = "pmd_${project.name}"
-    tasks.create(taskName, Pmd) {
+    def task = tasks.create(taskName, Pmd) {
         pmdClasspath = configurations.pmd.asFileTree
         ruleSetFiles = files("${rootDir}/android-style-guide/tools/static-analysis/pmd/rulesets/java/android.xml")
         ruleSets = []
@@ -361,24 +349,70 @@ getPmdTask = { sources ->
             }
         }
     }
-    return taskName
+    return task
 }
 
-getLintTask = {
-    def lintDebugTask = tasks.matching {
-        it.getName().contains("lint") && it.getName().contains("Debug")
-    }.first()
-    lintDebugTask.dependsOn.clear()
+getCpdTask = { isAndroidProject, sources ->
+    def taskName = (isAndroidProject ? "android" : "server") + "cpd_${project.name}"
+    def task = tasks.create(taskName, tasks.findByName('cpdCheck').getClass().getSuperclass()) {
+        minimumTokenCount = 60
+        source = files(sources)
+        ignoreFailures = true
+        reports {
+            xml {
+                enabled = true
+                destination = file("${project.buildDir}/reports/cpd.xml")
+            }
+        }
+    }
+    return task
+}
 
-    android.lintOptions.abortOnError = false
-    android.lintOptions.checkAllWarnings = true
-    android.lintOptions.warningsAsErrors = false
-    android.lintOptions.xmlReport = true
-    android.lintOptions.xmlOutput = file("${project.buildDir}/reports/lint_report.xml")
-    android.lintOptions.htmlReport = true
-    android.lintOptions.htmlOutput = file("${project.buildDir}/reports/lint_report.html")
-    android.lintOptions.lintConfig = file("${rootDir}/android-style-guide/tools/static-analysis/lint/lint.xml")
-    return lintDebugTask.getName()
+getLintTasks = { baselinePath ->
+    def taskLists = []
+    subprojects.each { project ->
+        project.getAllTasks(false).entrySet().each {
+            def task = it.value.findAll { it.name.contains("lint") && it.name.contains("Debug") }
+            taskLists.addAll(task)
+        }
+    }
+    taskLists.each { task ->
+        def lintOptions = task.project.getProperty("android").getProperty("lintOptions")
+        lintOptions.setProperty("abortOnError", false)
+        lintOptions.setProperty("checkAllWarnings", true)
+        lintOptions.setProperty("warningsAsErrors", true)
+        lintOptions.setProperty("htmlReport", false)
+        lintOptions.setProperty("xmlReport", true)
+        lintOptions.setProperty("xmlOutput", file("${project.buildDir}/reports/lint/${task.project.name}-${task.name}.xml"))
+        lintOptions.setProperty("lintConfig", file("${rootDir}/android-style-guide/tools/static-analysis/lint/lint.xml"))
+        if (baselinePath != null) {
+            lintOptions.setProperty("baselineFile", file("${baselinePath}/${task.project.name}-${task.name}.xml"))
+        }
+    }
+    return taskLists
+}
+
+getKotlinDetektTask = { isAndroidProject, baselinePath ->
+    def taskName = (isAndroidProject ? "android" : "server") + "detektCheck_${project.name}"
+    def task = tasks.create(taskName, JavaExec) {
+        main = "io.gitlab.arturbosch.detekt.cli.Main"
+        classpath = configurations.detekt
+        def input = "${rootDir}"
+        def output = "${project.buildDir}/reports"
+        def outputName = "kotlin-detekt"
+        def config = "${rootDir}/android-style-guide/tools/static-analysis/kotlin/detekt-config.yml"
+
+        def filters = ".*src/test.*,.*/resources/.*,.*/tmp/.*"
+        def params = ['-i', input,
+                      '-o', output,
+                      '-c', config,
+                      '-f', filters,
+                      '-b', baselinePath,
+                      '--output-name', outputName
+        ]
+        args(params)
+    }
+    return task
 }
 
 getCheckstyleTask = { sources ->
@@ -386,7 +420,7 @@ getCheckstyleTask = { sources ->
     def compileReleaseTask = tasks.matching {
         it.getName().contains("compile") && it.getName().contains("Release") && it.getName().contains("Java") && !it.getName().contains("UnitTest")
     }.last()
-    tasks.create(taskName, Checkstyle) {
+    def task = tasks.create(taskName, Checkstyle) {
         ignoreFailures = true
         showViolations = false
         source files(sources)
@@ -402,29 +436,5 @@ getCheckstyleTask = { sources ->
             }
         }
     }
-    return taskName
-}
-
-getKotlinDetektTask = { isAndroidProject, baselinePath ->
-    def taskName = (isAndroidProject ? "android" : "server") + "detektCheck_${project.name}"
-    tasks.create(taskName, JavaExec) {
-        main = "io.gitlab.arturbosch.detekt.cli.Main"
-        classpath = configurations.detekt
-        def input = "${rootDir}"
-        def output = "${project.buildDir}/reports"
-        def outputName = "kotlin-detekt"
-        def config = "${rootDir}/android-style-guide/tools/static-analysis/kotlin/detekt-config.yml"
-
-        // TODO add excludes from rootProject.extensions.findByName("staticAnalysisExcludes")
-        def filters = ".*src/test.*,.*/resources/.*,.*/tmp/.*"
-        def params = ['-i', input,
-                      '-o', output,
-                      '-c', config,
-                      '-f', filters,
-                      '-b', baselinePath,
-                      '--output-name', outputName
-        ]
-        args(params)
-    }
-    return taskName
+    return task
 }
