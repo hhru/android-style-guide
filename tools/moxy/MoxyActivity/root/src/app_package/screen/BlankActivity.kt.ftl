@@ -1,20 +1,20 @@
-package ${packageName}.ui.activity${dotSubpackage}
+package ${packageName}.screen
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import ${packageName}.R
-<#if useSubPackage??>import ${packageName}.ui.activity.BaseActivity</#if>
+import ru.hh.android.R
+import ru.hh.android.base.ui.BaseActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
-import ${packageName}.presentation.view${dotSubpackage}.${viewName}
-import ${packageName}.presentation.presenter${dotSubpackage}.${presenterName}
+import ${packageName}.view.${viewName}
+import ${packageName}.presenter.${presenterName}
 
 
 class ${className} : BaseActivity(), ${viewName} {
     
 <#if includeFactory>
     companion object {
-        val TAG = "${className}"
+        private const val TAG = "${className}"
 
         fun getIntent(context: Context): Intent {
             val intent = Intent(context, ${className}::class.java)
@@ -28,7 +28,7 @@ class ${className} : BaseActivity(), ${viewName} {
 
 
     @InjectPresenter
-    internal lateinit var local${presenterName}: ${presenterName}
+    internal lateinit var presenter: ${presenterName}
 
 <#if includeLayout>
 
@@ -38,5 +38,9 @@ class ${className} : BaseActivity(), ${viewName} {
     }
 
 </#if>
+
+    override fun onBackPressedInternal(): Boolean {
+        TODO("not implemented")
+    }
 
 }

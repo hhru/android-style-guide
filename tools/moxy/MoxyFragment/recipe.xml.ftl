@@ -12,23 +12,23 @@
         <open file="${escapeXmlAttribute(resOut)}/layout/${escapeXmlAttribute(fragmentName)}.xml" />
     </#if>
 
-    	<instantiate from="src/app_package/ui/fragment/BlankFragment.kt.ftl"
-		to="${srcOutRRR}/ui/fragment/${subpackage}${className}.kt" />
+    	<instantiate from="src/app_package/screen/BlankFragment.kt.ftl"
+		to="${srcOutRRR}/screen/${className}.kt" />
 
-    	<open file="${srcOutRRR}/ui/fragment/${subpackage}${className}.kt" />
+    	<open file="${srcOutRRR}/screen/${className}.kt" />
 
     <#if includeView>
-    	<instantiate from="src/app_package/presentation/view/BlankView.kt.ftl"
-		to="${srcOutRRR}/presentation/view/${subpackage}${viewName}.kt" />
+    	<instantiate from="src/app_package/view/BlankView.kt.ftl"
+		to="${srcOutRRR}/view/${viewName}.kt" />
 
-    	<open file="${srcOutRRR}/presentation/view/${subpackage}${viewName}.kt" />
+    	<open file="${srcOutRRR}/view/${viewName}.kt" />
     </#if>
 
     <#if includePresenter>
-    	<instantiate from="src/app_package/presentation/presenter/BlankPresenter.kt.ftl"
-		to="${srcOutRRR}/presentation/presenter/${subpackage}${presenterName}.kt" />
+    	<instantiate from="src/app_package/presenter/BlankPresenter.kt.ftl"
+		to="${srcOutRRR}/presenter/${presenterName}.kt" />
 
-    	<open file="${srcOutRRR}/presentation/presenter/${subpackage}${presenterName}.kt" />
+    	<open file="${srcOutRRR}/presenter/${presenterName}.kt" />
     </#if>
                                       
 </recipe>

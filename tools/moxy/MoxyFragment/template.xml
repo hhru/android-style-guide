@@ -20,22 +20,6 @@
         help="The name of the fragment class to create" />
 
     <parameter
-        id="useSubPackage"
-        name="Use sub package?"
-        type="boolean"
-        default="true"
-        help="Add generated classes to specified package" />
-
-
-    <parameter
-        id="subPackage"
-        name="Package name"
-        type="string"
-        default=""
-        visibility="useSubPackage"
-        help="Package name" />
-
-    <parameter
         id="includeView"
         name="Create View?"
         type="boolean"
