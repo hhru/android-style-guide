@@ -17,6 +17,12 @@
     <!-- todo: lint bug? -->
     <issue id="MissingSuperCall" severity="ignore"/>
 
+    <issue id="IconDensities" severity="ignore"/>
+    <issue id="TypographyQuotes" severity="ignore"/>
+    <issue id="IconDipSize" severity="ignore"/>
+    <issue id="StringFormatInvalid" severity="ignore"/>
+    <issue id="TypographyDashes" severity="ignore"/>
+
     <!-- Jake Wharton's bug https://github.com/JakeWharton/timber/issues/292? -->
     <issue id="StringFormatInTimber" severity="ignore"/>
     <issue id="TimberExceptionLogging" severity="ignore"/>
@@ -106,7 +112,6 @@
     <issue id="SSLCertificateSocketFactoryCreateSocket" severity="error"/>
     <issue id="SSLCertificateSocketFactoryGetInsecure" severity="error"/>
     <issue id="StringFormatMatches" severity="error"/>
-    <issue id="StringFormatInvalid" severity="error"/>
     <issue id="UseCheckPermission" severity="error"/>
     <issue id="CheckResult" severity="warning"/>
     <issue id="ResourceAsColor" severity="error"/>
@@ -123,7 +128,6 @@
     <issue id="UnsupportedTvHardware" severity="error"/>
     <issue id="MissingTvBanner" severity="error"/>
     <issue id="TypographyOther" severity="error"/>
-    <issue id="TypographyQuotes" severity="warning"/>
     <issue id="UnsafeProtectedBroadcastReceiver" severity="error"/>
     <issue id="UnprotectedSMSBroadcastReceiver" severity="error"/>
     <issue id="VectorRaster" severity="error"/>
@@ -169,8 +173,6 @@
     <issue id="HandlerLeak" severity="error"/>
     <issue id="HardcodedText" severity="error"/>
     <issue id="IconColors" severity="warning"/>
-    <issue id="IconDensities" severity="warning"/>
-    <issue id="IconDipSize" severity="error"/>
     <issue id="IconDuplicates" severity="error"/>
     <issue id="IconDuplicatesConfig" severity="error"/>
     <issue id="IconExtension" severity="error"/>
@@ -216,7 +218,6 @@
     <issue id="TextViewEdits" severity="error"/>
     <issue id="TooDeepLayout" severity="warning"/>
     <issue id="TooManyViews" severity="warning"/>
-    <issue id="TypographyDashes" severity="warning"/>
     <issue id="UnknownIdInLayout" severity="error"/>
     <issue id="UnlocalizedSms" severity="error"/>
     <issue id="UnusedIds" severity="error"/>
