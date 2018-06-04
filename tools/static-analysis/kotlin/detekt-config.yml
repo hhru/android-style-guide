@@ -382,7 +382,7 @@ style:
   EqualsNullCall:
     active: true
   ExpressionBodySyntax:
-    active: true
+    active: false
   ForbiddenComment:
     active: true
     values: 'TODO:,FIXME:,STOPSHIP:'
