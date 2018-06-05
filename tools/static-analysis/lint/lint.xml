@@ -22,6 +22,7 @@
     <issue id="IconDipSize" severity="ignore"/>
     <issue id="StringFormatInvalid" severity="ignore"/>
     <issue id="TypographyDashes" severity="ignore"/>
+    <issue id="StringFormatMatches" severity="ignore"/>
 
     <!-- Jake Wharton's bug https://github.com/JakeWharton/timber/issues/292? -->
     <issue id="StringFormatInTimber" severity="ignore"/>
@@ -111,7 +112,6 @@
     <issue id="ServiceCast" severity="error"/>
     <issue id="SSLCertificateSocketFactoryCreateSocket" severity="error"/>
     <issue id="SSLCertificateSocketFactoryGetInsecure" severity="error"/>
-    <issue id="StringFormatMatches" severity="error"/>
     <issue id="UseCheckPermission" severity="error"/>
     <issue id="CheckResult" severity="warning"/>
     <issue id="ResourceAsColor" severity="error"/>
