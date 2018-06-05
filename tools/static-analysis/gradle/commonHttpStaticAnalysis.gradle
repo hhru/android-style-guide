@@ -376,6 +376,7 @@ getLintTasks = { baselinePath ->
             taskLists.addAll(task)
         }
     }
+    def runLintModuleOnlyArg = rootProject.hasProperty("runLintModuleOnly") ? rootProject.getProperties().get("runLintModuleOnly") : null
     taskLists.each { task ->
         def lintOptions = task.project.getProperty("android").getProperty("lintOptions")
         lintOptions.setProperty("abortOnError", false)
@@ -387,6 +388,11 @@ getLintTasks = { baselinePath ->
         lintOptions.setProperty("lintConfig", file("${rootDir}/android-style-guide/tools/static-analysis/lint/lint.xml"))
         if (baselinePath != null && file("${baselinePath}/${task.project.name}-${task.name}.xml").exists()) {
             lintOptions.setProperty("baselineFile", file("${baselinePath}/${task.project.name}-${task.name}.xml"))
+        }
+    }
+    if (runLintModuleOnlyArg != null) {
+        taskLists = taskLists.find { task ->
+            task.project.name == runLintModuleOnlyArg
         }
     }
     return taskLists
