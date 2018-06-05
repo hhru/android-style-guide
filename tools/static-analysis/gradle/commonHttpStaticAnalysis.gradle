@@ -408,7 +408,7 @@ getKotlinDetektTask = { isAndroidProject, baselinePath ->
         def outputName = "kotlin-detekt"
         def config = "${rootDir}/android-style-guide/tools/static-analysis/kotlin/detekt-config.yml"
 
-        def filters = ".*src/test.*,.*/resources/.*,.*/tmp/.*"
+        def filters = ".*src/test.*,.*/resources/.*,.*/tmp/.*,.*/build/.*"
         def params = ['-i', input,
                       '-o', output,
                       '-c', config,
