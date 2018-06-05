@@ -34,6 +34,11 @@ ext.anlysators = [
 2. В параметре `detektBaselinePath` можно указать путь до baseline файла к detekt-у
 3. В параметре `lintBaselinePath` можно указать путь до директории с baseline файл(ом/ами) к lint-у. Из-за того что проект может содержать несколько модулей, то и baseline файлов к lint-у может быть несколько
 
+
+При запуске через командную строку есть возможность ограничить запуск проверок lint-a одим модулем с помощью параметра `runLintModuleOnly`:
+```sh
+./gradlew staticAnalysis -PrunLintModuleOnly=common
+```
 # ROADMAP
 
 1. Сделать таску для генерации baseline файлов
