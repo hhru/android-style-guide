@@ -385,7 +385,7 @@ getLintTasks = { baselinePath ->
         lintOptions.setProperty("xmlReport", true)
         lintOptions.setProperty("xmlOutput", file("${project.buildDir}/reports/lint/${task.project.name}-${task.name}.xml"))
         lintOptions.setProperty("lintConfig", file("${rootDir}/android-style-guide/tools/static-analysis/lint/lint.xml"))
-        if (baselinePath != null) {
+        if (baselinePath != null && file("${baselinePath}/${task.project.name}-${task.name}.xml").exists()) {
             lintOptions.setProperty("baselineFile", file("${baselinePath}/${task.project.name}-${task.name}.xml"))
         }
     }
