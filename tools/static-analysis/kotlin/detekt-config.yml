@@ -108,7 +108,7 @@ complexity:
     excludeStringsWithLessThan5Characters: false
     ignoreStringsRegex: '$^'
   TooManyFunctions:
-    active: true
+    active: false
     thresholdInFiles: 10
     thresholdInClasses: 10
     thresholdInInterfaces: 10
