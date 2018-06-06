@@ -23,6 +23,7 @@
     <issue id="StringFormatInvalid" severity="ignore"/>
     <issue id="TypographyDashes" severity="ignore"/>
     <issue id="StringFormatMatches" severity="ignore"/>
+    <issue id="GradleDependency" severity="ignore"/>
 
     <!-- Jake Wharton's bug https://github.com/JakeWharton/timber/issues/292? -->
     <issue id="StringFormatInTimber" severity="ignore"/>
@@ -164,7 +165,6 @@
     <issue id="ExtraText" severity="error"/>
     <issue id="GetInstance" severity="error"/>
     <issue id="GifUsage" severity="warning"/>
-    <issue id="GradleDependency" severity="error"/>
     <issue id="GradleDeprecated" severity="error"/>
     <issue id="GradleDynamicVersion" severity="error"/>
     <issue id="GradleOverrides" severity="error"/>
