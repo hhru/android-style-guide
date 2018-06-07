@@ -464,7 +464,7 @@ style:
     active: false
     excludeAnnotatedClasses: ""
   UtilityClassWithPublicConstructor:
-    active: true
+    active: false
   WildcardImport:
     active: false
     excludeImports: 'java.util.*,kotlinx.android.synthetic.*'
