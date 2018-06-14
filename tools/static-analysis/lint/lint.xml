@@ -4,9 +4,6 @@
     <issue id="InvalidPackage" severity="error">
         <ignore regexp="Invalid package reference in library.*not included in Android.*java.*"/>
     </issue>
-    <issue id="NewerVersionAvailable" severity="error">
-        <ignore regexp="A newer version of de.ruedigermoeller:fst than .+ is available: .+"/>
-    </issue>
     <issue id="GradleCompatible" severity="error">
         <ignore regexp="All com.android.support libraries must use the exact same version specification (mixing versions can lead to runtime crashes). Found versions *. Examples include *"/>
     </issue>
@@ -24,6 +21,7 @@
     <issue id="TypographyDashes" severity="ignore"/>
     <issue id="StringFormatMatches" severity="ignore"/>
     <issue id="GradleDependency" severity="ignore"/>
+    <issue id="NewerVersionAvailable" severity="ignore"/>
 
     <!-- Jake Wharton's bug https://github.com/JakeWharton/timber/issues/292? -->
     <issue id="StringFormatInTimber" severity="ignore"/>
