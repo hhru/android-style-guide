@@ -33,38 +33,52 @@ ext.getIdeaFormatTask = { isAndroidProject, sources ->
     if (ideaPath == null) {
         return tasks.create((isAndroidProject ? "android" : "server") + "do nothing")
     }
-    return tasks.create((isAndroidProject ? "android" : "server") + "IdeaFormat_$project.name", Exec) {
-        def inspectionPath
-        def params = ["-r", "-mask", "*.java,*.kt,*.xml"]
-        for (String source : sources) {
-            params.add(source)
-        }
+    return tasks.
+            create((isAndroidProject ? "android" : "server") + "IdeaFormat_$project.name", Exec) {
+                def inspectionPath
+                def params = ["-r", "-mask", "*.java,*.kt,*.xml"]
+                for (String source : sources) {
+                    params.add(source)
+                }
 
-        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            inspectionPath = ['cmd', '/c', "${ideaPath}\\bin\\format.bat ${params.join(" ")}"]
-        } else {
-            inspectionPath = ["$ideaPath/bin/format.sh"]
-        }
-        commandLine inspectionPath
-        if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-            args = params
-        }
-    }
+                if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                    inspectionPath =
+                            ['cmd', '/c', "${ideaPath}\\bin\\format.bat ${params.join(" ")}"]
+                } else {
+                    inspectionPath = ["$ideaPath/bin/format.sh"]
+                }
+                commandLine inspectionPath
+                if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
+                    args = params
+                }
+            }
 }
 
 ext.getStaticAnalysisTaskNames = { isAndroidProject, parameters, sources ->
     def tasks = []
     def excludes = parameters ? parameters["staticAnalysisExcludes"] : []
-    def detektBaselinePath = parameters ? parameters["detektBaselinePath"] : ""
     def lintBaselinePath = parameters ? parameters["lintBaselinePath"] : ""
 
+    def detektBaselinePath = parameters ? parameters["detektBaselinePath"] : ""
+    def detektConfigPath = parameters ? parameters["detektConfigPath"] : ""
+
     try {
-        if (!excludes.contains("cpd")) tasks.add(getCpdTask(isAndroidProject, sources))
-        if (!excludes.contains("detekt")) tasks.add(getKotlinDetektTask(isAndroidProject, detektBaselinePath))
+        if (!excludes.contains("cpd")) {
+            tasks.add(getCpdTask(isAndroidProject, sources))
+        }
+        if (!excludes.contains("detekt")) {
+            tasks.add(getKotlinDetektTask(isAndroidProject, detektBaselinePath, detektConfigPath))
+        }
         if (isAndroidProject) {
-            if (!excludes.contains("checkstyle")) tasks.add(getCheckstyleTask(sources))
-            if (!excludes.contains("pmd")) tasks.add(getPmdTask(sources))
-            if (!excludes.contains("lint")) tasks.addAll(getLintTasks(lintBaselinePath))
+            if (!excludes.contains("checkstyle")) {
+                tasks.add(getCheckstyleTask(sources))
+            }
+            if (!excludes.contains("pmd")) {
+                tasks.add(getPmdTask(sources))
+            }
+            if (!excludes.contains("lint")) {
+                tasks.addAll(getLintTasks(lintBaselinePath))
+            }
         }
     } catch (Exception exception) {
         println(exception.toString())
@@ -190,7 +204,8 @@ appendKotlinErrors = { report, count, checkstyleFile ->
             count++
 
             def error = errorNode.attribute("source")
-            appendError(report, count, "Detekt", fileNode.attribute("name"), errorNode.attribute("line"), error, "", errorNode.attribute("message"))
+            appendError(report, count, "Detekt", fileNode.attribute("name"),
+                    errorNode.attribute("line"), error, "", errorNode.attribute("message"))
         }
     }
     return count
@@ -219,12 +234,14 @@ appendCpdErrors = { report, count, cpdFile ->
                 def file = filePointNode.attribute("path")
                 def line = filePointNode.attribute("line");
                 def indexOfSrc = file.indexOf("src")
-                def deeplink = (indexOfSrc > 0 ? file.substring(indexOfSrc) : file).replace('\\', '/')
+                def deeplink = (indexOfSrc > 0 ? file.substring(indexOfSrc) : file).
+                        replace('\\', '/')
                 if (duplicationIndex > 0) {
                     links += "\n\t\t\t</br></br>"
                 }
                 links += "Code fragment " + (duplicationIndex + 1) + "</br>"
-                links += "\n\t\t\t<a href='javascript:visitPage(\"" + deeplink + "\", " + line + ")'>" + file + ":" + line + "</a>"
+                links += "\n\t\t\t<a href='javascript:visitPage(\"" + deeplink + "\", " + line +
+                        ")'>" + file + ":" + line + "</a>"
                 duplicationPoints += "\n\tat " + file + ":" + line
                 duplicationIndex++
             } else if (filePointNode.name().equals("codefragment")) {
@@ -255,8 +272,10 @@ appendCheckstyleErrors = { report, count, checkstyleFile ->
             count++
 
             def error = errorNode.attribute("source")
-            def link = "http://checkstyle.sourceforge.net/apidocs/" + error.replace('.', '/') + ".html"
-            appendError(report, count, "Checkstyle", fileNode.attribute("name"), errorNode.attribute("line"), error, link, errorNode.attribute("message"))
+            def link = "http://checkstyle.sourceforge.net/apidocs/" + error.replace('.', '/') +
+                    ".html"
+            appendError(report, count, "Checkstyle", fileNode.attribute("name"),
+                    errorNode.attribute("line"), error, link, errorNode.attribute("message"))
         }
     }
     return count
@@ -275,8 +294,10 @@ appendPmdErrors = { report, count, pmdFile ->
             }
             count++
 
-            appendError(report, count, "PMD", fileNode.attribute("name"), errorNode.attribute("beginline"),
-                    errorNode.attribute("rule").trim(), errorNode.attribute("externalInfoUrl").trim(), errorNode.text().trim())
+            appendError(report, count, "PMD", fileNode.attribute("name"),
+                    errorNode.attribute("beginline"),
+                    errorNode.attribute("rule").trim(),
+                    errorNode.attribute("externalInfoUrl").trim(), errorNode.text().trim())
         }
     }
     return count
@@ -286,7 +307,8 @@ appendLintErrors = { report, count, lintFiles ->
     lintFiles.each { lintFile ->
         def rootNode = new XmlParser().parse(lintFile)
         for (def issueNode : rootNode.children()) {
-            if (!issueNode.name().equals("issue") || issueNode.attribute("id").equals("LintBaseline")
+            if (!issueNode.name().equals("issue") ||
+                    issueNode.attribute("id").equals("LintBaseline")
                     || !issueNode.attribute("severity").equals("Error")) {
                 continue
             }
@@ -295,8 +317,10 @@ appendLintErrors = { report, count, lintFiles ->
                     continue
                 }
                 count++
-                appendError(report, count, "Lint", locationNode.attribute("file"), locationNode.attribute("line"),
-                        issueNode.attribute("id"), issueNode.attribute("explanation"), issueNode.attribute("message"))
+                appendError(report, count, "Lint", locationNode.attribute("file"),
+                        locationNode.attribute("line"),
+                        issueNode.attribute("id"), issueNode.attribute("explanation"),
+                        issueNode.attribute("message"))
             }
         }
     }
@@ -312,29 +336,35 @@ appendError = { report, number, analyzer, file, line, errorId, errorLink, descri
 
     report.append("\n\t\t<td>")
     if (analyzer == "Lint") {
-        report.append("\n\t\t\t<a href='javascript:alert(\"" + errorLink.replace("'", "&apos;") + "\")'>" + description + " (" + errorId + ")</a>")
+        report.append("\n\t\t\t<a href='javascript:alert(\"" + errorLink.replace("'", "&apos;") +
+                "\")'>" + description + " (" + errorId + ")</a>")
     } else if (analyzer == "Detekt") {
         report.append("\n\t\t\t" + description + " (" + errorId + ")")
     } else {
-        report.append("\n\t\t\t<a target='_blank' href='" + errorLink + "'>" + description + " (" + errorId + ")</a>")
+        report.append("\n\t\t\t<a target='_blank' href='" + errorLink + "'>" + description + " (" +
+                errorId + ")</a>")
     }
     report.append("\n\t\t</td>")
 
     def indexOfSrc = file.indexOf("src")
     def deeplink = (indexOfSrc > 0 ? file.substring(indexOfSrc) : file).replace('\\', '/')
     report.append("\n\t\t<td>")
-    report.append("\n\t\t\t<a href='javascript:visitPage(\"" + deeplink + "\", " + line + ")'>" + file + ":" + line + "</a>")
+    report.append(
+            "\n\t\t\t<a href='javascript:visitPage(\"" + deeplink + "\", " + line + ")'>" + file +
+                    ":" + line + "</a>")
     report.append("\n\t\t</td>")
 
     report.append("\n\t</tr>")
-    println("\n\u001B[31m" + number + " " + analyzer + ": " + description + " (" + errorId + ")\n\tat " + file + ":" + line + "\u001B[0m")
+    println("\n\u001B[31m" + number + " " + analyzer + ": " + description + " (" + errorId +
+            ")\n\tat " + file + ":" + line + "\u001B[0m")
 }
 
 getPmdTask = { sources ->
     def taskName = "pmd_${project.name}"
     def task = tasks.create(taskName, Pmd) {
         pmdClasspath = configurations.pmd.asFileTree
-        ruleSetFiles = files("${rootDir}/android-style-guide/tools/static-analysis/pmd/rulesets/java/android.xml")
+        ruleSetFiles = files(
+                "${rootDir}/android-style-guide/tools/static-analysis/pmd/rulesets/java/android.xml")
         ruleSets = []
         source files(sources)
         ignoreFailures = true
@@ -376,7 +406,8 @@ getLintTasks = { baselinePath ->
             taskLists.addAll(task)
         }
     }
-    def runLintModuleOnlyArg = rootProject.hasProperty("runLintModuleOnly") ? rootProject.getProperties().get("runLintModuleOnly") : null
+    def runLintModuleOnlyArg = rootProject.hasProperty("runLintModuleOnly") ?
+            rootProject.getProperties().get("runLintModuleOnly") : null
     taskLists.each { task ->
         def lintOptions = task.project.getProperty("android").getProperty("lintOptions")
         lintOptions.setProperty("abortOnError", false)
@@ -384,10 +415,14 @@ getLintTasks = { baselinePath ->
         lintOptions.setProperty("warningsAsErrors", true)
         lintOptions.setProperty("htmlReport", false)
         lintOptions.setProperty("xmlReport", true)
-        lintOptions.setProperty("xmlOutput", file("${project.buildDir}/reports/lint/${task.project.name}-${task.name}.xml"))
-        lintOptions.setProperty("lintConfig", file("${rootDir}/android-style-guide/tools/static-analysis/lint/lint.xml"))
-        if (baselinePath != null && file("${baselinePath}/${task.project.name}-${task.name}.xml").exists()) {
-            lintOptions.setProperty("baselineFile", file("${baselinePath}/${task.project.name}-${task.name}.xml"))
+        lintOptions.setProperty("xmlOutput",
+                file("${project.buildDir}/reports/lint/${task.project.name}-${task.name}.xml"))
+        lintOptions.setProperty("lintConfig",
+                file("${rootDir}/android-style-guide/tools/static-analysis/lint/lint.xml"))
+        if (baselinePath != null &&
+                file("${baselinePath}/${task.project.name}-${task.name}.xml").exists()) {
+            lintOptions.setProperty("baselineFile",
+                    file("${baselinePath}/${task.project.name}-${task.name}.xml"))
         }
     }
     if (runLintModuleOnlyArg != null) {
@@ -398,7 +433,7 @@ getLintTasks = { baselinePath ->
     return taskLists
 }
 
-getKotlinDetektTask = { isAndroidProject, baselinePath ->
+getKotlinDetektTask = { isAndroidProject, baselinePath, configPath ->
     def taskName = (isAndroidProject ? "android" : "server") + "detektCheck_${project.name}"
     def task = tasks.create(taskName, JavaExec) {
         main = "io.gitlab.arturbosch.detekt.cli.Main"
@@ -406,7 +441,13 @@ getKotlinDetektTask = { isAndroidProject, baselinePath ->
         def input = "${rootDir}"
         def output = "${project.buildDir}/reports"
         def outputName = "kotlin-detekt"
-        def config = "${rootDir}/android-style-guide/tools/static-analysis/kotlin/detekt-config.yml"
+        def config = (configPath == null || configPath.isEmpty()) ?
+                "${rootDir}/android-style-guide/tools/static-analysis/kotlin/detekt-config.yml" :
+                configPath
+
+        println("======================================================")
+        println("${config}")
+        println("======================================================")
 
         def filters = ".*src/test.*,.*/resources/.*,.*/tmp/.*,.*/build/.*"
         def params = ['-i', input,
@@ -424,15 +465,19 @@ getKotlinDetektTask = { isAndroidProject, baselinePath ->
 getCheckstyleTask = { sources ->
     def taskName = "checkstyle_${project.name}"
     def compileReleaseTask = tasks.matching {
-        it.getName().contains("compile") && it.getName().contains("Release") && it.getName().contains("Java") && !it.getName().contains("UnitTest")
+        it.getName().contains("compile") && it.getName().contains("Release") &&
+                it.getName().contains("Java") && !it.getName().contains("UnitTest")
     }.last()
     def task = tasks.create(taskName, Checkstyle) {
         ignoreFailures = true
         showViolations = false
         source files(sources)
-        configFile file("${rootDir}/android-style-guide/tools/static-analysis/checkstyle/configuration/touchin_checkstyle.xml")
+        configFile file(
+                "${rootDir}/android-style-guide/tools/static-analysis/checkstyle/configuration/touchin_checkstyle.xml")
         checkstyleClasspath = configurations.checkstyle.asFileTree
-        classpath = files(System.getenv("ANDROID_HOME") + "/platforms/" + android.compileSdkVersion + "/android.jar") +
+        classpath = files(
+                System.getenv("ANDROID_HOME") + "/platforms/" + android.compileSdkVersion +
+                        "/android.jar") +
                 files(System.properties.'java.home' + "/lib/rt.jar") +
                 compileReleaseTask.classpath
         reports {
