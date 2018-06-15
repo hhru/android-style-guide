@@ -38,7 +38,6 @@ gradle.projectsEvaluated {
     def excludesAnalysers = analysatorParameters ? analysatorParameters["staticAnalysisExcludes"] : []
 
     def androidStaticAnalysisTasks = getStaticAnalysisTaskNames(true, analysatorParameters, getAndroidProjectSources(excludes))
-    def androidIdeaFormatTask = getIdeaFormatTask(true, getAndroidProjectSources(excludes))
 
     def generateDetektConfigTask = generateDetektDefaultConfig()
     def generateDetektBaselineTask = generateDetektBaseline()
@@ -47,10 +46,6 @@ gradle.projectsEvaluated {
     task staticAnalysis {
         group = 'headhunter'
 
-        androidStaticAnalysisTasks.each { task ->
-            task.mustRunAfter(androidIdeaFormatTask)
-        }
-        dependsOn androidIdeaFormatTask
         dependsOn androidStaticAnalysisTasks
         doFirst {
             generateHtmlReport(true, excludesAnalysers)
@@ -71,16 +66,6 @@ gradle.projectsEvaluated {
 
     task checkMyScript {
     }
-
-    task staticAnalysisWithoutFormatting {
-        group = 'headhunter'
-
-        dependsOn androidStaticAnalysisTasks
-        doFirst {
-            generateHtmlReport(true, excludesAnalysers)
-        }
-    }
-
 }
 
 getAndroidProjectSources = { excludes ->

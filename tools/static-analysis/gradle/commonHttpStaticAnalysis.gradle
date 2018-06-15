@@ -26,34 +26,6 @@ cpd {
     skipLexicalErrors = true
 }
 
-import org.apache.tools.ant.taskdefs.condition.Os
-
-ext.getIdeaFormatTask = { isAndroidProject, sources ->
-    def ideaPath = System.getenv("IDEA_HOME")
-    if (ideaPath == null) {
-        return tasks.create((isAndroidProject ? "android" : "server") + "do nothing")
-    }
-    return tasks.
-            create((isAndroidProject ? "android" : "server") + "IdeaFormat_$project.name", Exec) {
-                def inspectionPath
-                def params = ["-r", "-mask", "*.java,*.kt,*.xml"]
-                for (String source : sources) {
-                    params.add(source)
-                }
-
-                if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-                    inspectionPath =
-                            ['cmd', '/c', "${ideaPath}\\bin\\format.bat ${params.join(" ")}"]
-                } else {
-                    inspectionPath = ["$ideaPath/bin/format.sh"]
-                }
-                commandLine inspectionPath
-                if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-                    args = params
-                }
-            }
-}
-
 ext.getStaticAnalysisTaskNames = { isAndroidProject, parameters, sources ->
     def tasks = []
     def excludes = parameters ? parameters["staticAnalysisExcludes"] : []
@@ -415,12 +387,9 @@ getLintTasks = { baselinePath ->
         lintOptions.setProperty("warningsAsErrors", true)
         lintOptions.setProperty("htmlReport", false)
         lintOptions.setProperty("xmlReport", true)
-        lintOptions.setProperty("xmlOutput",
-                file("${project.buildDir}/reports/lint/${task.project.name}-${task.name}.xml"))
-        lintOptions.setProperty("lintConfig",
-                file("${rootDir}/android-style-guide/tools/static-analysis/lint/lint.xml"))
-        if (baselinePath != null &&
-                file("${baselinePath}/${task.project.name}-${task.name}.xml").exists()) {
+        lintOptions.setProperty("xmlOutput", file("${project.buildDir}/reports/lint/${task.project.name}-${task.name}.xml"))
+        lintOptions.setProperty("lintConfig", file("${rootDir}/android-style-guide/tools/static-analysis/lint/lint.xml"))
+        if (baselinePath != null && file("${baselinePath}/${task.project.name}-${task.name}.xml").exists()) {
             lintOptions.setProperty("baselineFile",
                     file("${baselinePath}/${task.project.name}-${task.name}.xml"))
         }
