@@ -14,3 +14,17 @@ ext.generateDetektDefaultConfig = {
     }
     return task
 }
+
+ext.generateDetektBaseline = {
+    def taskName = "androidDetektGenerateBaseline_${project.name}"
+    def task = tasks.create(taskName, JavaExec) {
+        main = "io.gitlab.arturbosch.detekt.cli.Main"
+        classpath = configurations.detekt
+        def input = "${rootDir}"
+        def params = ['--create-baseline',
+                      '--baseline', "${input}/detekt-baseline.xml",
+                      '-i', input]
+        args(params)
+    }
+    return task
+}

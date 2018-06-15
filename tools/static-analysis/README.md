@@ -40,10 +40,18 @@ ext.anlysators = [
 ./gradlew staticAnalysis -PrunLintModuleOnly=common
 ```
 
-Для создания дефолтного конфига для detekt-a необходимо выполнить команду. После успешного выполнения gradle-таски будет создан файл default-detekt-config.yml в корне проекта.
+Для создания дефолтного конфига для detekt-a необходимо выполнить команду.
 ```sh
 ./gradlew generateDetektConfig
 ```
+После успешного выполнения gradle-таски будет создан файл default-detekt-config.yml в корне проекта.
+
+Для создания baseline файла для detekt-a необходимо выполнить команду.
+```sh
+./gradlew generateDetektBaseline
+```
+После выполнения gradle-таски будет создан файл detekt-baseline.xml в корне проекта. Gradle-таска завершается не успешно, из-за реализации генерации baseline файла detekta-a.
+
 # ROADMAP
 
 1. Сделать таску для генерации baseline файлов

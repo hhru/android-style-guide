@@ -41,6 +41,7 @@ gradle.projectsEvaluated {
     def androidIdeaFormatTask = getIdeaFormatTask(true, getAndroidProjectSources(excludes))
 
     def generateDetektConfigTask = generateDetektDefaultConfig()
+    def generateDetektBaselineTask = generateDetektBaseline()
 
 
     task staticAnalysis {
@@ -60,6 +61,12 @@ gradle.projectsEvaluated {
         group = 'headhunter'
 
         dependsOn generateDetektConfigTask
+    }
+
+    task generateDetektBaseline {
+        group = 'headhunter'
+
+        dependsOn generateDetektBaselineTask
     }
 
     task checkMyScript {
