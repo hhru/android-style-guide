@@ -29,12 +29,14 @@ ext.anlysators = [
         detektBaselinePath: "${rootDir}/detekt/detekt-baseline.xml",
         detektConfigPath: "${rootDir}/detekt/detekt-config.xml",
         lintBaselinePath: "${rootDir}/lint/"
+        lintConfigPath: "${rootDir}/lint/lint-config.xml"
 ]
 ```
 1. В параметре `staticAnalysisExcludes` можно указать какие инструменты мы хотим исключить при выполнении анализа. В качестве элементов можно указать: *cpd, pmd, checkstyle, detekt, lint*.
 2. В параметре `detektBaselinePath` можно указать путь до baseline файла к detekt-у
 3. В параметре `detektConfigPath` можно указать путь до конфиг файла к detekt-у
 4. В параметре `lintBaselinePath` можно указать путь до директории с baseline файл(ом/ами) к lint-у. Из-за того что проект может содержать несколько модулей, то и baseline файлов к lint-у может быть несколько
+5. В параметре `lintConfigPath` можно указать путь до конфиг файла к lint-у
 
 
 При запуске через командную строку есть возможность ограничить запуск проверок lint-a одим модулем с помощью параметра `runLintModuleOnly`:
@@ -56,5 +58,4 @@ ext.anlysators = [
 
 # ROADMAP
 
-1. Сделать таску для генерации baseline файлов
-2. Подумать как можно ускорить повторный процесс проверки на ошибки
+1. Подумать как можно ускорить повторный процесс проверки на ошибки

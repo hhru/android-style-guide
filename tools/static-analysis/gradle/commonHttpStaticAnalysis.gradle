@@ -29,7 +29,9 @@ cpd {
 ext.getStaticAnalysisTaskNames = { isAndroidProject, parameters, sources ->
     def tasks = []
     def excludes = parameters ? parameters["staticAnalysisExcludes"] : []
+
     def lintBaselinePath = parameters ? parameters["lintBaselinePath"] : ""
+    def lintConfigPath = parameters ? parameters["lintConfigPath"] : ""
 
     def detektBaselinePath = parameters ? parameters["detektBaselinePath"] : ""
     def detektConfigPath = parameters ? parameters["detektConfigPath"] : ""
@@ -49,7 +51,7 @@ ext.getStaticAnalysisTaskNames = { isAndroidProject, parameters, sources ->
                 tasks.add(getPmdTask(sources))
             }
             if (!excludes.contains("lint")) {
-                tasks.addAll(getLintTasks(lintBaselinePath))
+                tasks.addAll(getLintTasks(lintBaselinePath, lintConfigPath))
             }
         }
     } catch (Exception exception) {
@@ -370,7 +372,7 @@ getCpdTask = { isAndroidProject, sources ->
     return task
 }
 
-getLintTasks = { baselinePath ->
+getLintTasks = { baselinePath, configPath ->
     def taskLists = []
     subprojects.each { project ->
         project.getAllTasks(false).entrySet().each {
@@ -380,6 +382,11 @@ getLintTasks = { baselinePath ->
     }
     def runLintModuleOnlyArg = rootProject.hasProperty("runLintModuleOnly") ?
             rootProject.getProperties().get("runLintModuleOnly") : null
+
+    def config = (configPath == null || configPath.isEmpty()) ?
+            "${rootDir}/android-style-guide/tools/static-analysis/lint/lint.xml" :
+            configPath
+
     taskLists.each { task ->
         def lintOptions = task.project.getProperty("android").getProperty("lintOptions")
         lintOptions.setProperty("abortOnError", false)
@@ -388,7 +395,7 @@ getLintTasks = { baselinePath ->
         lintOptions.setProperty("htmlReport", false)
         lintOptions.setProperty("xmlReport", true)
         lintOptions.setProperty("xmlOutput", file("${project.buildDir}/reports/lint/${task.project.name}-${task.name}.xml"))
-        lintOptions.setProperty("lintConfig", file("${rootDir}/android-style-guide/tools/static-analysis/lint/lint.xml"))
+        lintOptions.setProperty("lintConfig", file(config))
         if (baselinePath != null && file("${baselinePath}/${task.project.name}-${task.name}.xml").exists()) {
             lintOptions.setProperty("baselineFile",
                     file("${baselinePath}/${task.project.name}-${task.name}.xml"))
@@ -414,9 +421,6 @@ getKotlinDetektTask = { isAndroidProject, baselinePath, configPath ->
                 "${rootDir}/android-style-guide/tools/static-analysis/kotlin/detekt-config.yml" :
                 configPath
 
-        println("======================================================")
-        println("${config}")
-        println("======================================================")
 
         def filters = ".*src/test.*,.*/resources/.*,.*/tmp/.*,.*/build/.*"
         def params = ['-i', input,
