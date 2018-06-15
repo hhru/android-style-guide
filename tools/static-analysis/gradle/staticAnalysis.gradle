@@ -1,6 +1,7 @@
 def getAndroidProjectSources
 
 apply from: "${rootDir}/android-style-guide/tools/static-analysis/gradle/commonHttpStaticAnalysis.gradle"
+apply from: "${rootDir}/android-style-guide/tools/static-analysis/gradle/detektTasks.gradle"
 
 repositories {
     maven { url "http://dl.bintray.com/touchin/touchin-tools" }
@@ -38,6 +39,10 @@ gradle.projectsEvaluated {
 
     def androidStaticAnalysisTasks = getStaticAnalysisTaskNames(true, analysatorParameters, getAndroidProjectSources(excludes))
     def androidIdeaFormatTask = getIdeaFormatTask(true, getAndroidProjectSources(excludes))
+
+    def generateDetektConfigTask = generateDetektDefaultConfig()
+
+
     task staticAnalysis {
         group = 'headhunter'
 
@@ -49,6 +54,12 @@ gradle.projectsEvaluated {
         doFirst {
             generateHtmlReport(true, excludesAnalysers)
         }
+    }
+
+    task generateDetektConfig {
+        group = 'headhunter'
+
+        dependsOn generateDetektConfigTask
     }
 
     task checkMyScript {

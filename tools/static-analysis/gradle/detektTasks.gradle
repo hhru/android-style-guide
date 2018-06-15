@@ -1,0 +1,16 @@
+configurations {
+    detekt
+}
+
+ext.generateDetektDefaultConfig = {
+    def taskName = "androidDetektGenerateConfig_${project.name}"
+    def task = tasks.create(taskName, JavaExec) {
+        main = "io.gitlab.arturbosch.detekt.cli.Main"
+        classpath = configurations.detekt
+        def input = "${rootDir}"
+        def params = ['--generate-config',
+                      '-i', input]
+        args(params)
+    }
+    return task
+}
