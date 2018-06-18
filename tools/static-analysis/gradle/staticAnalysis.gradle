@@ -2,6 +2,7 @@ def getAndroidProjectSources
 
 apply from: "${rootDir}/android-style-guide/tools/static-analysis/gradle/commonHttpStaticAnalysis.gradle"
 apply from: "${rootDir}/android-style-guide/tools/static-analysis/gradle/detektTasks.gradle"
+apply from: "${rootDir}/android-style-guide/tools/static-analysis/gradle/lintTasks.gradle"
 
 repositories {
     maven { url "http://dl.bintray.com/touchin/touchin-tools" }
@@ -62,6 +63,21 @@ gradle.projectsEvaluated {
         group = 'headhunter'
 
         dependsOn generateDetektBaselineTask
+    }
+
+    task generateLintBaseline {
+        group = 'headhunter'
+        def lintBaselinePath = analysatorParameters ? analysatorParameters["lintBaselinePath"] : null
+        def lintConfigPath = analysatorParameters ? analysatorParameters["lintConfigPath"] : null
+
+        def generateLintBaselineTask = generateLintBaseline(lintBaselinePath, lintConfigPath)
+        generateLintBaselineTask.each {
+            try {
+                it.execute()
+            } catch(GradleException e) {
+                e.printStackTrace()
+            }
+        }
     }
 
     task checkMyScript {

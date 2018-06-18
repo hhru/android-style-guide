@@ -43,6 +43,12 @@ ext.anlysators = [
 ```sh
 ./gradlew staticAnalysis -PrunLintModuleOnly=common
 ```
+Для создания baseline файлов для lint-a необходимо выполнить команду.
+```sh
+./gradlew generateLintBaseline
+```
+При выполнении этой таски в конфиге должен быть обязательно указан параметр `lintBaselinePath`.
+Так же при выполнении этой таски будет полностью удалено содержимое каталога, указаного в параметре `lintBaselinePath`.
 
 Для создания дефолтного конфига для detekt-a необходимо выполнить команду.
 ```sh
