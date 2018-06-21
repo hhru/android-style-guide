@@ -430,9 +430,11 @@ getKotlinDetektTask = { isAndroidProject, baselinePath, configPath ->
                       '-o', output,
                       '-c', config,
                       '-f', filters,
-                      '-b', baselinePath,
                       '--output-name', outputName
         ]
+        if (baselinePath != null) {
+            params.addAll(['-b', baselinePath])
+        }
         args(params)
     }
     return task
