@@ -150,6 +150,9 @@ ext.generateHtmlReport = { isAndroidProject, excludes ->
     File fullReportFile = new File("${project.buildDir}/reports/full_report.html")
     fullReportFile.write(fullReport.toString())
 
+    File simpleErrorCountReport = new File("${project.buildDir}/reports/count_report.txt")
+    simpleErrorCountReport.write(count.toString())
+
     if (count > 0) {
         consoleReport.append("\n\u001B[31mOverall: FAILED (" + count + " errors)\u001B[0m "
                 + normalizeFileUrl("file://${project.buildDir}/reports/full_report.html"))
