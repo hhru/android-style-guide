@@ -43,6 +43,26 @@ ext.anlysators = [
 4. В параметре `lintBaselinePath` можно указать путь до директории с baseline файл(ом/ами) к lint-у. Из-за того что проект может содержать несколько модулей, то и baseline файлов к lint-у может быть несколько
 5. В параметре `lintConfigPath` можно указать путь до конфиг файла к lint-у
 
+Так же есть поддержка задавать разные профили для проведения анализа, профили и настройки к ним указываются внутри объекта anlysators:
+```gradle
+ext.anlysators = [
+        staticAnalysisExcludes : ["cpd", "pmd", "checkstyle"],
+        detektBaselinePath: "${rootDir}/detekt/detekt-baseline.xml",
+        detektConfigPath: "${rootDir}/detekt/detekt-config.xml",
+        lintBaselinePath: "${rootDir}/lint/"
+        lintConfigPath: "${rootDir}/lint/lint-config.xml",
+
+        release : [
+                    staticAnalysisExcludes : ["cpd", "pmd", "checkstyle", "lint"],
+                    detektConfigPath: "${rootDir}/detekt/detekt-release-config.xml",
+                    lintConfigPath: "${rootDir}/lint/lint-release-config.xml"
+                  ]
+]
+```
+Для выполнения задачи на анализ с использованием профиля необходимо в командной строке указать профиль с помощью параметра `useProfile`:
+```sh
+./gradlew staticAnalysis -PuseProfile=release
+```
 
 При запуске через командную строку есть возможность ограничить запуск проверок lint-a одим модулем с помощью параметра `runLintModuleOnly`:
 ```sh
