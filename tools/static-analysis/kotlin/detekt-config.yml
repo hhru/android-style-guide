@@ -18,14 +18,15 @@ test-pattern: # Configure exclusions for test sources
     - 'StringLiteralDuplication'
     - 'SpreadOperator'
     - 'TooManyFunctions'
+    - 'ForEachOnRange'
 
 build:
   maxIssues: 100500
   weights:
-    complexity: 2
-    LongParameterList: 1
-    style: 1
-    comments: 1
+    # complexity: 2
+    # LongParameterList: 1
+    # style: 1
+    # comments: 1
 
 processors:
   active: true
@@ -55,9 +56,9 @@ output-reports:
 comments:
   active: true
   CommentOverPrivateFunction:
-    active: true
+    active: false
   CommentOverPrivateProperty:
-    active: true
+    active: false
   EndOfSentenceFormat:
     active: false
     endOfSentenceFormat: ([.?!][ \t\n\r\f<])|([.?!]$)
@@ -111,10 +112,11 @@ complexity:
     active: true
     thresholdInFiles: 150
     thresholdInClasses: 150
-    thresholdInInterfaces: 10
+    thresholdInInterfaces: 15
     thresholdInObjects: 150
     thresholdInEnums: 150
     ignoreDeprecated: true
+    ignorePrivate: true
 
 empty-blocks:
   active: true
@@ -178,8 +180,12 @@ exceptions:
   TooGenericExceptionCaught:
     active: true
     exceptionNames:
+     - ArrayIndexOutOfBoundsException
      - Error
      - Exception
+     - IllegalMonitorStateException
+     - NullPointerException
+     - IndexOutOfBoundsException
      - RuntimeException
      - Throwable
   TooGenericExceptionThrown:
@@ -252,7 +258,7 @@ formatting:
     active: true
     autoCorrect: true
   NoWildcardImports:
-    active: false
+    active: true
     autoCorrect: true
   ParameterListWrapping:
     active: true
@@ -383,6 +389,7 @@ style:
     active: true
   ExpressionBodySyntax:
     active: false
+    includeLineWrapping: false
   ForbiddenComment:
     active: true
     values: 'TODO:,FIXME:,STOPSHIP:'
@@ -406,6 +413,8 @@ style:
     ignoreAnnotation: false
     ignoreNamedArgument: true
     ignoreEnums: false
+  MandatoryBracesIfStatements:
+    active: true
   MaxLineLength:
     active: true
     maxLineLength: 120
@@ -427,6 +436,8 @@ style:
   OptionalUnit:
     active: false
   OptionalWhenBraces:
+    active: false
+  PreferToOverPairSyntax:
     active: false
   ProtectedMemberInFinalClass:
     active: true
@@ -466,5 +477,5 @@ style:
   UtilityClassWithPublicConstructor:
     active: false
   WildcardImport:
-    active: false
+    active: true
     excludeImports: 'java.util.*,kotlinx.android.synthetic.*'

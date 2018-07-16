@@ -22,6 +22,7 @@
     <issue id="StringFormatMatches" severity="ignore"/>
     <issue id="GradleDependency" severity="ignore"/>
     <issue id="NewerVersionAvailable" severity="ignore"/>
+    <issue id="DefaultLocale" severity="ignore"/>
 
     <!-- Jake Wharton's bug https://github.com/JakeWharton/timber/issues/292? -->
     <issue id="StringFormatInTimber" severity="ignore"/>
@@ -71,7 +72,6 @@
     <issue id="IconExpectedSize" severity="error"/>
     <issue id="IncludeLayoutParam" severity="error"/>
     <issue id="TrustAllX509TrustManager" severity="warning"/>
-    <issue id="DefaultLocale" severity="error"/>
     <issue id="InvalidResourceFolder" severity="error"/>
     <issue id="LongLogTag" severity="error"/>
     <issue id="LogTagMismatch" severity="error"/>
