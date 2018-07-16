@@ -17,7 +17,7 @@ dependencies {
 
 //    cpd 'de.aaschmid:gradle-cpd-plugin:1.0'
 
-    detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.RC7'
+    detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.RC7-3'
 }
 
 gradle.projectsEvaluated {
