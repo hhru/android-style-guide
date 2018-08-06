@@ -1,6 +1,10 @@
 Набор соглашений по оформлению кода на языке Kotlin. 
 
 
+Этот список правил расширяет предложенные [Google](https://android.github.io/kotlin-guides/style.html) и [командой разработки Kotlin](https://kotlinlang.org/docs/reference/coding-conventions.html) гайды и пересматривает в них некоторые неоднозначные моменты.
+За основу взят [список гайдов предложенных REDMADROBOT](https://github.com/RedMadRobot/kotlin-style-guide)
+
+
 # Содержание
 1. [Длина строки](#linelength)
 2. [Правила именования](#naming)
@@ -18,6 +22,9 @@
 10. [Использование условных операторов](#condition_operator)
 11. [Template header](#template_header)
 12. [Файлы](#files)
+13. [Использование Properties](#properties)
+    * 13.1 [Форматирование properties](#properties_formatting)
+    * 13.2 [Functions VS Properties](#functions_vs_properties)
 
 
 # <a name='linelength '>Длина строки</a>
@@ -130,15 +137,16 @@ var promoItem: PromoItem? = null
 # <a name='class_member_order'>Структура класса</a>
 1) companion object
 2) Поля: abstract, override, public, internal, protected, private
-3) Блок инициализации: init, конструкторы
-4) Абстрактные методы
-5) Переопределенные методы родительского класса(желательно в том же порядке, в каком они следуют в родительском классе)
-6) Реализации методов интерфейсов(желательно в том же порядке, в каком они следуют в описании класса, соблюдая при этом порядок описания этих методов в самом интерфейсе)
-7) public методы
-8) internal методы
-9) protected методы
-10) private методы
-11) inner классы
+3) Properties: abstract, override, public, internal, protected, private
+4) Блок инициализации: init, конструкторы
+5) Абстрактные методы
+6) Переопределенные методы родительского класса(желательно в том же порядке, в каком они следуют в родительском классе)
+7) Реализации методов интерфейсов(желательно в том же порядке, в каком они следуют в описании класса, соблюдая при этом порядок описания этих методов в самом интерфейсе)
+8) public методы
+9) internal методы
+10) protected методы
+11) private методы
+12) inner классы
 
 # <a name='lambda_formating'>Форматирование лямбда-выражений</a>
 
@@ -211,5 +219,82 @@ when (feed.type) {
 
 - Возможно описывать несколько классов в одном файле только для `sealed` классов. В остальных случаях для каждого класса необходимо использовать отдельный файл (не относится к `inner` классам).
 
-Этот список правил расширяет предложенные [Google](https://android.github.io/kotlin-guides/style.html) и [командой разработки Kotlin](https://kotlinlang.org/docs/reference/coding-conventions.html) гайды и пересматривает в них некоторые неоднозначные моменты.
-За основу взят [список гайдов предложенных REDMADROBOT](https://github.com/RedMadRobot/kotlin-style-guide)
+# <a name='properties'>Использование Properties</a>
+
+## <a name='properties_formatting'>Форматирование properties</a>
+
+* Всегда указывать тип ```property``` явно, даже если ```get```-блок помещается на одной строчке.
+
+* Если `get`-блок помещается на одной строчке и не требует нескольких действий - можно писать его в одну строчку:
+
+```kotlin
+class User(
+    var firstName: String?,
+    var lastName: String?
+) {
+	
+    val fullName: String get() = "$firstName $lastName"
+
+}
+```
+
+* Если ```get```-блок не помещается на одной строчке - помещаем его под определением property, отделяя от следующего блока кода одной строчкой:
+
+```kotlin
+class User(
+    var firstName: String?,
+    var lastName: String?
+) {
+	
+    val lastNameValue: Int 
+        get() {
+            return when (lastName) {
+                null -> 100
+                isNullOrBlank() -> 200
+                else -> 300
+            }
+        }
+        
+    val fullName: String get() = "$firstName $lastName"
+    
+}
+```
+
+* Два ```property``` разделяются отдельной строкой если их нужно отделить логически друг от друга, или же у ```property``` есть выделенный ```get```-блок:
+
+```kotlin
+class User(
+    var firstName: String?,
+    var lastName: String?
+) {
+	
+    val firstNameValue: String get() = "First name: $firstName"
+    val lastNameHashCode: Int? get() = lastName?.hashCode()
+    
+    val lastNameValue: Int 
+        get() {
+            return when (lastName) {
+                null -> 100
+                isNullOrBlank() -> 200
+                else -> 300
+            }
+        }
+        
+    val fullName: String
+        get() {
+            val superValue = firstName?.hashCode()?.plus(lastName?.hashCode() ?: 0)
+            return "$superValue"
+    }
+    
+}
+```
+
+## <a name='functions_vs_properties'>Functions VS Properties</a>
+
+* Разрешается использовать только **read-only properties**, то есть только те, у которых есть только getter. 
+
+* В getter-е property не должны изменяться поля класса. Если требуется менять внутренние поля класса - нужно использовать функции.
+
+* В getter-е property не должны бросаться исключения. Если нужно бросить исключение в getter-е, лучше используйте функцию с говорящим названием.
+
+* Get-блок property не должен содержать сложной логики. Если требуется описать некоторый сложный алгоритм, то лучше написать функцию. 
