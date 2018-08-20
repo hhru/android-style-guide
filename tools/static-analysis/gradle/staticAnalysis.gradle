@@ -1,6 +1,3 @@
-def getAndroidProjectSources
-def getParameters
-
 apply from: "${rootDir}/android-style-guide/tools/static-analysis/gradle/commonHttpStaticAnalysis.gradle"
 apply from: "${rootDir}/android-style-guide/tools/static-analysis/gradle/detektTasks.gradle"
 
@@ -19,7 +16,81 @@ dependencies {
 
     detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.RC7-3'
 }
+gradle.projectsEvaluated {
+    task staticAnalysis {
+        group = 'headhunter'
+        doFirst {
 
+            def getParameters = { String profile ->
+                def properties = rootProject.hasProperty("anlysators") ? rootProject.ext.anlysators : null
+
+                if (properties != null && properties.containsKey(profile)) {
+                    return properties.get(profile)
+                }
+
+                return properties
+            }
+            def getAndroidProjectSources = { excl ->
+                def sources = new ArrayList<String>()
+                for (def project : rootProject.subprojects) {
+                    if (!project.subprojects.isEmpty() || (excl != null && excl.contains(project.path))) {
+                        continue
+                    }
+
+                    def sourcesDirectory = new File(project.projectDir.path, 'src')
+                    if (!sourcesDirectory.exists() || !sourcesDirectory.isDirectory()) {
+                        continue
+                    }
+
+                    for (def sourceFlavorDirectory : sourcesDirectory.listFiles()) {
+                        def javaSourceDirectory = new File(sourceFlavorDirectory.path, 'java')
+                        def kotlinSourceDirectory = new File(sourceFlavorDirectory.path, 'kotlin')
+
+                        if (javaSourceDirectory.exists() && javaSourceDirectory.isDirectory()) {
+                            sources.add(javaSourceDirectory.absolutePath)
+                        }
+                        if (kotlinSourceDirectory.exists() && kotlinSourceDirectory.isDirectory()) {
+                            sources.add(kotlinSourceDirectory.absolutePath)
+                        }
+                    }
+                }
+                return sources
+            }
+            def useProfile = rootProject.hasProperty("useProfile") ?
+                    rootProject.getProperties().get("useProfile") : null
+            def excludes = rootProject.extensions.findByName("pathExludes")
+            def analysatorParameters = getParameters(useProfile)
+
+            def androidStaticAnalysisTasks =
+                    getStaticAnalysisTaskNames(true, analysatorParameters, getAndroidProjectSources(excludes))
+
+            androidStaticAnalysisTasks.each {
+                println("------------------------------------------------")
+                println("${it.project.name}:${it.name}")
+                println("------------------------------------------------")
+                it.execute()
+            }
+        }
+
+        doLast {
+            def getParameters = { String profile ->
+                def properties = rootProject.hasProperty("anlysators") ? rootProject.ext.anlysators : null
+
+                if (properties != null && properties.containsKey(profile)) {
+                    return properties.get(profile)
+                }
+
+                return properties
+            }
+            def useProfile = rootProject.hasProperty("useProfile") ?
+                    rootProject.getProperties().get("useProfile") : null
+            def analysatorParameters = getParameters(useProfile)
+            def excludesAnalysers = analysatorParameters ? analysatorParameters["staticAnalysisExcludes"] : []
+
+            generateHtmlReport(true, excludesAnalysers)
+        }
+    }
+}
 gradle.projectsEvaluated {
 
     tasks.withType(JavaCompile) {
@@ -37,28 +108,30 @@ gradle.projectsEvaluated {
     def useProfile = rootProject.hasProperty("useProfile") ?
             rootProject.getProperties().get("useProfile") : null
     def excludes = rootProject.extensions.findByName("pathExludes")
-    def analysatorParameters = getParameters(useProfile)
-    def excludesAnalysers = analysatorParameters ? analysatorParameters["staticAnalysisExcludes"] : []
+//    def analysatorParameters = getParameters(useProfile)
+//    def excludesAnalysers = analysatorParameters ? analysatorParameters["staticAnalysisExcludes"] : []
 
-    def androidStaticAnalysisTasks = getStaticAnalysisTaskNames(true, analysatorParameters, getAndroidProjectSources(excludes))
+//    def androidStaticAnalysisTasks = getStaticAnalysisTaskNames(true, analysatorParameters, getAndroidProjectSources(excludes))
 
     def generateDetektConfigTask = generateDetektDefaultConfig()
     def generateDetektBaselineTask = generateDetektBaseline()
 
 
-    task staticAnalysis {
-        group = 'headhunter'
-
-        dependsOn androidStaticAnalysisTasks
-        doFirst {
-            generateHtmlReport(true, excludesAnalysers)
-        }
-    }
-
     task generateDetektConfig {
         group = 'headhunter'
 
         dependsOn generateDetektConfigTask
+    }
+
+
+    task generateLintBaseline {
+//        def lintBaselinePath = analysatorParameters ? analysatorParameters["lintBaselinePath"] : ""
+//        def lintConfigPath = analysatorParameters ? analysatorParameters["lintConfigPath"] : ""
+//        def lintAdditionalProjectFilter = analysatorParameters ? analysatorParameters["lintAdditionalProjectFilter"] : ""
+//        def lintAdditionalTaskFilter = analysatorParameters ? analysatorParameters["lintAdditionalTaskFilter"] : ""
+//
+//        def tasks = generateLintBaseline(lintBaselinePath, lintConfigPath, lintAdditionalProjectFilter, lintAdditionalTaskFilter)
+//        dependsOn tasks
     }
 
     task generateDetektBaseline {
@@ -70,41 +143,3 @@ gradle.projectsEvaluated {
     task checkMyScript {
     }
 }
-
-getParameters = { profile ->
-    def properties = rootProject.hasProperty("anlysators") ? rootProject.ext.anlysators : null
-    if (properties != null && properties.containsKey(profile)) {
-        return properties.get(profile)
-    }
-
-    return properties
-}
-
-getAndroidProjectSources = { excludes ->
-    def sources = new ArrayList<String>()
-    for (def project : rootProject.subprojects) {
-        if (!project.subprojects.isEmpty() || (excludes != null && excludes.contains(project.path))) {
-            continue
-        }
-
-        def sourcesDirectory = new File(project.projectDir.path, 'src')
-        if (!sourcesDirectory.exists() || !sourcesDirectory.isDirectory()) {
-            continue
-        }
-
-        for (def sourceFlavorDirectory : sourcesDirectory.listFiles()) {
-            def javaSourceDirectory = new File(sourceFlavorDirectory.path, 'java')
-            def kotlinSourceDirectory = new File(sourceFlavorDirectory.path, 'kotlin')
-
-            if (javaSourceDirectory.exists() && javaSourceDirectory.isDirectory()) {
-                sources.add(javaSourceDirectory.absolutePath)
-            }
-            if (kotlinSourceDirectory.exists() && kotlinSourceDirectory.isDirectory()) {
-                sources.add(kotlinSourceDirectory.absolutePath)
-            }
-        }
-    }
-    return sources
-}
-
-

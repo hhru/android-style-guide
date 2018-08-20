@@ -39,3 +39,48 @@ ext.generateLintBaseline = { baselinePath, configPath ->
     }
     return taskLists
 }
+gradle.projectsEvaluated {
+    ext.getLintTasks = { baselinePath, configPath, additionalProjectNameFilter, additionalTaskNameFilter ->
+        def taskLists = []
+        rootProject.getAllprojects().findAll { project ->
+            project.plugins.hasPlugin("com.android.application") && project.name.contains(additionalProjectNameFilter)
+        }.each { project ->
+            def debugLintTasks = project.getTasks().findAll { task ->
+                task.name.contains("lint") && task.name.contains("Debug") &&
+                        task.name.contains(additionalTaskNameFilter)
+            }
+            taskLists.addAll(debugLintTasks)
+        }
+
+        def runLintModuleOnlyArg = rootProject.hasProperty("runLintModuleOnly") ?
+                rootProject.getProperties().get("runLintModuleOnly") : null
+
+        def config = (configPath == null || configPath.isEmpty()) ?
+                "${rootDir}/android-style-guide/tools/static-analysis/lint/lint.xml" :
+                configPath
+
+        taskLists.each { task ->
+            def lintOptions = task.project.getProperty("android").getProperty("lintOptions")
+            lintOptions.setProperty("abortOnError", false)
+            lintOptions.setProperty("checkAllWarnings", true)
+            lintOptions.setProperty("warningsAsErrors", true)
+            lintOptions.setProperty("htmlReport", false)
+            lintOptions.setProperty("xmlReport", true)
+            lintOptions.setProperty("checkDependencies", true)
+            lintOptions.setProperty("disable", ['WrongThreadInterprocedural'])
+            lintOptions.setProperty("xmlOutput",
+                    file("${project.buildDir}/reports/lint/${task.project.name}-${task.name}.xml"))
+            lintOptions.setProperty("lintConfig", file(config))
+            if (baselinePath != null && file("${baselinePath}/${task.project.name}-${task.name}.xml").exists()) {
+                lintOptions.setProperty("baselineFile",
+                        file("${baselinePath}/${task.project.name}-${task.name}.xml"))
+            }
+        }
+        if (runLintModuleOnlyArg != null) {
+            taskLists = taskLists.find { task ->
+                task.project.name == runLintModuleOnlyArg
+            }
+        }
+        return taskLists
+    }
+}
