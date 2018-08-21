@@ -42,6 +42,7 @@ ext.generateLintBaseline = { baselinePath, configPath ->
 gradle.projectsEvaluated {
     ext.getLintTasks = { baselinePath, configPath, additionalProjectNameFilter, additionalTaskNameFilter ->
         def taskLists = []
+        if (additionalProjectNameFilter == null) additionalProjectNameFilter = ""
         rootProject.getAllprojects().findAll { project ->
             project.plugins.hasPlugin("com.android.application") && project.name.contains(additionalProjectNameFilter)
         }.each { project ->
