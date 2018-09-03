@@ -65,7 +65,7 @@ ext.getStaticAnalysisTaskNames = { isAndroidProject, parameters, sources ->
 ext.generateHtmlReport = { isAndroidProject, excludes ->
     StringBuilder fullReport = new StringBuilder()
 
-    fullReport.append("<table cellpadding='10px' border='2px' cellspacing='0px' cols='4'>");
+    fullReport.append("<table cellpadding='10px' border='2px' cellspacing='0px' cols='4'>")
 
     StringBuilder consoleReport = new StringBuilder()
     consoleReport.append("STATIC ANALYSIS RESULTS:")
@@ -137,7 +137,7 @@ ext.generateHtmlReport = { isAndroidProject, excludes ->
         }
     }
 
-    fullReport.append("\n</table>\n");
+    fullReport.append("\n</table>\n")
     fullReport.append("<script>\n" +
             "\tfunction visitPage(file, line) {\n" +
             "\t\tfor (port = 63330; port < 63340; port++) {\n" +
@@ -211,7 +211,7 @@ appendCpdErrors = { report, count, cpdFile ->
         for (def filePointNode : duplicationNode.children()) {
             if (filePointNode.name().equals("file")) {
                 def file = filePointNode.attribute("path")
-                def line = filePointNode.attribute("line");
+                def line = filePointNode.attribute("line")
                 def indexOfSrc = file.indexOf("src")
                 def deeplink = (indexOfSrc > 0 ? file.substring(indexOfSrc) : file).
                         replace('\\', '/')
