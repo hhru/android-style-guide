@@ -23,6 +23,7 @@
     <issue id="GradleDependency" severity="ignore"/>
     <issue id="NewerVersionAvailable" severity="ignore"/>
     <issue id="DefaultLocale" severity="ignore"/>
+    <issue id="DuplicateIncludedIds" severity="ignore"/>
 
     <!-- Jake Wharton's bug https://github.com/JakeWharton/timber/issues/292? -->
     <issue id="StringFormatInTimber" severity="ignore"/>
@@ -155,7 +156,6 @@
     <issue id="DeviceAdmin" severity="error"/>
     <issue id="DisableBaselineAlignment" severity="error"/>
     <issue id="DrawAllocation" severity="warning"/>
-    <issue id="DuplicateIncludedIds" severity="error"/>
     <issue id="DuplicateUsesFeature" severity="error"/>
     <issue id="ExportedContentProvider" severity="error"/>
     <issue id="ExportedReceiver" severity="error"/>
