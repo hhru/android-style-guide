@@ -386,6 +386,7 @@ getKotlinDetektTask = { isAndroidProject, baselinePath, configPath ->
         def input = "${rootDir}"
         def output = "${project.buildDir}/reports"
         def outputName = "kotlin-detekt"
+        def outputFile = "${output}/${outputName}"
         def config = (configPath == null || configPath.isEmpty()) ?
                 "${rootDir}/android-style-guide/tools/static-analysis/kotlin/detekt-config.yml" :
                 configPath
@@ -393,10 +394,11 @@ getKotlinDetektTask = { isAndroidProject, baselinePath, configPath ->
 
         def filters = ".*src/test.*,.*/resources/.*,.*/tmp/.*,.*/build/.*"
         def params = ['-i', input,
-                      '-o', output,
                       '-c', config,
                       '-f', filters,
-                      '--output-name', outputName
+                      '-r', "xml:${outputFile}.xml",
+                      '-r', "plain:${outputFile}.txt",
+                      '-r', "html:${outputFile}.html"
         ]
         if (baselinePath != null) {
             params.addAll(['-b', baselinePath])
