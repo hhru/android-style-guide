@@ -1,6 +1,6 @@
 package ${packageName}.view
 
-import com.arellomobile.mvp.MvpView
+import io.moxy.MvpView
 
 interface ${viewName} : MvpView {
 

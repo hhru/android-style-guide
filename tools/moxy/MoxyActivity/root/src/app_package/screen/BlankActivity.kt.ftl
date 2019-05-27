@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import ru.hh.android.R
 import ru.hh.android.base.ui.BaseActivity
-import com.arellomobile.mvp.presenter.InjectPresenter
+import io.moxy.presenter.InjectPresenter
 import ${packageName}.view.${viewName}
 import ${packageName}.presenter.${presenterName}
 

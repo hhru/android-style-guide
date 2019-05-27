@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import ru.hh.android.R
 import ru.hh.android.base.ui.BaseFragment
-import com.arellomobile.mvp.presenter.InjectPresenter
+import io.moxy.presenter.InjectPresenter
 import ${packageName}.view.${viewName}
 import ${packageName}.presenter.${presenterName}
 

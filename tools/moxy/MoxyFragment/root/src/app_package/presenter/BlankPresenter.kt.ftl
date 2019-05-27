@@ -1,6 +1,6 @@
 package ${packageName}.presenter
 
-import com.arellomobile.mvp.InjectViewState
+import io.moxy.InjectViewState
 import ru.hh.android.base.ui.BasePresenter
 import ${packageName}.view.${viewName}
 
