@@ -1,3 +1,11 @@
+apply plugin: 'ru.hh.android.gradle_plugin.module_config'
+<#if enable_moxy>
+
+moduleConfigPlugin {
+    enableMoxy = true
+}
+</if>
+
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -5,48 +13,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 </#if>
 
-
-android {
-    compileSdkVersion rootProject.ext.targetSdkVersion
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [ toothpick_registry_package_name : '${package_name}' ]
-            }
-        }
-
-        <#if need_add_ui_modules_dependencies>
-        vectorDrawables.useSupportLibrary = true
-        </#if>
-    }
-
-    <#if enable_moxy>
-    kapt {
-        arguments {
-            arg("moxyReflectorPackage", '${package_name}')
-        }
-    }
-    </#if>
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-}
 
 dependencies {
     def libraries = rootProject.ext.deps
