@@ -4,6 +4,8 @@
 1. [Константы](#constants)
 2. [Фрагменты](#fragments)
 3. [Логирование](#log)
+4. [RxJava](#rxjava)
+5. [Общие соглашения](#common)
 
 ## <a name='constants'>Константы</a>
 * Для констант, которые используются как **ключи к `SharedPreferences`** необходимо придерживатся следующих соглашений:
@@ -30,8 +32,23 @@
 
 ## <a name='fragments'>Фрагменты</a>
 * Создавать экземпляры класса `Fragment` всегда необходимо через статический метод `newInstance` самого класса с передачей всех аргументов в этот метод. Аргументы не должны быть типа `Bundle`.
+* Для передачи множества аргументов между фрагментами создаем `Serializable`-модель:
+
+```kotlin
+data class NavModel(
+    val arg1: Int,
+    val arg2: String
+): Serializable
+```
 
 ## <a name='log'>Логирование</a>
+* При логгировании всегда проставлять тэг: `Timber.tag(LOG_TAG).d("Some message")` 
+
+* Если требуется залогировать параметры, используем интерполяцию строк в Kotlin-е:
+```kotlin
+Timber.tag(LOG_TAG).d("Some message with params: $param1, $param2 and $param3")
+```
+
 * При использовании статического метода `Timber.e(args)` в качестве аргументов всегда передавать экземпляр класса `Throwable`, даже несмотря на то, что в качестве аргументов можно передать только строку текста. Это необходимо, т.к. все ошибки у нас логируются в Crashlytics и затем отображаются как non-fatal, и важно что бы вершина stacktrace-a была в том месте, где ошибка возникает, т.о. ошибки будут выделяться отдельным элементом в Crashlytics. 
     ```kotlin
     Timber.tag(LOG_TAG).e(Exception("Unknown currency code: $currency"))
@@ -45,4 +62,46 @@
         Timber.tag(LOG_TAG).e(e, "Cannot validate input JSON")
     }
     ```
-    
+
+## <a name='rxjava'>RxJava</a>
+* Для создания `Single`-ов в общем случае нужно использовать метод `.fromCallable`:
+
+```kotlin
+fun createSingle(): Single<MyModel> {
+    return Single.fromCallable { 
+        createMyModel()
+     }
+}
+```
+
+Однако в тестах, или в случаях, когда нам нужно просто пробросить non-null значение в `Single`, 
+можно использовать функцию `.just`:
+
+```kotlin
+fun createSingle(value: myModel): Single<MyModel> {
+    return Single.just(value)
+}
+```
+
+## <a name='common'>Общие соглашения</a>
+* При описании условий вида `if-else` сначала описываем позитивный сценарий, а потом негативный. 
+
+То есть, не так:
+
+```kotlin
+if (!myList.contains(1)) {
+    negativeScenario()
+} else {
+    positiveScenario()
+}
+```
+
+А вот так:
+
+```kotlin
+if (myList.contains(1)) {
+    positiveScenario()
+} else {
+    negativeScenario()
+}
+```
