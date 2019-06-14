@@ -25,9 +25,9 @@
     * с префиксом `ARGS_`, если объект используется для предачи параметров между компонентами приложения или при передачи аргументов в объект класса `Fragment`
     * с префиксом `STATE_`, если объект используется для сохранения состояния экрана внутри метода `onSaveInstanceState`  
 * Константы, которые используются как **аргумент `requestCode` в методе  `startActivityForResult`**, именуются с префиксом `REQUEST_CODE_`
-* При первой имплементации интерфейса `Serializable` для какого-л. класса проставлять значение константы `serialVersionUID` равной **`1L`**
+* При первой имплементации интерфейса `Serializable` для какого-л. класса проставлять значение константы `serialVersionUID` равной **`-1L`**
     ```kotlin
-        private const val serialVersionUID = 1L
+        private const val serialVersionUID = -1L
     ```
 
 ## <a name='fragments'>Фрагменты</a>
@@ -38,7 +38,14 @@
 data class NavModel(
     val arg1: Int,
     val arg2: String
-): Serializable
+): Serializable {
+
+    companion object {
+        private const val serialVersionUID: Long = -1L
+    }
+
+}
+
 ```
 
 ## <a name='log'>Логирование</a>
@@ -86,7 +93,7 @@ fun createSingle(value: myModel): Single<MyModel> {
 ## <a name='common'>Общие соглашения</a>
 * При описании условий вида `if-else` сначала описываем позитивный сценарий, а потом негативный. 
 
-То есть, не так:
+То есть, НЕ так:
 
 ```kotlin
 if (!myList.contains(1)) {
