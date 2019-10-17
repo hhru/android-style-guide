@@ -4,7 +4,7 @@ apply plugin: 'ru.hh.android.gradle_plugin.module_config'
 moduleConfigPlugin {
     enableMoxy = true
 }
-</if>
+</#if>
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
