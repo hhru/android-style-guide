@@ -43,11 +43,11 @@ resume_contacts.xml\
 vacancy_actions.xml
 
 ### anim
-- Имя имеет маску { описание }\_{ свойства: время действия (опционально) }
+- Имя имеет маску { описание }\_{ свойства: вид анимации(fade, transform и пр.), время действия (опционально) }
 
 Пример:\
 enter_from_left_250ms.xml\
-hide_icon.xml
+hide_icon_fade_out.xml
 
 ## <a name='id_naming'>Правила именования Id</a>
 - Имя записано в стиле lower_snake_case
