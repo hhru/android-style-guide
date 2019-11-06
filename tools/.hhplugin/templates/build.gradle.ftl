@@ -15,7 +15,7 @@ dependencies {
     </#list>
 
     // Kotlin
-    implementation Libs.kotlin
+    compileOnly Libs.kotlin
 
     // DI
     compileOnly Libs.toothpick.core
