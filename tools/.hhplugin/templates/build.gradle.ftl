@@ -1,10 +1,4 @@
 apply plugin: 'ru.hh.android.gradle_plugin.module_config'
-<#if enable_moxy>
-
-moduleConfigPlugin {
-    enableMoxy = true
-}
-</#if>
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
@@ -15,35 +9,33 @@ apply plugin: 'kotlin-android-extensions'
 
 
 dependencies {
-    def libraries = rootProject.ext.deps
 
     <#list libraries_modules as module>
     compileOnly project(':${module}')
     </#list>
 
     // Kotlin
-    implementation libraries.kotlin
+    compileOnly Libs.kotlin
 
     // DI
-    compileOnly libraries.toothpick
-    kapt libraries.toothpickCompiler
+    compileOnly Libs.toothpick.core
+    kapt Libs.toothpick.compiler
 
     <#if enable_moxy>
     // Moxy
-    compileOnly libraries.moxy
-    compileOnly libraries.moxyAppCompat
-    kapt libraries.moxyCompiler
+    compileOnly Libs.moxy.appCompat
+    kapt Libs.moxy.compiler
     </#if>
 
     <#if need_create_api_interface>
     // Gson
-    compileOnly libraries.gson
+    compileOnly Libs.network.gson
 
     // Network
-    compileOnly libraries.retrofit
+    compileOnly Libs.network.retrofit
 
     // RxJava
-    compileOnly libraries.rxJava
-    compileOnly libraries.rxAndroid
+    compileOnly Libs.rx.rxJava
+    compileOnly Libs.rx.rxAndroid
     </#if>
 }
