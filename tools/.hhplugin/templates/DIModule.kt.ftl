@@ -36,7 +36,7 @@ class ${formatted_library_name}Module : Module() {
     private fun bindApi() {
         bind(${formatted_library_name}Api::class.java)
             .toProvider(${formatted_library_name}ApiProvider::class.java)
-            .providesSingletonInScope()
+            .providesSingleton()
     }
     </#if>
 
@@ -45,20 +45,20 @@ class ${formatted_library_name}Module : Module() {
         <#if need_create_interface_for_repository>
         bind(${formatted_library_name}Repository::class.java)
             .to(${formatted_library_name}RepositoryImpl::class.java)
-            .singletonInScope()
+            .singleton()
         <#else>
-        bind(${formatted_library_name}Repository::class.java).singletonInScope()
+        bind(${formatted_library_name}Repository::class.java).singleton()
         </#if>
     }
 
     private fun bindInteractors() {
-        bind(${formatted_library_name}Interactor::class.java).singletonInScope()
+        bind(${formatted_library_name}Interactor::class.java).singleton()
     }
     </#if>
 
     <#if need_create_presentation_layer>
     private fun bindPresenter() {
-        bind(${formatted_library_name}Presenter::class.java).singletonInScope()
+        bind(${formatted_library_name}Presenter::class.java).singleton()
     }
     </#if>
 
