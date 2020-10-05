@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<template
+    format="4"
+    revision="1"
+    name="HeadHunter BaseFragment"
+    description="Creates HeadHunter BaseFragment"
+    minApi="7"
+    minBuildApi="8">
+
+    <category value="HeadHunter" />
+ 
+    <!-- параметры фрагмента -->
+
+    <parameter
+        id="className"
+        name="Fragment Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="BlankFragment"
+        help="The name of the fragment class to create" />
+
+    <parameter
+        id="fragmentName"
+        name="Fragment Layout Name"
+        type="string"
+        constraints="layout|nonempty|unique"
+        default="fragment_blank"
+        suggest="fragment_${classToResource(className)}"
+        help="The name of the layout to create" />
+
+    <parameter
+        id="includeFactory"
+        name="Include fragment factory method?"
+        type="boolean"
+        default="true"
+        help="Generate static fragment factory method for easy instantiation" />
+
+
+    <!-- доп параметры  -->    
+
+    <parameter
+        id="includeModule"
+        name="Include Toothpick Module class?"
+        type="boolean"
+        default="true"
+        help="Generate fragment Toothpick Module for easy instantiation" />
+
+    <parameter
+        id="moduleName"
+        name="Fragment Toothpick Module"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="BlankModule"
+        visibility="includeModule"
+        suggest="${underscoreToCamelCase(classToResource(className))}Module"
+        help="The name of the Fragment Toothpick Module to create" />
+
+
+    <thumbs>
+        <thumb>template_blank_fragment.png</thumb>
+    </thumbs>
+
+    <globals file="globals.xml.ftl" />
+    <execute file="recipe.xml.ftl" />
+
+</template>
