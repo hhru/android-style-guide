@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<template
+    format="4"
+    revision="15"
+    name="HeadHunter MVI Feature"
+    description="Creates HeadHunter MVI Feature"
+    minApi="7"
+    minBuildApi="8">
+
+    <category value="HeadHunter" />
+ 
+    <!-- параметры фрагмента -->
+
+    <parameter
+        id="featureName"
+        name="Mvi Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="BaseMviFeature"
+        help="The name of the Mvi Feature class to create" />
+
+
+    <parameter
+        id="featureEffect"
+        name="Feature Effect Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="BaseMviFeatureEffect"
+        suggest="${underscoreToCamelCase(classToResource(featureName))}Effect"
+        visibility="false"
+        help="The name of the Feature Effect" />
+
+    <parameter
+        id="featureNews"
+        name="Feature News Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="BaseMviFeatureNews"
+        suggest="${underscoreToCamelCase(classToResource(featureName))}News"
+        visibility="false"
+        help="The name of the Feature News" />
+
+    <parameter
+        id="featureState"
+        name="Feature State Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="BaseMviFeatureState"
+        suggest="${underscoreToCamelCase(classToResource(featureName))}State"
+        visibility="false"
+        help="The name of the Feature State" />
+
+    <parameter
+        id="featureWish"
+        name="Feature Wish Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="BaseMviFeatureWish"
+        suggest="${underscoreToCamelCase(classToResource(featureName))}Wish"
+        visibility="false"
+        help="The name of the Feature Wish" />
+
+
+    <parameter
+        id="featureActor"
+        name="Feature Actor Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="BaseMviFeatureWish"
+        suggest="${underscoreToCamelCase(classToResource(featureName))}Actor"
+        visibility="false"
+        help="The name of the Feature Actor" />
+
+    <parameter
+        id="featureBootstrapper"
+        name="Feature Bootstrapper Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="BaseMviFeatureBootstrapper"
+        suggest="${underscoreToCamelCase(classToResource(featureName))}Bootstrapper"
+        visibility="false"
+        help="The name of the Feature Bootstrapper" />
+
+    <parameter
+        id="featureNewsPublisher"
+        name="Feature NewsPublisher Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="BaseMviFeatureNewsPublisher"
+        suggest="${underscoreToCamelCase(classToResource(featureName))}NewsPublisher"
+        visibility="false"
+        help="The name of the Feature NewsPublisher" />
+
+    <parameter
+        id="featureReducer"
+        name="Feature Reducer Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="BaseMviFeatureNewsReducer"
+        suggest="${underscoreToCamelCase(classToResource(featureName))}Reducer"
+        visibility="false"
+        help="The name of the Feature Reducer" />
+
+
+    <thumbs>
+        <thumb>template_blank_fragment.png</thumb>
+    </thumbs>
+
+    <globals file="globals.xml.ftl" />
+    <execute file="recipe.xml.ftl" />
+
+</template>
