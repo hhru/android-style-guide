@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<template
+    format="4"
+    revision="3"
+    name="HeadHunter Feature API Base"
+    description="Creates HeadHunter Feature API Base"
+    minApi="7"
+    minBuildApi="8">
+
+    <category value="HeadHunter" />
+ 
+    <!-- параметры фрагмента -->
+
+    <parameter
+        id="featureApi"
+        name="Feature Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="Feature"
+        help="The name of the feature class to create" />
+
+    <parameter
+        id="featureDefScreen"
+        name="Feature Default Screen Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="FeatureDefaultScreen"
+        suggest="${underscoreToCamelCase(classToResource(featureApi))}NavScreen"
+        visibility="false"
+        help="The name of the Api to NavScreen" />
+
+    <parameter
+        id="featureDeps"
+        name="Feature Default Screen Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="FeatureDeps"
+        suggest="${underscoreToCamelCase(classToResource(featureApi))}Deps"
+        visibility="false"
+        help="The name of the FeatureDeps interface to create" />
+
+    <parameter
+        id="featureFacade"
+        name="Feature Facade Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="FeatureFacade"
+        suggest="${underscoreToCamelCase(classToResource(featureApi))}Facade"
+        visibility="false"
+        help="The name of the FeatureFacade to create" />
+
+    <parameter
+        id="featureModuleName"
+        name="Feature Default Module Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="FeatureModule"
+        suggest="${underscoreToCamelCase(classToResource(featureApi))}Module"
+        visibility="false"
+        help="The name of the FeatureFacade to create" />
+
+    <thumbs>
+        <thumb>template_blank_fragment.png</thumb>
+    </thumbs>
+
+    <globals file="globals.xml.ftl" />
+    <execute file="recipe.xml.ftl" />
+
+</template>
