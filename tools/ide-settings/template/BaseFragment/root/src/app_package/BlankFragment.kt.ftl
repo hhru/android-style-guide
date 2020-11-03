@@ -6,6 +6,7 @@ import ${applicationPackage}.R
 <#if includeModule??>import ${packageName}.di.${moduleName}</#if>
 import ru.hh.shared_core_ui.fragment.BaseFragment
 <#if includeFactory??>import ru.hh.shared_core_ui.fragment.withArgs</#if>
+import ru.hh.shared_core_ui.fragment_plugin.common.di.diPlugin
 import toothpick.config.Module
 
 internal class ${className} : BaseFragment(R.layout.${fragmentName}) {
@@ -20,8 +21,10 @@ internal class ${className} : BaseFragment(R.layout.${fragmentName}) {
     }
 
 
-
-    override fun getModules(): Array<Module> = arrayOf(<#if includeModule>${moduleName}()</#if>)
-   
+    @Suppress("unused")
+    private val di by diPlugin(
+        parentScopeNameProvider = { SplashFacade().internalScope.name },
+        <#if includeModule>modulesProvider = { arrayOf(${moduleName}()) }</#if>
+    )
 
 }
