@@ -7,5 +7,5 @@ import ru.hh.shared_core_ui.navigation.NavScreen
  */
 interface ${featureApi} {
 	
-	val ${featureDefScreen}: NavScreen
+	override val defaultScreen: NavScreen
 }

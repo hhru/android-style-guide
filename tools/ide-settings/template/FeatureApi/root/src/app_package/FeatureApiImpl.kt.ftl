@@ -5,5 +5,5 @@ import ru.hh.shared_core_ui.navigation.NavScreen
 
 class ${featureApi}Impl: ${featureApi} {
 	
-	val defaultScreen: NavScreen = TODO("Заглушка API")
+	override val defaultScreen: NavScreen = TODO("Заглушка API")
 }
