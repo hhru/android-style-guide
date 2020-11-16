@@ -35,7 +35,7 @@
         type="string"
         constraints="class|nonempty|unique"
         default="FeatureDefaultScreen"
-        suggest="${underscoreToCamelCase(classToResource(featureApi))}NavScreen"
+        suggest="${underscoreToCamelCase(classToResource(feature))}NavScreen"
         visibility="false"
         help="The name of the Api to NavScreen" />
 
@@ -45,7 +45,7 @@
         type="string"
         constraints="class|nonempty|unique"
         default="FeatureDeps"
-        suggest="${underscoreToCamelCase(classToResource(featureApi))}Deps"
+        suggest="${underscoreToCamelCase(classToResource(feature))}Deps"
         visibility="false"
         help="The name of the FeatureDeps interface to create" />
 
@@ -55,7 +55,7 @@
         type="string"
         constraints="class|nonempty|unique"
         default="FeatureFacade"
-        suggest="${underscoreToCamelCase(classToResource(featureApi))}Facade"
+        suggest="${underscoreToCamelCase(classToResource(feature))}Facade"
         visibility="false"
         help="The name of the FeatureFacade to create" />
 
@@ -65,7 +65,7 @@
         type="string"
         constraints="class|nonempty|unique"
         default="FeatureModule"
-        suggest="${underscoreToCamelCase(classToResource(featureApi))}Module"
+        suggest="${underscoreToCamelCase(classToResource(feature))}Module"
         visibility="false"
         help="The name of the FeatureFacade to create" />
 
