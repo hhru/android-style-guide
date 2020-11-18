@@ -30,10 +30,12 @@ widgetsClassesMap:
       - app_bar_layout
 
   # Toolbar
-  androidx.appcompat.widget.Toolbar:
+  androidx.appcompat.widget.Toolbar: &ToolbarNode
     kakaoWidgetFQN: com.agoda.kakao.common.views.KView
     idSuffixes:
       - toolbar
+  com.google.android.material.appbar.MaterialToolbar:
+    <<: *ToolbarNode
 
   # RecyclerView
   androidx.recyclerview.widget.RecyclerView:
@@ -60,6 +62,8 @@ widgetsClassesMap:
     idSuffixes:
       - switch
   androidx.appcompat.widget.SwitchCompat:
+    <<: *SwitchNode
+  com.google.android.material.switchmaterial.SwitchMaterial:
     <<: *SwitchNode
 
   # SeekBar
