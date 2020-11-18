@@ -1,0 +1,184 @@
+enableDebugMode: false
+
+templatesPaths:
+  screenPageObjectTemplatePath: ./templates/screen_page_object.ftl
+  rvItemPageObjectTemplatePath: ./templates/rv_item_page_object.ftl
+
+widgetsClassesMap:
+  # BottomNavigationView
+  com.google.android.material.bottomnavigation.BottomNavigationView:
+    kakaoWidgetFQN: com.agoda.kakao.bottomnav.KBottomNavigationView
+    idSuffixes:
+      - bottom_navigation_view
+
+  # NavigationView
+  com.google.android.material.navigation.NavigationView:
+    kakaoWidgetFQN: com.agoda.kakao.navigation.KNavigationView
+    idSuffixes:
+      - navigation_view
+
+  # CollapsingToolbarLayout
+  com.google.android.material.appbar.CollapsingToolbarLayout:
+    kakaoWidgetFQN: com.agoda.kakao.common.views.KView
+    idSuffixes:
+      - collapsing_toolbar_layout
+
+  # AppBarLayout
+  com.google.android.material.appbar.AppBarLayout:
+    kakaoWidgetFQN: com.agoda.kakao.common.views.KView
+    idSuffixes:
+      - app_bar_layout
+
+  # Toolbar
+  androidx.appcompat.widget.Toolbar: &ToolbarNode
+    kakaoWidgetFQN: com.agoda.kakao.common.views.KView
+    idSuffixes:
+      - toolbar
+  com.google.android.material.appbar.MaterialToolbar:
+    <<: *ToolbarNode
+
+  # RecyclerView
+  androidx.recyclerview.widget.RecyclerView:
+    kakaoWidgetFQN: com.agoda.kakao.recycler.KRecyclerView
+    idSuffixes:
+      - recycler_view
+      - recycler
+
+  # ViewPager
+  androidx.viewpager.widget.ViewPager:
+    kakaoWidgetFQN: com.agoda.kakao.pager.KViewPager
+    idSuffixes:
+      - view_pager
+
+  # SwipeRefreshLayout
+  androidx.swiperefreshlayout.widget.SwipeRefreshLayout:
+    kakaoWidgetFQN: com.agoda.kakao.swiperefresh.KSwipeRefreshLayout
+    idSuffixes:
+      - swipe_refresh_layout
+
+  # Switch
+  android.widget.Switch: &SwitchNode
+    kakaoWidgetFQN: com.agoda.kakao.switch.KSwitch
+    idSuffixes:
+      - switch
+  androidx.appcompat.widget.SwitchCompat:
+    <<: *SwitchNode
+  com.google.android.material.switchmaterial.SwitchMaterial:
+    <<: *SwitchNode
+
+  # SeekBar
+  android.widget.SeekBar: &SeekBarNode
+    kakaoWidgetFQN: com.agoda.kakao.progress.KSeekBar
+    idSuffixes:
+      - seek_bar
+  androidx.appcompat.widget.AppCompatSeekBar:
+    <<: *SeekBarNode
+
+  # TabLayout
+  com.google.android.material.tabs.TabLayout:
+    kakaoWidgetFQN: com.agoda.kakao.tabs.KTabLayout
+    idSuffixes:
+      - tab_layout
+
+  # TextInputLayout && TextInputEditText
+  com.google.android.material.textfield.TextInputLayout: &TextInputNode
+    kakaoWidgetFQN: com.agoda.kakao.edit.KTextInputLayout
+    idSuffixes:
+      - text_input_layout
+  com.google.android.material.textfield.TextInputEditText:
+    <<: *TextInputNode
+
+  # ProgressBar
+  android.widget.ProgressBar:
+    kakaoWidgetFQN: com.agoda.kakao.progress.KProgressBar
+    idSuffixes:
+      - progress_bar
+
+  # RatingBar
+  android.widget.RatingBar: &RatingBarNode
+    kakaoWidgetFQN: com.agoda.kakao.rating.KRatingBar
+    idSuffixes:
+      - rating_bar
+  androidx.appcompat.widget.AppCompatRatingBar:
+    <<: *RatingBarNode
+
+  # ScrollView
+  android.widget.ScrollView: &ScrollViewNode
+    kakaoWidgetFQN: com.agoda.kakao.scroll.KScrollView
+    idSuffixes:
+      - scroll_view
+  android.widget.HorizontalScrollView:
+    <<: *ScrollViewNode
+  androidx.core.widget.NestedScrollView:
+    <<: *ScrollViewNode
+
+  # ImageView
+  android.widget.ImageView: &ImageViewNode
+    kakaoWidgetFQN: com.agoda.kakao.image.KImageView
+    idSuffixes:
+      - image
+  androidx.appcompat.widget.AppCompatImageView:
+    <<: *ImageViewNode
+
+  # CheckBox
+  android.widget.CheckBox: &CheckBoxNode
+    kakaoWidgetFQN: com.agoda.kakao.check.KCheckBox
+    idSuffixes:
+      - checkbox
+      - check_box
+  androidx.appcompat.widget.AppCompatCheckBox:
+    <<: *CheckBoxNode
+
+  # Button
+  android.widget.Button: &ButtonNode
+    kakaoWidgetFQN: com.agoda.kakao.text.KButton
+    idSuffixes:
+      - button
+  androidx.appcompat.widget.AppCompatButton:
+    <<: *ButtonNode
+
+  # DatePicker
+  android.widget.DatePicker:
+    kakaoWidgetFQN: com.agoda.kakao.picker.date.KDatePicker
+    idSuffixes:
+      - date_picker
+
+  # DrawerLayout
+  androidx.drawerlayout.widget.DrawerLayout:
+    kakaoWidgetFQN: com.agoda.kakao.drawer.KDrawerView
+    idSuffixes:
+      - drawer_view
+
+  # EditText
+  android.widget.EditText: &EditTextNode
+    kakaoWidgetFQN: com.agoda.kakao.edit.KEditText
+    idSuffixes:
+      - edit_text
+  androidx.appcompat.widget.AppCompatEditText:
+    <<: *EditTextNode
+
+  # TextView:
+  android.widget.TextView: &TextViewNode
+    kakaoWidgetFQN: com.agoda.kakao.text.KTextView
+    idSuffixes:
+      - text_view
+  androidx.appcompat.widget.AppCompatTextView:
+    <<: *TextViewNode
+
+  # TimePicker
+  android.widget.TimePicker:
+    kakaoWidgetFQN: com.agoda.kakao.picker.time.KTimePicker
+    idSuffixes:
+      - time_picker
+
+  # ViewGroup
+  android.view.ViewGroup:
+    kakaoWidgetFQN: com.agoda.kakao.common.views.KView
+    idSuffixes:
+      - container
+
+  # View
+  android.view.View:
+    kakaoWidgetFQN: com.agoda.kakao.common.views.KView
+    idSuffixes:
+      - view
