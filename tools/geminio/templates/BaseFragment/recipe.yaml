@@ -61,21 +61,15 @@ widgets:
       suggest: ${className.classToResource().underlinesToCamelCase()}Module
 
 recipe:
-  - instantiate:
+  - instantiateAndOpen:
       from: root/src/app_package/BlankFragment.kt.ftl
       to: ${srcOut}/${className}.kt
-  - open:
-      file: ${srcOut}/${className}.kt
-  - instantiate:
+  - instantiateAndOpen:
       from: root/res/layout/fragment_blank.xml.ftl
       to: ${resOut}/layout/${fragmentName}.xml
-  - open:
-      file: ${resOut}/layout/${fragmentName}.xml
   - predicate:
       validIf: ${includeModule}
       commands:
-        - instantiate:
+        - instantiateAndOpen:
             from: root/src/app_package/BlankModule.kt.ftl
             to: ${srcOut}/di/${moduleName}.kt
-        - open:
-            file: ${srcOut}/di/${moduleName}.kt

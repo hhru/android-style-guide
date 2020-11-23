@@ -86,28 +86,18 @@ widgets:
       visibility: false
 
 recipe:
-  - instantiate:
+  - instantiateAndOpen:
       from: root/src/app_package/FeatureApi.kt.ftl
       to: ${srcOut}/api/${featureApi}.kt
-  - open:
-      file: ${srcOut}/api/${featureApi}.kt
-  - instantiate:
+  - instantiateAndOpen:
       from: root/src/app_package/FeatureApiImpl.kt.ftl
       to: ${srcOut}/api/${featureApi}Impl.kt
-  - open:
-      file: ${srcOut}/api/${featureApi}Impl.kt
-  - instantiate:
+  - instantiateAndOpen:
       from: root/src/app_package/FeatureDeps.kt.ftl
       to: ${srcOut}/api/${featureDeps}.kt
-  - open:
-      file: ${srcOut}/api/${featureDeps}.kt
-  - instantiate:
+  - instantiateAndOpen:
       from: root/src/app_package/FeatureFacade.kt.ftl
       to: ${srcOut}/api/${featureFacade}.kt
-  - open:
-      file: ${srcOut}/api/${featureFacade}.kt
-  - instantiate:
+  - instantiateAndOpen:
       from: root/src/app_package/FeatureModule.kt.ftl
       to: ${srcOut}/api/${featureModuleName}.kt
-  - open:
-      file: ${srcOut}/api/${featureModuleName}.kt
