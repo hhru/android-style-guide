@@ -1,0 +1,113 @@
+requiredParams:
+  name: HeadHunter Feature API Base
+  description: Creates HeadHunter Feature API Base
+
+optionalParams:
+  revision: 1
+  category: fragment
+  formFactor: mobile
+  constraints:
+    - kotlin
+  screens:
+    - fragment_gallery
+    - menu_entry
+  minApi: 7
+  minBuildApi: 8
+
+widgets:
+  - stringParameter:
+      id: feature
+      name: Feature Name
+      help: The name of the feature class to create
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: Feature
+
+  - stringParameter:
+      id: featureApi
+      name: Feature Api
+      help: The name of the feature class to create
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: FeatureApi
+      suggest: ${feature}Api
+      visibility: false
+
+  - stringParameter:
+      id: featureDefScreen
+      name: Feature Default Screen Name
+      help: The name of the Api to NavScreen
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: FeatureDefaultScreen
+      suggest: ${feature}NavScreen
+      visibility: false
+
+  - stringParameter:
+      id: featureDeps
+      name: Feature dependencies interface name
+      help: The name of the FeatureDeps interface to create
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: FeatureDeps
+      suggest: ${feature}Deps
+      visibility: false
+
+  - stringParameter:
+      id: featureFacade
+      name: Feature Facade Name
+      help: The name of the FeatureFacade to create
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: FeatureFacade
+      suggest: ${feature}Facade
+      visibility: false
+
+  - stringParameter:
+      id: featureModuleName
+      name: Feature Default Module Name
+      help: The name of the FeatureModule to create
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: FeatureModule
+      suggest: ${feature}Module
+      visibility: false
+
+recipe:
+  - instantiate:
+      from: root/src/app_package/FeatureApi.kt.ftl
+      to: ${srcOut}/api/${featureApi}.kt
+  - open:
+      file: ${srcOut}/api/${featureApi}.kt
+  - instantiate:
+      from: root/src/app_package/FeatureApiImpl.kt.ftl
+      to: ${srcOut}/api/${featureApi}Impl.kt
+  - open:
+      file: ${srcOut}/api/${featureApi}Impl.kt
+  - instantiate:
+      from: root/src/app_package/FeatureDeps.kt.ftl
+      to: ${srcOut}/api/${featureDeps}.kt
+  - open:
+      file: ${srcOut}/api/${featureDeps}.kt
+  - instantiate:
+      from: root/src/app_package/FeatureFacade.kt.ftl
+      to: ${srcOut}/api/${featureFacade}.kt
+  - open:
+      file: ${srcOut}/api/${featureFacade}.kt
+  - instantiate:
+      from: root/src/app_package/FeatureModule.kt.ftl
+      to: ${srcOut}/api/${featureModuleName}.kt
+  - open:
+      file: ${srcOut}/api/${featureModuleName}.kt
