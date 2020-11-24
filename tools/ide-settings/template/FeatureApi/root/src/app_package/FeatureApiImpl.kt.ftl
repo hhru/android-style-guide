@@ -4,7 +4,7 @@ import ru.hh.shared_core_ui.navigation.NavScreen
 import javax.inject.Inject
 
 
-class ${featureApi}Impl @Inject constructor() : ${featureApi} {
+internal class ${featureApi}Impl @Inject constructor() : ${featureApi} {
 	
 	override val defaultScreen: NavScreen = TODO("Заглушка API")
 }
