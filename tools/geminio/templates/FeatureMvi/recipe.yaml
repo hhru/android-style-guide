@@ -14,27 +14,6 @@ optionalParams:
   minApi: 7
   minBuildApi: 8
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 widgets:
   - stringParameter:
       id: featureName
