@@ -1,0 +1,7 @@
+templatesRootDirPath: /android-style-guide/geminio/templates
+
+groupsNames:
+  forNewGroup: HH Templates
+  forGenerateGroup: From HH Templates
+
+enableDebugMode: true

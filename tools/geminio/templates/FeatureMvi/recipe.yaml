@@ -1,0 +1,153 @@
+requiredParams:
+  name: HeadHunter MVI Feature
+  description: Creates HeadHunter MVI Feature
+
+optionalParams:
+  revision: 1
+  category: fragment
+  formFactor: mobile
+  constraints:
+    - kotlin
+  screens:
+    - fragment_gallery
+    - menu_entry
+  minApi: 7
+  minBuildApi: 8
+
+widgets:
+  - stringParameter:
+      id: featureName
+      name: Mvi Name
+      help: The name of the Mvi Feature class to create
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: BaseMviFeature
+
+  - stringParameter:
+      id: featureEffect
+      name: Feature Effect Name
+      help: The name of the Feature Effect
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: BaseMviFeatureEffect
+      suggest: ${featureName}Effect
+      visibility: false
+
+  - stringParameter:
+      id: featureNews
+      name: Feature News Name
+      help: The name of the Feature News
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: BaseMviFeatureNews
+      suggest: ${featureName}News
+      visibility: false
+
+  - stringParameter:
+      id: featureState
+      name: Feature State Name
+      help: The name of the Feature State
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: BaseMviFeatureState
+      suggest: ${featureName}State
+      visibility: false
+
+  - stringParameter:
+      id: featureWish
+      name: Feature Wish Name
+      help: The name of the Feature Wish
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: BaseMviFeatureWish
+      suggest: ${featureName}Wish
+      visibility: false
+
+  - stringParameter:
+      id: featureActor
+      name: Feature Actor Name
+      help: The name of the Feature Actor
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: BaseMviFeatureActor
+      suggest: ${featureName}Actor
+      visibility: false
+
+  - stringParameter:
+      id: featureBootstrapper
+      name: Feature Bootstrapper Name
+      help: The name of the Feature Bootstrapper
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: BaseMviFeatureBootstrapper
+      suggest: ${featureName}Bootstrapper
+      visibility: false
+
+  - stringParameter:
+      id: featureNewsPublisher
+      name: Feature NewsPublisher Name
+      help: The name of the Feature NewsPublisher
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: BaseMviFeatureNewsPublisher
+      suggest: ${featureName}NewsPublisher
+      visibility: false
+
+  - stringParameter:
+      id: featureReducer
+      name: Feature Reducer Name
+      help: The name of the Feature Reducer
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: BaseMviFeatureReducer
+      suggest: ${featureName}Reducer
+      visibility: false
+
+recipe:
+  # elements
+  - instantiateAndOpen:
+      from: root/src/app_package/element/FeatureEffect.kt.ftl
+      to: ${srcOut}/feature/element/${featureEffect}.kt
+  - instantiateAndOpen:
+      from: root/src/app_package/element/FeatureNews.kt.ftl
+      to: ${srcOut}/feature/element/${featureNews}.kt
+  - instantiateAndOpen:
+      from: root/src/app_package/element/FeatureState.kt.ftl
+      to: ${srcOut}/feature/element/${featureState}.kt
+  - instantiateAndOpen:
+      from: root/src/app_package/element/FeatureWish.kt.ftl
+      to: ${srcOut}/feature/element/${featureWish}.kt
+  # feature
+  - instantiateAndOpen:
+      from: root/src/app_package/Feature.kt.ftl
+      to: ${srcOut}/feature/${featureName}.kt
+  - instantiateAndOpen:
+      from: root/src/app_package/FeatureActor.kt.ftl
+      to: ${srcOut}/feature/${featureActor}.kt
+  - instantiateAndOpen:
+      from: root/src/app_package/FeatureBootstrapper.kt.ftl
+      to: ${srcOut}/feature/${featureBootstrapper}.kt
+  - instantiateAndOpen:
+      from: root/src/app_package/FeatureNewsPublisher.kt.ftl
+      to: ${srcOut}/feature/${featureNewsPublisher}.kt
+  - instantiateAndOpen:
+      from: root/src/app_package/FeatureReducer.kt.ftl
+      to: ${srcOut}/feature/${featureReducer}.kt

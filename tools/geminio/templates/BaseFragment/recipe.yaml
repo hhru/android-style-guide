@@ -1,0 +1,75 @@
+requiredParams:
+  name: HeadHunter BaseFragment
+  description: Creates HeadHunter BaseFragment
+
+optionalParams:
+  revision: 1
+  category: fragment
+  formFactor: mobile
+  constraints:
+    - kotlin
+  screens:
+    - fragment_gallery
+    - menu_entry
+  minApi: 7
+  minBuildApi: 8
+
+widgets:
+  - stringParameter:
+      id: className
+      name: Fragment Name
+      help: The name of the fragment class to create
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: BlankFragment
+
+  - stringParameter:
+      id: fragmentName
+      name: Fragment Layout Name
+      help: The name of the layout to create
+      constraints:
+        - layout
+        - nonempty
+        - unique
+      default: fragment_blank
+      suggest: fragment_${className.classToResource()}
+
+  - booleanParameter:
+      id: includeFactory
+      name: Include fragment factory method?
+      help: Generate static fragment factory method for easy instantiation
+      default: true
+
+  - booleanParameter:
+      id: includeModule
+      name: Include Toothpick Module class?
+      help: Generate fragment Toothpick Module for easy instantiation
+      default: true
+
+  - stringParameter:
+      id: moduleName
+      name: Fragment Toothpick Module
+      help: The name of the Fragment Toothpick Module to create
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: BlankModule
+      visibility: ${includeModule}
+      suggest: ${className.classToResource().underlinesToCamelCase()}Module
+
+recipe:
+  - instantiateAndOpen:
+      from: root/src/app_package/BlankFragment.kt.ftl
+      to: ${srcOut}/${className}.kt
+  - instantiateAndOpen:
+      from: root/res/layout/fragment_blank.xml.ftl
+      to: ${resOut}/layout/${fragmentName}.xml
+  - predicate:
+      validIf: ${includeModule}
+      commands:
+        - instantiateAndOpen:
+            from: root/src/app_package/BlankModule.kt.ftl
+            to: ${srcOut}/di/${moduleName}.kt
