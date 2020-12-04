@@ -1,0 +1,42 @@
+requiredParams:
+  name: HeadHunter Cell
+  description: Creates simple Cell for RecyclerView
+
+widgets:
+  - stringParameter:
+      id: cellClassName
+      name: Cell class name
+      help: The name of the Cell
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: BaseCell
+
+  - stringParameter:
+      id: cellLayoutName
+      name: Cell's layout name
+      help: The name of the layout to create
+      constraints:
+        - layout
+        - nonempty
+        - unique
+      default: cell_base
+      suggest: ${cellClassName.classToResource()}
+
+recipe:
+  # kotlin files
+  - instantiateAndOpen:
+      from: root/src/app_package/Cell.kt.ftl
+      to: ${srcOut}/${cellClassName}.kt
+  # layouts
+  - instantiateAndOpen:
+      from: root/res/layout/cell_layout.xml.ftl
+      to: ${resOut}/layout/${cellLayoutName}.xml
+  # dependencies
+  - addDependencies:
+    # projects
+      - compileOnly: :shared-core-ui-design-system
+    # libraries
+      - compileOnly: Libs.kotlin
+      - compileOnly: Libs.support.recyclerView
