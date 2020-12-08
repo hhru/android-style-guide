@@ -13,7 +13,6 @@ internal data class ${cellClassName}(
     override fun getLayoutId(): Int = R.layout.${cellLayoutName}
 
     override fun bind(viewHolder: RecyclerView.ViewHolder, payloads: List<Any>) {
-        val model = this
         with(viewHolder.itemView) {
             // TODO bind fields from model to layout
         }
