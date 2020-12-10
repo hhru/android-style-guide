@@ -2,18 +2,6 @@ requiredParams:
   name: HeadHunter MVI Feature
   description: Creates HeadHunter MVI Feature
 
-optionalParams:
-  revision: 1
-  category: fragment
-  formFactor: mobile
-  constraints:
-    - kotlin
-  screens:
-    - fragment_gallery
-    - menu_entry
-  minApi: 7
-  minBuildApi: 8
-
 widgets:
   - stringParameter:
       id: featureName
@@ -25,101 +13,38 @@ widgets:
         - unique
       default: BaseMviFeature
 
+globals:
   - stringParameter:
       id: featureEffect
-      name: Feature Effect Name
-      help: The name of the Feature Effect
-      constraints:
-        - class
-        - nonempty
-        - unique
-      default: BaseMviFeatureEffect
       suggest: ${featureName}Effect
-      visibility: false
 
   - stringParameter:
       id: featureNews
-      name: Feature News Name
-      help: The name of the Feature News
-      constraints:
-        - class
-        - nonempty
-        - unique
-      default: BaseMviFeatureNews
       suggest: ${featureName}News
-      visibility: false
 
   - stringParameter:
       id: featureState
-      name: Feature State Name
-      help: The name of the Feature State
-      constraints:
-        - class
-        - nonempty
-        - unique
-      default: BaseMviFeatureState
       suggest: ${featureName}State
-      visibility: false
 
   - stringParameter:
       id: featureWish
-      name: Feature Wish Name
-      help: The name of the Feature Wish
-      constraints:
-        - class
-        - nonempty
-        - unique
-      default: BaseMviFeatureWish
       suggest: ${featureName}Wish
-      visibility: false
 
   - stringParameter:
       id: featureActor
-      name: Feature Actor Name
-      help: The name of the Feature Actor
-      constraints:
-        - class
-        - nonempty
-        - unique
-      default: BaseMviFeatureActor
       suggest: ${featureName}Actor
-      visibility: false
 
   - stringParameter:
       id: featureBootstrapper
-      name: Feature Bootstrapper Name
-      help: The name of the Feature Bootstrapper
-      constraints:
-        - class
-        - nonempty
-        - unique
-      default: BaseMviFeatureBootstrapper
       suggest: ${featureName}Bootstrapper
-      visibility: false
 
   - stringParameter:
       id: featureNewsPublisher
-      name: Feature NewsPublisher Name
-      help: The name of the Feature NewsPublisher
-      constraints:
-        - class
-        - nonempty
-        - unique
-      default: BaseMviFeatureNewsPublisher
       suggest: ${featureName}NewsPublisher
-      visibility: false
 
   - stringParameter:
       id: featureReducer
-      name: Feature Reducer Name
-      help: The name of the Feature Reducer
-      constraints:
-        - class
-        - nonempty
-        - unique
-      default: BaseMviFeatureReducer
       suggest: ${featureName}Reducer
-      visibility: false
 
 recipe:
   # elements
