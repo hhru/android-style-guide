@@ -16,35 +16,35 @@ widgets:
 globals:
   - stringParameter:
       id: featureEffect
-      suggest: ${featureName}Effect
+      value: ${featureName}Effect
 
   - stringParameter:
       id: featureNews
-      suggest: ${featureName}News
+      value: ${featureName}News
 
   - stringParameter:
       id: featureState
-      suggest: ${featureName}State
+      value: ${featureName}State
 
   - stringParameter:
       id: featureWish
-      suggest: ${featureName}Wish
+      value: ${featureName}Wish
 
   - stringParameter:
       id: featureActor
-      suggest: ${featureName}Actor
+      value: ${featureName}Actor
 
   - stringParameter:
       id: featureBootstrapper
-      suggest: ${featureName}Bootstrapper
+      value: ${featureName}Bootstrapper
 
   - stringParameter:
       id: featureNewsPublisher
-      suggest: ${featureName}NewsPublisher
+      value: ${featureName}NewsPublisher
 
   - stringParameter:
       id: featureReducer
-      suggest: ${featureName}Reducer
+      value: ${featureName}Reducer
 
 recipe:
   # elements
