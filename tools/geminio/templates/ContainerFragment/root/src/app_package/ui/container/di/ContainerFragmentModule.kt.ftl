@@ -4,6 +4,8 @@ import ru.hh.shared_core_ui.navigation.AppRouter
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.NavigatorHolder
 import toothpick.config.Module
+import toothpick.ktp.binding.bind
+import ${packageName}.container.${containerFragmentVMName}
 
 
 internal class ${containerFragmentModuleName}: Module() {
@@ -11,7 +13,9 @@ internal class ${containerFragmentModuleName}: Module() {
     private val cicerone = Cicerone.create(AppRouter())
 
     init {
-        bind(NavigatorHolder::class.java).toInstance(cicerone.navigatorHolder)
-        bind(AppRouter::class.java).toInstance(cicerone.router)
+        bind<NavigatorHolder>().toInstance(cicerone.navigatorHolder)
+        bind<AppRouter>.toInstance(cicerone.router)
+
+        bind<${containerFragmentVMName>()
     }
 }
