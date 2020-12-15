@@ -9,6 +9,9 @@ apply plugin: 'kotlin-android-extensions'
 
 
 dependencies {
+    compileOnly project(':shared-core-logger')
+    compileOnly project(':shared-core-utils')
+    compileOnly project(':analytics-api')
 
     <#list __librariesModules as module>
 compileOnly project(':${module}')
@@ -22,12 +25,17 @@ compileOnly project(':${module}')
     kapt Libs.toothpick.compiler
 
     <#if needCreatePresentationLayer>
+    compileOnly project(':base-ui')
+
     // Moxy
     compileOnly Libs.moxy.appCompat
     kapt Libs.moxy.compiler
     </#if>
 
     <#if needCreateApiInterface>
+    compileOnly project(':shared-core-network')
+    compileOnly project(':analytics-api')
+
     // Gson
     compileOnly Libs.network.gson
 
