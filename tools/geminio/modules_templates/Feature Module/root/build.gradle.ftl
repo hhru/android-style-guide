@@ -3,15 +3,15 @@ apply plugin: 'ru.hh.android.gradle_plugin.module_config'
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-<#if need_add_ui_modules_dependencies>
+<#if needCreatePresentationLayer>
 apply plugin: 'kotlin-android-extensions'
 </#if>
 
 
 dependencies {
 
-    <#list libraries_modules as module>
-    compileOnly project(':${module}')
+    <#list __librariesModules as module>
+compileOnly project(':${module}')
     </#list>
 
     // Kotlin
@@ -21,13 +21,13 @@ dependencies {
     compileOnly Libs.toothpick.core
     kapt Libs.toothpick.compiler
 
-    <#if enable_moxy>
+    <#if needCreatePresentationLayer>
     // Moxy
     compileOnly Libs.moxy.appCompat
     kapt Libs.moxy.compiler
     </#if>
 
-    <#if need_create_api_interface>
+    <#if needCreateApiInterface>
     // Gson
     compileOnly Libs.network.gson
 

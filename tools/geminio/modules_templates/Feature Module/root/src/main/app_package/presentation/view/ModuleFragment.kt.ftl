@@ -1,4 +1,4 @@
-package ${package_name}.presentation.view
+package ${packageName}.presentation.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,24 +7,24 @@ import android.view.ViewGroup
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import ru.hh.android.base.ui.navigation.BaseBottomNavigationFragment
-import ru.hh.${package_name}.R
-import ${package_name}.presentation.presenter.${formatted_library_name}Presenter
+import ${applicationPackage}.R
+import ${packageName}.presentation.presenter.${modulePresenterClassName}
 import toothpick.Scope
 
 
-class ${formatted_library_name}Fragment : BaseBottomNavigationFragment(), ${formatted_library_name}View {
+internal class ${moduleFragmentClassName} : BaseBottomNavigationFragment(), ${moduleViewClassName} {
 
     @InjectPresenter
-    lateinit var presenter: ${formatted_library_name}Presenter
+    lateinit var presenter: ${modulePresenterClassName}
 
     @ProvidePresenter
-    internal fun providePresenter(): ${formatted_library_name}Presenter {
-        return openScope().getInstance(${formatted_library_name}Presenter::class.java)
+    internal fun providePresenter(): ${modulePresenterClassName} {
+        return openScope().getInstance(${modulePresenterClassName}::class.java)
     }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_${layout_name}, container, false)
+        return inflater.inflate(R.layout.${moduleFragmentLayoutName}, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
