@@ -121,7 +121,7 @@ recipe:
   # other
   - instantiateAndOpen:
       from: root/src/main/app_package/di/DIModule.kt.ftl
-      to: ${srcOut}/di/${formattedModuleName}Module.kt
+      to: ${srcOut}/di/${moduleNetworkDiModuleClassName}.kt
 
   - predicate:
       validIf: ${needCreateApiInterface}
@@ -159,13 +159,13 @@ recipe:
       commands:
         - instantiateAndOpen:
             from: root/src/main/app_package/presentation/presenter/ModulePresenter.kt.ftl
-            to: ${srcOut}/presentation/presenter/{modulePresenterClassName}.kt
+            to: ${srcOut}/presentation/presenter/${modulePresenterClassName}.kt
         - instantiateAndOpen:
             from: root/src/main/app_package/presentation/view/ModuleFragment.kt.ftl
-            to: ${srcOut}/presentation/view/{moduleFragmentClassName}.kt
+            to: ${srcOut}/presentation/view/${moduleFragmentClassName}.kt
         - instantiateAndOpen:
             from: root/src/main/app_package/presentation/view/ModuleView.kt.ftl
-            to: ${srcOut}/presentation/view/{moduleViewClassName}.kt
+            to: ${srcOut}/presentation/view/${moduleViewClassName}.kt
         - instantiateAndOpen:
             from: root/res/layout/fragment_module.xml.ftl
             to: ${resOut}/layout/${moduleFragmentLayoutName}.xml

@@ -14,7 +14,7 @@ dependencies {
     compileOnly project(':analytics-api')
 
     <#list __librariesModules as module>
-compileOnly project(':${module}')
+    compileOnly project(':${module}')
     </#list>
 
     // Kotlin
