@@ -1,0 +1,155 @@
+requiredParams:
+  name: HeadHunter Container Fragment
+  description: Creates HeadHunter Container Fragment
+
+widgets:
+  - stringParameter:
+      id: featureName
+      name: Feature name
+      help: The name of your feature as base for generating container
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: BaseFlow
+      
+  - stringParameter:
+      id: featureFacadeName
+      name: Feature facade name
+      help: Feature facade name
+      constraints:
+        - class
+        - nonempty
+        - unique
+      suggest: ${featureName}Facade
+      default: BaseFlowFacade
+      visibility: false
+
+  - stringParameter:
+      id: featureDepsName
+      name: Feature deps name
+      help: Feature deps name
+      constraints:
+        - class
+        - nonempty
+        - unique
+      suggest: ${featureName}Deps
+      default: BaseFlowDeps
+      visibility: false
+
+  - stringParameter:
+      id: containerFragmentName
+      name: Container fragment name
+      help: Container fragment name
+      constraints:
+        - class
+        - nonempty
+        - unique
+      suggest: ${featureName}ContainerFragment
+      default: BaseFlowContainerFragment
+      visibility: false
+
+  - stringParameter:
+      id: containerFragmentLayoutName
+      name: Container fragment layout
+      help: Container fragment layout
+      constraints:
+        - layout
+        - nonempty
+        - unique
+      suggest: ${containerFragmentName.fragmentToLayout()}
+      default: fragment_base_flow_container
+      visibility: false
+
+  - stringParameter:
+      id: containerFragmentContainerId
+      name: Container id
+      help: Container id
+      constraints:
+        - layout
+        - nonempty
+        - unique
+      suggest: ${containerFragmentLayoutName}
+      default: fragment_base_flow_container
+      visibility: false
+
+  - stringParameter:
+      id: containerFragmentModuleName
+      name: Container fragment Module
+      help: Container fragment Module
+      constraints:
+        - class
+        - nonempty
+        - unique
+      suggest: ${featureName}ContainerModule
+      default: BaseFlowContainerModule
+      visibility: false
+
+  - stringParameter:
+      id: containerFragmentNavigatorName
+      name: Container fragment Navigator name
+      help: Container fragment Navigator name
+      constraints:
+        - class
+        - nonempty
+        - unique
+      suggest: ${featureName}ContainerNavigator
+      default: BaseFlowContainerNavigator
+      visibility: false
+
+  - stringParameter:
+      id: containerFragmentVMName
+      name: Container fragment ViewModel name
+      help: Container fragment ViewModel name
+      constraints:
+        - class
+        - nonempty
+        - unique
+      suggest: ${featureName}ContainerVM
+      default: BaseFlowContainerVM
+      visibility: false
+
+  - stringParameter:
+      id: containerFragmentNavScreenName
+      name: Container fragment NavScreen name
+      help: Container fragment NavScreen name
+      constraints:
+        - class
+        - nonempty
+        - unique
+      suggest: ${featureName}ContainerNavScreen
+      default: BaseFlowContainerNavScreen
+      visibility: false
+
+recipe:
+  # kotlin files
+  - instantiateAndOpen:
+      from: root/src/app_package/ui/container/ContainerFragment.kt.ftl
+      to: ${srcOut}/ui/container/${containerFragmentName}.kt
+  - instantiateAndOpen:
+      from: root/src/app_package/ui/container/ContainerFragmentNavigator.kt.ftl
+      to: ${srcOut}/ui/container/${containerFragmentNavigatorName}.kt
+  - instantiateAndOpen:
+      from: root/src/app_package/ui/container/ContainerFragmentNavScreen.kt.ftl
+      to: ${srcOut}/ui/container/${containerFragmentNavScreenName}.kt
+  - instantiateAndOpen:
+      from: root/src/app_package/ui/container/ContainerFragmentVM.kt.ftl
+      to: ${srcOut}/ui/container/${containerFragmentVMName}.kt
+  - instantiateAndOpen:
+      from: root/src/app_package/ui/container/di/ContainerFragmentModule.kt.ftl
+      to: ${srcOut}/ui/container/di/${containerFragmentModuleName}.kt
+  # layouts
+  - instantiateAndOpen:
+      from: root/res/layout/container_fragment.xml.ftl
+      to: ${resOut}/layout/${containerFragmentLayoutName}.xml
+  # dependencies
+  - addDependencies:
+    # projects
+      - compileOnly: :shared-core-ui
+      - compileOnly: :core-mvvm
+      - compileOnly: :shared-core-rx
+    # libraries
+      - compileOnly: Libs.kotlin
+      - compileOnly: Libs.toothpick.core
+      - kapt: Libs.toothpick.compiler
+      - compileOnly: Libs.ui.cicerone
