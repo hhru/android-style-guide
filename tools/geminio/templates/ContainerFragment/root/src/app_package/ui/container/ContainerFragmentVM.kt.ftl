@@ -4,6 +4,7 @@ import ru.hh.android.mvvm.viewmodel.BaseViewModel
 import ru.hh.core_rx.SchedulersProvider
 import ${packageName}.api.${featureDepsName}
 import toothpick.InjectConstructor
+import timber.log.Timber
 
 
 @InjectConstructor
@@ -19,6 +20,6 @@ internal class ${containerFragmentVMName}(
 
     override fun onFirstAttach() {
         super.onFirstAttach()
-        // TODO
+        Timber.tag(LOG_TAG).d("On first attach")
     }
 }

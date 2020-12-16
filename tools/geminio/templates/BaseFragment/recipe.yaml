@@ -34,7 +34,7 @@ widgets:
         - nonempty
         - unique
       default: fragment_blank
-      suggest: fragment_${className.classToResource()}
+      suggest: ${className.fragmentToLayout()}
 
   - booleanParameter:
       id: includeFactory

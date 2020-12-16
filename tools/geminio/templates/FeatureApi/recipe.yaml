@@ -25,65 +25,26 @@ widgets:
         - unique
       default: Feature
 
+globals:
   - stringParameter:
       id: featureApi
-      name: Feature Api
-      help: The name of the feature class to create
-      constraints:
-        - class
-        - nonempty
-        - unique
-      default: FeatureApi
-      suggest: ${feature}Api
-      visibility: false
+      value: ${feature}Api
 
   - stringParameter:
       id: featureDefScreen
-      name: Feature Default Screen Name
-      help: The name of the Api to NavScreen
-      constraints:
-        - class
-        - nonempty
-        - unique
-      default: FeatureDefaultScreen
-      suggest: ${feature}NavScreen
-      visibility: false
+      value: ${feature}NavScreen
 
   - stringParameter:
       id: featureDeps
-      name: Feature dependencies interface name
-      help: The name of the FeatureDeps interface to create
-      constraints:
-        - class
-        - nonempty
-        - unique
-      default: FeatureDeps
-      suggest: ${feature}Deps
-      visibility: false
+      value: ${feature}Deps
 
   - stringParameter:
       id: featureFacade
-      name: Feature Facade Name
-      help: The name of the FeatureFacade to create
-      constraints:
-        - class
-        - nonempty
-        - unique
-      default: FeatureFacade
-      suggest: ${feature}Facade
-      visibility: false
+      value: ${feature}Facade
 
   - stringParameter:
       id: featureModuleName
-      name: Feature Default Module Name
-      help: The name of the FeatureModule to create
-      constraints:
-        - class
-        - nonempty
-        - unique
-      default: FeatureModule
-      suggest: ${feature}Module
-      visibility: false
+      value: ${feature}Module
 
 recipe:
   - instantiateAndOpen:

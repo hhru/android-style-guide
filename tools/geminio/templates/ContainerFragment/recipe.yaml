@@ -12,114 +12,43 @@ widgets:
         - nonempty
         - unique
       default: BaseFlow
-      
+
+globals:
   - stringParameter:
       id: featureFacadeName
-      name: Feature facade name
-      help: Feature facade name
-      constraints:
-        - class
-        - nonempty
-        - unique
-      suggest: ${featureName}Facade
-      default: BaseFlowFacade
-      visibility: false
+      value: ${featureName}Facade
 
   - stringParameter:
       id: featureDepsName
-      name: Feature deps name
-      help: Feature deps name
-      constraints:
-        - class
-        - nonempty
-        - unique
-      suggest: ${featureName}Deps
-      default: BaseFlowDeps
-      visibility: false
+      value: ${featureName}Deps
 
   - stringParameter:
       id: containerFragmentName
-      name: Container fragment name
-      help: Container fragment name
-      constraints:
-        - class
-        - nonempty
-        - unique
-      suggest: ${featureName}ContainerFragment
-      default: BaseFlowContainerFragment
-      visibility: false
+      value: ${featureName}ContainerFragment
 
   - stringParameter:
       id: containerFragmentLayoutName
-      name: Container fragment layout
-      help: Container fragment layout
-      constraints:
-        - layout
-        - nonempty
-        - unique
-      suggest: ${containerFragmentName.fragmentToLayout()}
-      default: fragment_base_flow_container
-      visibility: false
+      value: ${containerFragmentName.fragmentToLayout()}
 
   - stringParameter:
       id: containerFragmentContainerId
-      name: Container id
-      help: Container id
-      constraints:
-        - layout
-        - nonempty
-        - unique
-      suggest: ${containerFragmentLayoutName}
-      default: fragment_base_flow_container
-      visibility: false
+      value: ${containerFragmentLayoutName}
 
   - stringParameter:
       id: containerFragmentModuleName
-      name: Container fragment Module
-      help: Container fragment Module
-      constraints:
-        - class
-        - nonempty
-        - unique
-      suggest: ${featureName}ContainerModule
-      default: BaseFlowContainerModule
-      visibility: false
+      value: ${featureName}ContainerModule
 
   - stringParameter:
       id: containerFragmentNavigatorName
-      name: Container fragment Navigator name
-      help: Container fragment Navigator name
-      constraints:
-        - class
-        - nonempty
-        - unique
-      suggest: ${featureName}ContainerNavigator
-      default: BaseFlowContainerNavigator
-      visibility: false
+      value: ${featureName}ContainerNavigator
 
   - stringParameter:
       id: containerFragmentVMName
-      name: Container fragment ViewModel name
-      help: Container fragment ViewModel name
-      constraints:
-        - class
-        - nonempty
-        - unique
-      suggest: ${featureName}ContainerVM
-      default: BaseFlowContainerVM
-      visibility: false
+      value: ${featureName}ContainerVM
 
   - stringParameter:
       id: containerFragmentNavScreenName
-      name: Container fragment NavScreen name
-      help: Container fragment NavScreen name
-      constraints:
-        - class
-        - nonempty
-        - unique
-      suggest: ${featureName}ContainerNavScreen
-      default: BaseFlowContainerNavScreen
-      visibility: false
+      value: ${featureName}ContainerNavScreen
 
 recipe:
   # kotlin files
@@ -144,11 +73,12 @@ recipe:
       to: ${resOut}/layout/${containerFragmentLayoutName}.xml
   # dependencies
   - addDependencies:
-    # projects
+      # projects
       - compileOnly: :shared-core-ui
       - compileOnly: :core-mvvm
       - compileOnly: :shared-core-rx
-    # libraries
+      - compileOnly: :shared-core-logger
+      # libraries
       - compileOnly: Libs.kotlin
       - compileOnly: Libs.toothpick.core
       - kapt: Libs.toothpick.compiler
