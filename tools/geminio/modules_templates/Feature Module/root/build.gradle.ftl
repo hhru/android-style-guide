@@ -3,14 +3,17 @@ apply plugin: 'ru.hh.android.gradle_plugin.module_config'
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-<#if need_add_ui_modules_dependencies>
+<#if needCreatePresentationLayer>
 apply plugin: 'kotlin-android-extensions'
 </#if>
 
 
 dependencies {
+    compileOnly project(':shared-core-logger')
+    compileOnly project(':shared-core-utils')
+    compileOnly project(':analytics-api')
 
-    <#list libraries_modules as module>
+    <#list __librariesModules as module>
     compileOnly project(':${module}')
     </#list>
 
@@ -21,13 +24,18 @@ dependencies {
     compileOnly Libs.toothpick.core
     kapt Libs.toothpick.compiler
 
-    <#if enable_moxy>
+    <#if needCreatePresentationLayer>
+    compileOnly project(':base-ui')
+
     // Moxy
     compileOnly Libs.moxy.appCompat
     kapt Libs.moxy.compiler
     </#if>
 
-    <#if need_create_api_interface>
+    <#if needCreateApiInterface>
+    compileOnly project(':shared-core-network')
+    compileOnly project(':analytics-api')
+
     // Gson
     compileOnly Libs.network.gson
 

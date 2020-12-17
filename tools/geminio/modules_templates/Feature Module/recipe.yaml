@@ -1,0 +1,171 @@
+requiredParams:
+  name: HeadHunter Feature Module
+  description: Creates HeadHunter Feature Module
+
+predefinedFeatures:
+  - enableModuleCreationParams
+
+widgets:
+  - booleanParameter:
+      id: needCreateApiInterface
+      name: Need create network API interface
+      help: Creates several classes and also adds some dependencies into build.gradle
+      default: false
+
+  - booleanParameter:
+      id: needCreateRepositoryWithInteractor
+      name: Need create repository with interactor
+      help: Creates Repository && Interactor classes and also adds some dependencies into build.gradle
+      default: false
+
+  - booleanParameter:
+      id: needCreateInterfaceForRepository
+      name: Create interface for repository?
+      help: Creates separate interface for Repository
+      default: false
+      visibility: ${needCreateRepositoryWithInteractor}
+
+  - booleanParameter:
+      id: needCreatePresentationLayer
+      name: Create presentation layer?
+      help: Creates several classes and adds some dependencies into build.gradle
+      default: false
+
+
+globals:
+  - stringParameter:
+      id: moduleNetworkDiModuleClassName
+      value: ${__formattedModuleName}Module
+
+  - stringParameter:
+      id: moduleNetworkApiClassName
+      value: ${__formattedModuleName}Api
+
+  - stringParameter:
+      id: moduleNetworkApiProviderClassName
+      value: ${__formattedModuleName}ApiProvider
+
+  - stringParameter:
+      id: moduleInteractorClassName
+      value: ${__formattedModuleName}Interactor
+
+  - stringParameter:
+      id: moduleRepositoryClassName
+      value: ${__formattedModuleName}Repository
+
+  - stringParameter:
+      id: moduleRepositoryImplClassName
+      value: ${__formattedModuleName}RepositoryImpl
+
+  - stringParameter:
+      id: moduleFragmentClassName
+      value: ${__formattedModuleName}Fragment
+
+  - stringParameter:
+      id: moduleFragmentLayoutName
+      value: ${moduleFragmentClassName.fragmentToLayout()}
+
+  - stringParameter:
+      id: modulePresenterClassName
+      value: ${__formattedModuleName}Presenter
+
+  - stringParameter:
+      id: moduleViewClassName
+      value: ${__formattedModuleName}View
+
+recipe:
+  # directories structure
+  - mkDirs:
+      - ${srcOut}:
+          - data:
+              - local:
+                  - model
+              - remote:
+                  - api
+                  - model
+          - di:
+              - outer
+              - modules
+              - provider
+          - domain:
+              - interactor
+              - model
+              - repository
+          - presentation:
+              - custom_view
+              - model
+              - presenter
+              - view
+
+      - ${resOut}:
+          - layout
+          - values
+          - drawables
+
+  # module root
+  - instantiate:
+      from: root/gitignore.ftl
+      to: ${rootOut}/.gitignore
+  - instantiateAndOpen:
+      from: root/build.gradle.ftl
+      to: ${rootOut}/build.gradle
+  - instantiate:
+      from: root/proguard-rules.pro.ftl
+      to: ${rootOut}/proguard-rules.pro
+
+  # src/main
+  - instantiate:
+      from: root/src/main/AndroidManifest.xml.ftl
+      to: ${manifestOut}/AndroidManifest.xml
+
+  # other
+  - instantiate:
+      from: root/src/main/app_package/di/DIModule.kt.ftl
+      to: ${srcOut}/di/${moduleNetworkDiModuleClassName}.kt
+
+  - predicate:
+      validIf: ${needCreateApiInterface}
+      commands:
+        - instantiate:
+            from: root/src/main/app_package/di/provider/ApiProvider.kt.ftl
+            to: ${srcOut}/di/provider/${moduleNetworkApiProviderClassName}.kt
+        - instantiate:
+            from: root/src/main/app_package/data/remote/api/ModuleApi.kt.ftl
+            to: ${srcOut}/data/remote/api/${moduleNetworkApiClassName}.kt
+
+  - predicate:
+      validIf: ${needCreateRepositoryWithInteractor}
+      commands:
+        - instantiate:
+            from: root/src/main/app_package/domain/interactor/ModuleInteractor.kt.ftl
+            to: ${srcOut}/domain/interactor/${moduleInteractorClassName}.kt
+
+        - predicate:
+            validIf: ${needCreateInterfaceForRepository}
+            commands:
+              - instantiate:
+                  from: root/src/main/app_package/domain/repository/ModuleRepository.kt.ftl
+                  to: ${srcOut}/domain/repository/${moduleRepositoryClassName}.kt
+              - instantiate:
+                  from: root/src/main/app_package/domain/repository/ModuleRepositoryImpl.kt.ftl
+                  to: ${srcOut}/domain/repository/${moduleRepositoryImplClassName}.kt
+            elseCommands:
+              - instantiate:
+                  from: root/src/main/app_package/domain/repository/ModuleRepositoryImpl.kt.ftl
+                  to: ${srcOut}/domain/repository/${moduleRepositoryClassName}.kt
+
+  - predicate:
+      validIf: ${needCreatePresentationLayer}
+      commands:
+        - instantiate:
+            from: root/src/main/app_package/presentation/presenter/ModulePresenter.kt.ftl
+            to: ${srcOut}/presentation/presenter/${modulePresenterClassName}.kt
+        - instantiate:
+            from: root/src/main/app_package/presentation/view/ModuleFragment.kt.ftl
+            to: ${srcOut}/presentation/view/${moduleFragmentClassName}.kt
+        - instantiate:
+            from: root/src/main/app_package/presentation/view/ModuleView.kt.ftl
+            to: ${srcOut}/presentation/view/${moduleViewClassName}.kt
+        - instantiate:
+            from: root/res/layout/fragment_module.xml.ftl
+            to: ${resOut}/layout/${moduleFragmentLayoutName}.xml
