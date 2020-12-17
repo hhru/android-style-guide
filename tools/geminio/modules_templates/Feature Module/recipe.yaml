@@ -103,69 +103,69 @@ recipe:
           - drawables
 
   # module root
-  - instantiateAndOpen:
+  - instantiate:
       from: root/gitignore.ftl
       to: ${rootOut}/.gitignore
   - instantiateAndOpen:
       from: root/build.gradle.ftl
       to: ${rootOut}/build.gradle
-  - instantiateAndOpen:
+  - instantiate:
       from: root/proguard-rules.pro.ftl
       to: ${rootOut}/proguard-rules.pro
 
   # src/main
-  - instantiateAndOpen:
+  - instantiate:
       from: root/src/main/AndroidManifest.xml.ftl
       to: ${manifestOut}/AndroidManifest.xml
 
   # other
-  - instantiateAndOpen:
+  - instantiate:
       from: root/src/main/app_package/di/DIModule.kt.ftl
       to: ${srcOut}/di/${moduleNetworkDiModuleClassName}.kt
 
   - predicate:
       validIf: ${needCreateApiInterface}
       commands:
-        - instantiateAndOpen:
+        - instantiate:
             from: root/src/main/app_package/di/provider/ApiProvider.kt.ftl
             to: ${srcOut}/di/provider/${moduleNetworkApiProviderClassName}.kt
-        - instantiateAndOpen:
+        - instantiate:
             from: root/src/main/app_package/data/remote/api/ModuleApi.kt.ftl
             to: ${srcOut}/data/remote/api/${moduleNetworkApiClassName}.kt
 
   - predicate:
       validIf: ${needCreateRepositoryWithInteractor}
       commands:
-        - instantiateAndOpen:
+        - instantiate:
             from: root/src/main/app_package/domain/interactor/ModuleInteractor.kt.ftl
             to: ${srcOut}/domain/interactor/${moduleInteractorClassName}.kt
 
         - predicate:
             validIf: ${needCreateInterfaceForRepository}
             commands:
-              - instantiateAndOpen:
+              - instantiate:
                   from: root/src/main/app_package/domain/repository/ModuleRepository.kt.ftl
                   to: ${srcOut}/domain/repository/${moduleRepositoryClassName}.kt
-              - instantiateAndOpen:
+              - instantiate:
                   from: root/src/main/app_package/domain/repository/ModuleRepositoryImpl.kt.ftl
                   to: ${srcOut}/domain/repository/${moduleRepositoryImplClassName}.kt
             elseCommands:
-              - instantiateAndOpen:
+              - instantiate:
                   from: root/src/main/app_package/domain/repository/ModuleRepositoryImpl.kt.ftl
                   to: ${srcOut}/domain/repository/${moduleRepositoryClassName}.kt
 
   - predicate:
       validIf: ${needCreatePresentationLayer}
       commands:
-        - instantiateAndOpen:
+        - instantiate:
             from: root/src/main/app_package/presentation/presenter/ModulePresenter.kt.ftl
             to: ${srcOut}/presentation/presenter/${modulePresenterClassName}.kt
-        - instantiateAndOpen:
+        - instantiate:
             from: root/src/main/app_package/presentation/view/ModuleFragment.kt.ftl
             to: ${srcOut}/presentation/view/${moduleFragmentClassName}.kt
-        - instantiateAndOpen:
+        - instantiate:
             from: root/src/main/app_package/presentation/view/ModuleView.kt.ftl
             to: ${srcOut}/presentation/view/${moduleViewClassName}.kt
-        - instantiateAndOpen:
+        - instantiate:
             from: root/res/layout/fragment_module.xml.ftl
             to: ${resOut}/layout/${moduleFragmentLayoutName}.xml
