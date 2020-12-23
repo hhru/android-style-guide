@@ -1,0 +1,57 @@
+requiredParams:
+  name: HeadHunter Fragment + ViewModel
+  description: Creates Fragment + ViewModel
+
+optionalParams:
+  revision: 1
+  category: fragment
+  formFactor: mobile
+  constraints:
+    - kotlin
+  screens:
+    - fragment_gallery
+    - menu_entry
+  minApi: 7
+  minBuildApi: 8
+
+widgets:
+  - stringParameter:
+      id: fragmentPrefix
+      name: Fragment Prefix
+      help: Prefix of the fragment and other classes to create
+      constraints:
+        - nonempty
+        - unique
+        - class
+      default: Blank
+
+globals:
+  - stringParameter:
+      id: fragmentPackage
+      value: ${fragmentPrefix.camelCaseToUnderlines()}
+  - stringParameter:
+      id: fragmentName
+      value: ${fragmentPrefix}Fragment
+  - stringParameter:
+      id: fragmentLayoutResName
+      value: ${fragmentName.fragmentToLayout()}
+  - stringParameter:
+      id: paramsName
+      value: ${fragmentPrefix}Params
+  - stringParameter:
+      id: moduleName
+      value: ${fragmentPrefix}Module
+
+recipe:
+  - instantiateAndOpen:
+      from: root/res/layout/fragment.xml.ftl
+      to: ${resOut}/layout/${fragmentLayoutResName}.xml
+  - instantiateAndOpen:
+      from: root/src/app_package/Fragment.kt.ftl
+      to: ${srcOut}/${fragmentPackage}/${fragmentName}.kt
+  - instantiateAndOpen:
+      from: root/src/app_package/model/Params.kt.ftl
+      to: ${srcOut}/${fragmentPackage}/model/${paramsName}.kt
+  - instantiateAndOpen:
+      from: root/src/app_package/Module.kt.ftl
+      to: ${srcOut}/${fragmentPackage}/${moduleName}.kt
