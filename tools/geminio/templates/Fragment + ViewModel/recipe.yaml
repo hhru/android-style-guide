@@ -41,17 +41,36 @@ globals:
   - stringParameter:
       id: moduleName
       value: ${fragmentPrefix}Module
+  - stringParameter:
+      id: uiStateName
+      value: ${fragmentPrefix}UiState
+  - stringParameter:
+      id: uiEventName
+      value: ${fragmentPrefix}UiEvent
+  - stringParameter:
+      id: viewModelName
+      value: ${fragmentPrefix}ViewModel
 
 recipe:
-  - instantiateAndOpen:
+  - instantiate:
       from: root/res/layout/fragment.xml.ftl
       to: ${resOut}/layout/${fragmentLayoutResName}.xml
   - instantiateAndOpen:
+      from: root/src/app_package/ViewModel.kt.ftl
+      to: ${srcOut}/${fragmentPackage}/${viewModelName}.kt
+  - instantiateAndOpen:
       from: root/src/app_package/Fragment.kt.ftl
       to: ${srcOut}/${fragmentPackage}/${fragmentName}.kt
-  - instantiateAndOpen:
+  - instantiate:
       from: root/src/app_package/model/Params.kt.ftl
       to: ${srcOut}/${fragmentPackage}/model/${paramsName}.kt
-  - instantiateAndOpen:
+  - instantiate:
       from: root/src/app_package/Module.kt.ftl
       to: ${srcOut}/${fragmentPackage}/${moduleName}.kt
+  - instantiate:
+      from: root/src/app_package/model/UiEvent.kt.ftl
+      to: ${srcOut}/${fragmentPackage}/model/${uiEventName}.kt
+  - instantiate:
+      from: root/src/app_package/model/UiState.kt.ftl
+      to: ${srcOut}/${fragmentPackage}/model/${uiStateName}.kt
+
