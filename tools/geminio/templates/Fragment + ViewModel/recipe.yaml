@@ -24,6 +24,23 @@ widgets:
         - unique
         - class
       default: Blank
+  - booleanParameter:
+      id: useMviViewModel
+      name: Use MviViewModel?
+      help: If true, the MviViewModel will be generated
+      default: false
+  - stringParameter:
+      id: mviStateName
+      name: MVI state class name
+      help: MVI state class name
+      default: MviStateName
+      visibility: ${useMviViewModel}
+  - stringParameter:
+      id: mviNewsName
+      name: MVI news class name
+      help: MVI news class name
+      default: MviNewsName
+      visibility: ${useMviViewModel}
 
 globals:
   - stringParameter:
