@@ -1,78 +1,102 @@
 requiredParams:
-  name: HeadHunter MVI Feature
-  description: Creates HeadHunter MVI Feature
+    name: HeadHunter MVI Feature
+    description: Creates HeadHunter MVI Feature
 
 widgets:
-  - stringParameter:
-      id: featureName
-      name: Mvi Name
-      help: The name of the Mvi Feature class to create
-      constraints:
-        - class
-        - nonempty
-        - unique
-      default: BaseMviFeature
+    -   stringParameter:
+            id: featurePrefix
+            name: Feature Prefix
+            help: Prefix of the feature
+            constraints:
+                - nonempty
+                - unique
+                - class
+            default: Blank
 
 globals:
-  - stringParameter:
-      id: featureEffect
-      value: ${featureName}Effect
+    -   stringParameter:
+            id: featureName
+            value: ${featurePrefix}Feature
 
-  - stringParameter:
-      id: featureNews
-      value: ${featureName}News
+    -   stringParameter:
+            id: featurePackage
+            value: ${featurePrefix.camelCaseToUnderlines()}
 
-  - stringParameter:
-      id: featureState
-      value: ${featureName}State
+    -   stringParameter:
+            id: bootstrapperName
+            value: ${featurePrefix}Bootstrapper
 
-  - stringParameter:
-      id: featureWish
-      value: ${featureName}Wish
+    -   stringParameter:
+            id: actorName
+            value: ${featurePrefix}Actor
 
-  - stringParameter:
-      id: featureActor
-      value: ${featureName}Actor
+    -   stringParameter:
+            id: reducerName
+            value: ${featurePrefix}Reducer
 
-  - stringParameter:
-      id: featureBootstrapper
-      value: ${featureName}Bootstrapper
+    -   stringParameter:
+            id: newsPublisherName
+            value: ${featurePrefix}NewsPublisher
 
-  - stringParameter:
-      id: featureNewsPublisher
-      value: ${featureName}NewsPublisher
+    -   stringParameter:
+            id: stateName
+            value: ${featurePrefix}State
 
-  - stringParameter:
-      id: featureReducer
-      value: ${featureName}Reducer
+    -   stringParameter:
+            id: wishName
+            value: ${featurePrefix}Wish
+
+    -   stringParameter:
+            id: effectName
+            value: ${featurePrefix}Effect
+
+    -   stringParameter:
+            id: newsName
+            value: ${featurePrefix}News
 
 recipe:
-  # elements
-  - instantiateAndOpen:
-      from: root/src/app_package/element/FeatureEffect.kt.ftl
-      to: ${srcOut}/feature/element/${featureEffect}.kt
-  - instantiateAndOpen:
-      from: root/src/app_package/element/FeatureNews.kt.ftl
-      to: ${srcOut}/feature/element/${featureNews}.kt
-  - instantiateAndOpen:
-      from: root/src/app_package/element/FeatureState.kt.ftl
-      to: ${srcOut}/feature/element/${featureState}.kt
-  - instantiateAndOpen:
-      from: root/src/app_package/element/FeatureWish.kt.ftl
-      to: ${srcOut}/feature/element/${featureWish}.kt
-  # feature
-  - instantiateAndOpen:
-      from: root/src/app_package/Feature.kt.ftl
-      to: ${srcOut}/feature/${featureName}.kt
-  - instantiateAndOpen:
-      from: root/src/app_package/FeatureActor.kt.ftl
-      to: ${srcOut}/feature/${featureActor}.kt
-  - instantiateAndOpen:
-      from: root/src/app_package/FeatureBootstrapper.kt.ftl
-      to: ${srcOut}/feature/${featureBootstrapper}.kt
-  - instantiateAndOpen:
-      from: root/src/app_package/FeatureNewsPublisher.kt.ftl
-      to: ${srcOut}/feature/${featureNewsPublisher}.kt
-  - instantiateAndOpen:
-      from: root/src/app_package/FeatureReducer.kt.ftl
-      to: ${srcOut}/feature/${featureReducer}.kt
+    -   instantiate:
+            from: root/src/app_package/model/Effect.kt.ftl
+            to: ${srcOut}/${featurePackage}/model/${effectName}.kt
+
+    -   instantiate:
+            from: root/src/app_package/model/News.kt.ftl
+            to: ${srcOut}/${featurePackage}/model/${newsName}.kt
+
+    -   instantiate:
+            from: root/src/app_package/model/State.kt.ftl
+            to: ${srcOut}/${featurePackage}/model/${stateName}.kt
+
+    -   instantiate:
+            from: root/src/app_package/model/Wish.kt.ftl
+            to: ${srcOut}/${featurePackage}/model/${wishName}.kt
+
+    -   instantiateAndOpen:
+            from: root/src/app_package/Feature.kt.ftl
+            to: ${srcOut}/${featurePackage}/${featureName}.kt
+
+    -   instantiate:
+            from: root/src/app_package/Actor.kt.ftl
+            to: ${srcOut}/${featurePackage}/${actorName}.kt
+
+    -   instantiate:
+            from: root/src/app_package/Bootstrapper.kt.ftl
+            to: ${srcOut}/${featurePackage}/${bootstrapperName}.kt
+
+    -   instantiate:
+            from: root/src/app_package/NewsPublisher.kt.ftl
+            to: ${srcOut}/${featurePackage}/${newsPublisherName}.kt
+
+    -   instantiate:
+            from: root/src/app_package/Reducer.kt.ftl
+            to: ${srcOut}/${featurePackage}/${reducerName}.kt
+
+    -   addDependencies:
+            -   compileOnly: :core-mvi
+            -   compileOnly: Libs.mviCore.binder
+            -   compileOnly: Libs.rx.rxJava
+            -   compileOnly: Libs.rx.rxKotlin
+            -   compileOnly: :shared-core-rx
+            -   compileOnly: Libs.toothpick.core
+            -   compileOnly: Libs.toothpick.ktp
+            -   kapt: Libs.toothpick.compiler

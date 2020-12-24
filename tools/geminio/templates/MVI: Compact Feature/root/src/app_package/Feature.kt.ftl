@@ -10,11 +10,17 @@ import ${packageName}.${featureName}.State
 import ${packageName}.${featureName}.Wish
 import ${packageName}.${featureName}.Effect
 import ${packageName}.${featureName}.News
+import ru.hh.core_rx.SchedulersProvider
+import toothpick.InjectConstructor
 
-internal class ${featureName} : ActorReducerFeature<Wish, Effect, State, News>(
+
+@InjectConstructor
+internal class ${featureName}(
+    actor: ActorImpl
+) : ActorReducerFeature<Wish, Effect, State, News>(
     initialState = State(),
     bootstrapper = BootstrapperImpl(),
-    actor = ActorImpl(),
+    actor = actor,
     reducer = ReducerImpl(),
     newsPublisher = NewsPublisherImpl()
 ) {
@@ -23,11 +29,17 @@ internal class ${featureName} : ActorReducerFeature<Wish, Effect, State, News>(
         val yourData: Any? = null
     )
 
-    sealed class Wish
+    sealed class Wish {
 
-    sealed class Effect
+    }
 
-    sealed class News
+    sealed class Effect {
+
+    }
+
+    sealed class News {
+
+    }
 
     class BootstrapperImpl : Bootstrapper<Wish> {
         override fun invoke(): Observable<Wish> {
@@ -35,7 +47,10 @@ internal class ${featureName} : ActorReducerFeature<Wish, Effect, State, News>(
         }
     }
 
-    class ActorImpl : Actor<State, Wish, Effect> {
+    @InjectConstructor
+    class ActorImpl(
+        private val schedulersProvider: SchedulersProvider
+    ) : Actor<State, Wish, Effect> {
         override fun invoke(state: State, wish: Wish): Observable<Effect> = when (wish) {
             TODO() -> Observable.just(TODO())
         }

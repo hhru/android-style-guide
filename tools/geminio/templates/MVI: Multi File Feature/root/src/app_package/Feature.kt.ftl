@@ -1,23 +1,20 @@
-package ${packageName}.feature
+package ${packageName}.${featurePackage}
 
 import com.badoo.mvicore.feature.ActorReducerFeature
-import ${packageName}.feature.element.${featureState}
-import ${packageName}.feature.element.${featureWish}
-import ${packageName}.feature.element.${featureEffect}
-import ${packageName}.feature.element.${featureNews}
-import javax.inject.Inject
+import ${packageName}.${featurePackage}.model.${stateName}
+import ${packageName}.${featurePackage}.model.${wishName}
+import ${packageName}.${featurePackage}.model.${effectName}
+import ${packageName}.${featurePackage}.model.${newsName}
+import toothpick.InjectConstructor
 
 
-internal class ${featureName} @Inject constructor(
-	actor: ${featureActor}
-): ActorReducerFeature<${featureWish},
-        ${featureEffect},
-        ${featureState},
-        ${featureNews}>
-(
-        actor = actor,
-        bootstrapper =  ${featureBootstrapper}(),
-        initialState = ${featureState}.LoadingState,
-        newsPublisher = ${featureNewsPublisher}(),
-        reducer = ${featureReducer}()
+@InjectConstructor
+internal class ${featureName}(
+    actor: ${actorName}
+): ActorReducerFeature<${wishName}, ${effectName}, ${stateName}, ${newsName}> (
+    actor = actor,
+    bootstrapper = ${bootstrapperName}(),
+    initialState = ${stateName}(),
+    newsPublisher = ${newsPublisherName}(),
+    reducer = ${reducerName}()
 )

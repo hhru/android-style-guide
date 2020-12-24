@@ -29,3 +29,7 @@ recipe:
           - compileOnly: Libs.rx.rxJava
           - compileOnly: Libs.rx.rxKotlin
           - compileOnly: :shared-core-rx
+          - compileOnly: Libs.toothpick.core
+          - compileOnly: Libs.toothpick.ktp
+          - kapt: Libs.toothpick.compiler
+
