@@ -2,39 +2,30 @@ requiredParams:
   name: HeadHunter Fragment + ViewModel
   description: Creates Fragment + ViewModel
 
-optionalParams:
-  revision: 1
-  category: fragment
-  formFactor: mobile
-  constraints:
-    - kotlin
-  screens:
-    - fragment_gallery
-    - menu_entry
-  minApi: 7
-  minBuildApi: 8
-
 widgets:
   - stringParameter:
       id: fragmentPrefix
       name: Fragment Prefix
       help: Prefix of the fragment and other classes to create
       constraints:
-        - nonempty
-        - unique
-        - class
+          - nonempty
+          - unique
+          - class
       default: Blank
+
   - booleanParameter:
       id: useMviViewModel
       name: Use MviViewModel?
       help: If true, the MviViewModel will be generated
       default: false
+
   - stringParameter:
       id: mviStateName
       name: MVI state class name
       help: MVI state class name
       default: MviStateName
       visibility: ${useMviViewModel}
+
   - stringParameter:
       id: mviNewsName
       name: MVI news class name
@@ -46,24 +37,31 @@ globals:
   - stringParameter:
       id: fragmentPackage
       value: ${fragmentPrefix.camelCaseToUnderlines()}
+
   - stringParameter:
       id: fragmentName
       value: ${fragmentPrefix}Fragment
+
   - stringParameter:
       id: fragmentLayoutResName
       value: ${fragmentName.fragmentToLayout()}
+
   - stringParameter:
       id: paramsName
       value: ${fragmentPrefix}Params
+
   - stringParameter:
       id: moduleName
       value: ${fragmentPrefix}Module
+
   - stringParameter:
       id: uiStateName
       value: ${fragmentPrefix}UiState
+
   - stringParameter:
       id: uiEventName
       value: ${fragmentPrefix}UiEvent
+
   - stringParameter:
       id: viewModelName
       value: ${fragmentPrefix}ViewModel
@@ -72,22 +70,44 @@ recipe:
   - instantiate:
       from: root/res/layout/fragment.xml.ftl
       to: ${resOut}/layout/${fragmentLayoutResName}.xml
+
   - instantiateAndOpen:
       from: root/src/app_package/ViewModel.kt.ftl
       to: ${srcOut}/${fragmentPackage}/${viewModelName}.kt
+
   - instantiateAndOpen:
       from: root/src/app_package/Fragment.kt.ftl
       to: ${srcOut}/${fragmentPackage}/${fragmentName}.kt
+
   - instantiate:
       from: root/src/app_package/model/Params.kt.ftl
       to: ${srcOut}/${fragmentPackage}/model/${paramsName}.kt
+
   - instantiate:
       from: root/src/app_package/Module.kt.ftl
       to: ${srcOut}/${fragmentPackage}/${moduleName}.kt
+
   - instantiate:
       from: root/src/app_package/model/UiEvent.kt.ftl
       to: ${srcOut}/${fragmentPackage}/model/${uiEventName}.kt
+
   - instantiate:
       from: root/src/app_package/model/UiState.kt.ftl
       to: ${srcOut}/${fragmentPackage}/model/${uiStateName}.kt
 
+  - addDependencies:
+      - compileOnly: :shared-core-ui
+      - compileOnly: :core-mvvm
+      - compileOnly: Libs.support.appCompat
+      - compileOnly: :shared-core-di
+      - compileOnly: Libs.toothpick.core
+      - compileOnly: Libs.toothpick.ktp
+      - kapt: Libs.toothpick.compiler
+
+  - predicate:
+      validIf: ${useMviViewModel}
+      commands:
+          - addDependencies:
+              - compileOnly: Libs.rx.rxJava
+              - compileOnly: Libs.rx.rxKotlin
+              - compileOnly: :shared-core-rx

@@ -5,10 +5,10 @@ import toothpick.config.Module
 import toothpick.ktp.binding.bind
 
 
-internal class ${fragmentPrefix}Module(params: ${paramsName}) : Module() {
+internal class ${moduleName}(params: ${paramsName}) : Module() {
 
     init {
-        bind<${fragmentPrefix}Params>().toInstance(params)
+        bind<${paramsName}>().toInstance(params)
     }
 
 }
