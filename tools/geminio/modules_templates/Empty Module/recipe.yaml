@@ -7,6 +7,14 @@ predefinedFeatures:
 
 widgets:
   - booleanParameter:
+      id: needFeatureStructure
+      name: Generate feature structure?
+      help:
+        Generates root packages - api (for feature facade), data (for network/database),
+        feature (for domain logic/mvi), ui (for fragments/viewmodels)
+      default: false
+
+  - booleanParameter:
       id: needTests
       name: Add dependencies for tests?
       help: Adds typical test-framework dependencies
@@ -62,6 +70,16 @@ recipe:
                 - values
                 - drawables
 
+  - predicate:
+      validIf: ${needFeatureStructure}
+      commands:
+        - mkDirs:
+            - ${srcOut}:
+                - api
+                - data
+                - feature
+                - ui
+
   - instantiate:
       from: root/gitignore.ftl
       to: ${rootOut}/.gitignore
@@ -69,6 +87,10 @@ recipe:
   - instantiateAndOpen:
       from: root/build.gradle.ftl
       to: ${rootOut}/build.gradle
+
+  - instantiateAndOpen:
+      from: root/README.md
+      to: ${rootOut}/README.md
 
   - instantiate:
       from: root/proguard-rules.pro.ftl
