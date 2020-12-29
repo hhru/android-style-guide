@@ -3,6 +3,9 @@ apply plugin: 'ru.hh.android.gradle_plugin.module_config'
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+<#if needNetworkLibraries>
+apply plugin: 'kotlinx-serialization'
+</#if>
 <#if needUiLibraries>
 apply plugin: 'kotlin-android-extensions'
 </#if>
@@ -46,8 +49,13 @@ dependencies {
     <#if needNetworkLibraries>
     // Network
     compileOnly project(':shared-core-network')
-    compileOnly Libs.network.gson
+    compileOnly project(':shared-core-network-model')
+    compileOnly Libs.network.kotlinxSerializationJson
     compileOnly Libs.network.retrofit
+    compileOnly Libs.network.retrofitKotlinxConverter
+    <#if needRx>
+    compileOnly Libs.network.adapterRxJava2
+    </#if>
     </#if>
 
     <#if needDbLibraries>
