@@ -51,21 +51,27 @@ internal class ${featureName}(
     class ActorImpl(
         private val schedulersProvider: SchedulersProvider
     ) : Actor<State, Wish, Effect> {
-        override fun invoke(state: State, wish: Wish): Observable<Effect> = when (wish) {
-            TODO() -> Observable.just(TODO())
+        override fun invoke(state: State, wish: Wish): Observable<Effect> {
+            return when(wish) {
+                TODO() -> Observable.just(TODO())
+            }
         }
     }
 
     class ReducerImpl : Reducer<State, Effect> {
-        override fun invoke(state: State, effect: Effect): State = when (effect) {
-            TODO() -> state.copy()
+        override fun invoke(state: State, effect: Effect): State {
+            return when(effect) {
+                TODO() -> state.copy()
+            }
         }
     }
 
     class NewsPublisherImpl : NewsPublisher<Wish, Effect, State, News> {
-        override fun invoke(wish: Wish, effect: Effect, state: State): News? = when {
-            TODO() -> TODO()
-            else -> null
+        override fun invoke(wish: Wish, effect: Effect, state: State): News? {
+            return when(effect) {
+                TODO() -> TODO()
+                else -> null
+            }
         }
     }
 

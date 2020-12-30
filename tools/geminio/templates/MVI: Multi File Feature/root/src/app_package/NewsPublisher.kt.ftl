@@ -9,13 +9,11 @@ import ${packageName}.${featurePackage}.model.${newsName}
 
 internal class ${newsPublisherName} : NewsPublisher<${wishName}, ${effectName}, ${stateName}, ${newsName}> {
 
-    override fun invoke(
-        wish: ${wishName},
-        effect: ${effectName},
-        state: ${stateName}
-    ): ${newsName}? = when {
-        TODO() -> TODO()
-        else -> null
+    override fun invoke(wish: ${wishName}, effect: ${effectName}, state: ${stateName}): ${newsName}? {
+        return when(effect) {
+            TODO() -> TODO()
+            else -> null
+        }
     }
     
 }

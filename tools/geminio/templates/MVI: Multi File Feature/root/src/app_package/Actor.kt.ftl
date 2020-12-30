@@ -14,8 +14,10 @@ internal class ${actorName}(
 	private val schedulersProvider: SchedulersProvider
 ): Actor<${stateName}, ${wishName}, ${effectName}>  {
 	
-	override fun invoke(state: ${stateName}, wish: ${wishName}) = when (wish) {
-        TODO() -> Observable.just(TODO())
+	override fun invoke(state: ${stateName}, wish: ${wishName}): Observable<${effectName}> {
+	    return when(wish) {
+            TODO() -> Observable.just(TODO())
+        }
     }
 
 }

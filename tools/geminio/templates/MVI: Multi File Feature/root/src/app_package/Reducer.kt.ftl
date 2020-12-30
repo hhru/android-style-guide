@@ -7,8 +7,10 @@ import ${packageName}.${featurePackage}.model.${effectName}
 
 internal class ${reducerName}: Reducer<${stateName}, ${effectName}> {
 
-    override fun invoke(state: ${stateName}, effect: ${effectName}) = when (effect) {
-        TODO() -> state.copy()
+    override fun invoke(state: ${stateName}, effect: ${effectName}): ${stateName} {
+        return when(effect) {
+            TODO() -> state.copy()
+        }
     }
 
 }
