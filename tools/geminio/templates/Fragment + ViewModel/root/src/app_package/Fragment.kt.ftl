@@ -60,6 +60,8 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
             adapter = delegateAdapter
             layoutManager = LinearLayoutManager(context)
         }
+
+        ${fragmentLayoutResName}_swipe_refresh_layout.setOnRefreshListener(TODO())
         <#else>
         TODO()
         </#if>
@@ -69,7 +71,7 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
         <#if needDesignSample == true>
         when (val list = state.listCells) {
             is AsyncRes.Data -> {
-                ${fragmentLayoutResName}_progress_bar.gone(true)
+                ${fragmentLayoutResName}_swipe_refresh_layout.isRefreshing = false
                 ${fragmentLayoutResName}_zero_state_view.gone(true)
                 ${fragmentLayoutResName}_recycler_view.gone(false)
 
@@ -77,7 +79,7 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
             }
 
             is AsyncRes.Error -> {
-                ${fragmentLayoutResName}_progress_bar.gone(true)
+                ${fragmentLayoutResName}_swipe_refresh_layout.isRefreshing = false
                 ${fragmentLayoutResName}_zero_state_view.gone(false)
                 ${fragmentLayoutResName}_recycler_view.gone(true)
 
@@ -86,7 +88,7 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
             }
 
             is AsyncRes.Loading -> {
-                ${fragmentLayoutResName}_progress_bar.gone(false)
+                ${fragmentLayoutResName}_swipe_refresh_layout.isRefreshing = true
                 ${fragmentLayoutResName}_zero_state_view.gone(true)
                 ${fragmentLayoutResName}_recycler_view.gone(true)
             }
