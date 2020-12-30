@@ -1,59 +1,59 @@
 requiredParams:
-    name: HeadHunter Custom View
-    description: Generates empty custom view
+  name: HeadHunter Custom View
+  description: Generates empty custom view
 
 widgets:
-    -   stringParameter:
-            id: viewPrefix
-            name: View name prefix
-            help: View name prefix
-            constraints:
-                - nonempty
-                - unique
-                - class
-            default: Blank
+  - stringParameter:
+      id: viewPrefix
+      name: View name prefix
+      help: View name prefix
+      constraints:
+        - nonempty
+        - unique
+        - class
+      default: Blank
 
-    -   stringParameter:
-            id: baseViewName
-            name: Base view name
-            help: Base view name
-            constraints:
-                - nonempty
-                - unique
-                - class
-            default: FrameLayout
+  - stringParameter:
+      id: baseViewName
+      name: Base view name
+      help: Base view name
+      constraints:
+        - nonempty
+        - unique
+        - class
+      default: FrameLayout
 
-    -   booleanParameter:
-            id: generateAttrs
-            name: Generate attrs?
-            help: If true, xml-file for view attributes will be generated
-            default: false
+  - booleanParameter:
+      id: generateAttrs
+      name: Generate attrs?
+      help: If true, xml-file for view attributes will be generated
+      default: false
 
 globals:
-    -   stringParameter:
-            id: viewName
-            value: ${viewPrefix}View
+  - stringParameter:
+      id: viewName
+      value: ${viewPrefix}View
 
-    -   stringParameter:
-            id: viewLayoutName
-            value: view_${viewPrefix.camelCaseToUnderlines()}
+  - stringParameter:
+      id: viewLayoutName
+      value: view_${viewPrefix.camelCaseToUnderlines()}
 
-    -   stringParameter:
-            id: attrsName
-            value: widget_${viewPrefix.camelCaseToUnderlines()}
+  - stringParameter:
+      id: attrsName
+      value: widget_${viewPrefix.camelCaseToUnderlines()}
 
 recipe:
-    -   instantiate:
-            from: root/res/layout/view.xml.ftl
-            to: ${resOut}/layout/${viewLayoutName}.xml
+  - instantiate:
+      from: root/res/layout/view.xml.ftl
+      to: ${resOut}/layout/${viewLayoutName}.xml
 
-    -   instantiateAndOpen:
-            from: root/src/app_package/View.kt.ftl
-            to: ${srcOut}/${viewName}.kt
+  - instantiateAndOpen:
+      from: root/src/app_package/View.kt.ftl
+      to: ${srcOut}/${viewName}.kt
 
-    -   predicate:
-            validIf: ${generateAttrs}
-            commands:
-                -   instantiate:
-                        from: root/res/values/attrs.xml.ftl
-                        to: ${resOut}/values/${attrsName}.xml
+  - predicate:
+      validIf: ${generateAttrs}
+      commands:
+        - instantiate:
+            from: root/res/values/attrs.xml.ftl
+            to: ${resOut}/values/${attrsName}.xml
