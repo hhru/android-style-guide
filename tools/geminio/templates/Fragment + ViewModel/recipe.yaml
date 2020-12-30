@@ -14,6 +14,12 @@ widgets:
       default: Blank
 
   - booleanParameter:
+      id: needDesignSample
+      name: Need design sample?
+      help: If true, add Toolbar, RecyclerView and ZeroScrenView to layout and fragment
+      default: true
+
+  - booleanParameter:
       id: useMviViewModel
       name: Use MviViewModel?
       help: If true, the MviViewModel will be generated
@@ -67,10 +73,6 @@ globals:
       value: ${fragmentPrefix}ViewModel
 
 recipe:
-  - instantiate:
-      from: root/res/layout/fragment.xml.ftl
-      to: ${resOut}/layout/${fragmentLayoutResName}.xml
-
   - instantiateAndOpen:
       from: root/src/app_package/ViewModel.kt.ftl
       to: ${srcOut}/${fragmentPackage}/${viewModelName}.kt
@@ -95,8 +97,21 @@ recipe:
       from: root/src/app_package/model/UiState.kt.ftl
       to: ${srcOut}/${fragmentPackage}/model/${uiStateName}.kt
 
+  - predicate:
+      validIf: ${needDesignSample}
+      commands:
+        - instantiate:
+            from: root/res/layout/design_fragment.xml.ftl
+            to: ${resOut}/layout/${fragmentLayoutResName}.xml
+      elseCommands:
+        - instantiate:
+            from: root/res/layout/simple_fragment.xml.ftl
+            to: ${resOut}/layout/${fragmentLayoutResName}.xml
+
   - addDependencies:
-      - compileOnly: :shared-core-ui
+      - implementation: :shared-core-ui
+      - implementation: :shared-core-ui-design-system
+      - compileOnly: Libs.support.materialComponents
       - compileOnly: :core-mvvm
       - compileOnly: Libs.support.appCompat
       - compileOnly: :shared-core-di
@@ -111,3 +126,10 @@ recipe:
             - compileOnly: Libs.rx.rxJava
             - compileOnly: Libs.rx.rxKotlin
             - compileOnly: :shared-core-rx
+
+  - predicate:
+      validIf: ${needDesignSample}
+      commands:
+        - addDependencies:
+            - compileOnly: :shared-core-model
+            - compileOnly: :delegation-adapter
