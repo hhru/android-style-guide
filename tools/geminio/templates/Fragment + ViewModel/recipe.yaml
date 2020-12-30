@@ -8,9 +8,9 @@ widgets:
       name: Fragment Prefix
       help: Prefix of the fragment and other classes to create
       constraints:
-          - nonempty
-          - unique
-          - class
+        - nonempty
+        - unique
+        - class
       default: Blank
 
   - booleanParameter:
@@ -127,10 +127,10 @@ recipe:
   - predicate:
       validIf: ${useMviViewModel}
       commands:
-          - addDependencies:
-              - compileOnly: Libs.rx.rxJava
-              - compileOnly: Libs.rx.rxKotlin
-              - compileOnly: :shared-core-rx
+        - addDependencies:
+            - compileOnly: Libs.rx.rxJava
+            - compileOnly: Libs.rx.rxKotlin
+            - compileOnly: :shared-core-rx
 
   - predicate:
       validIf: ${needRecyclerView}
