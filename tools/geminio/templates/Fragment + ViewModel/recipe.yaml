@@ -14,6 +14,24 @@ widgets:
       default: Blank
 
   - booleanParameter:
+      id: needToolbar
+      name: Need toolbar?
+      help: If true, add toolbar to layout and fragment
+      default: false
+
+  - booleanParameter:
+      id: needZeroStateView
+      name: Need ZeroStateView?
+      help: If true, add ZeroStateView to layout
+      default: false
+
+  - booleanParameter:
+      id: needRecyclerView
+      name: Need RecyclerView?
+      help: If true, add RecyclerView and adapter delegate
+      default: false
+
+  - booleanParameter:
       id: useMviViewModel
       name: Use MviViewModel?
       help: If true, the MviViewModel will be generated
@@ -96,7 +114,9 @@ recipe:
       to: ${srcOut}/${fragmentPackage}/model/${uiStateName}.kt
 
   - addDependencies:
-      - compileOnly: :shared-core-ui
+      - implementation: :shared-core-ui
+      - implementation: :shared-core-ui-design-system
+      - compileOnly: Libs.support.materialComponents
       - compileOnly: :core-mvvm
       - compileOnly: Libs.support.appCompat
       - compileOnly: :shared-core-di
@@ -111,3 +131,9 @@ recipe:
               - compileOnly: Libs.rx.rxJava
               - compileOnly: Libs.rx.rxKotlin
               - compileOnly: :shared-core-rx
+
+  - predicate:
+      validIf: ${needRecyclerView}
+      commands:
+        - addDependencies:
+            - compileOnly: :delegation-adapter
