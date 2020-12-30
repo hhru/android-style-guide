@@ -71,6 +71,7 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
         <#if needDesignSample == true>
         when (val list = state.listCells) {
             is AsyncRes.Data -> {
+                ${fragmentLayoutResName}_swipe_refresh_layout.isEnabled = true
                 ${fragmentLayoutResName}_swipe_refresh_layout.isRefreshing = false
                 ${fragmentLayoutResName}_zero_state_view.gone(true)
                 ${fragmentLayoutResName}_recycler_view.gone(false)
@@ -79,6 +80,7 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
             }
 
             is AsyncRes.Error -> {
+                ${fragmentLayoutResName}_swipe_refresh_layout.isEnabled = false
                 ${fragmentLayoutResName}_swipe_refresh_layout.isRefreshing = false
                 ${fragmentLayoutResName}_zero_state_view.gone(false)
                 ${fragmentLayoutResName}_recycler_view.gone(true)
@@ -88,6 +90,7 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
             }
 
             is AsyncRes.Loading -> {
+                ${fragmentLayoutResName}_swipe_refresh_layout.isEnabled = true
                 ${fragmentLayoutResName}_swipe_refresh_layout.isRefreshing = true
                 ${fragmentLayoutResName}_zero_state_view.gone(true)
                 ${fragmentLayoutResName}_recycler_view.gone(true)
