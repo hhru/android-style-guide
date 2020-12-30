@@ -6,18 +6,18 @@ import ru.hh.android.mvvm.stateViewModel
 <#if applicationPackage??>
 import ${applicationPackage}.R
 </#if>
-<#if needRecyclerView == true>
+<#if needDesignSample == true>
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.hh.delegationadapter.DelegationAdapter
-import ru.hh.delegationadapter.DisplayableItem
+import ru.hh.cells.interfaces.Cell
+import ru.hh.android.shared_core_model.AsyncRes
+import ru.hh.android.design_system.utils.widget.toolbar.initBoldTitleLayout
+import ru.hh.android.design_system.utils.widget.gone
 </#if>
 import kotlinx.android.synthetic.main.${fragmentLayoutResName}.*
 import ${packageName}.${fragmentPackage}.model.${paramsName}
 import ${packageName}.${fragmentPackage}.model.${uiEventName}
 import ${packageName}.${fragmentPackage}.model.${uiStateName}
-<#if needToolbar == true>
-import ru.hh.android.base.ui.utils.widget.initToolbar
-</#if>
 import ru.hh.shared_core_ui.fragment.BaseFragment
 import ru.hh.shared_core_ui.fragment.withParams
 import ru.hh.shared_core_ui.fragment_plugin.common.di.diPlugin
@@ -43,39 +43,57 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
         viewModelProvider = { di.getInstance() }
     )
 
-    <#if needRecyclerView == true>
+    <#if needDesignSample == true>
     private val delegateAdapter by lazy {
-        DelegationAdapter<DisplayableItem>()
+        DelegationAdapter<Cell>()
     }
     </#if>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        <#if needDesignSample == true>
 
-        <#if needToolbar == true>
-        view.initToolbar(
-            title = "TODO()",
-            navigateIcon = R.drawable.ic_navbar_back,
-            navIconAction = { activity?.onBackPressed() }
-        )
-        </#if>
+        ${fragmentLayoutResName}_toolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+        ${fragmentLayoutResName}_collapsing_toolbar.initBoldTitleLayout()
 
-        <#if needRecyclerView == true>
         ${fragmentLayoutResName}_recycler_view.apply {
             adapter = delegateAdapter
             layoutManager = LinearLayoutManager(context)
         }
+        <#else>
+        TODO()
         </#if>
     }
 
     private fun renderState(state: ${uiStateName}) {
-        <#if needRecyclerView == true>
-        delegateAdapter.submitList(emptyList())
-        </#if>
-        <#if needZeroStateView == true>
-        ${fragmentLayoutResName}_zero_view.clearState()
-        </#if>
+        <#if needDesignSample == true>
+        when (val list = state.listCells) {
+            is AsyncRes.Data -> {
+                ${fragmentLayoutResName}_progress_bar.gone(true)
+                ${fragmentLayoutResName}_zero_state_view.gone(true)
+                ${fragmentLayoutResName}_recycler_view.gone(false)
+
+                delegateAdapter.submitList(list.value)
+            }
+
+            is AsyncRes.Error -> {
+                ${fragmentLayoutResName}_progress_bar.gone(true)
+                ${fragmentLayoutResName}_zero_state_view.gone(false)
+                ${fragmentLayoutResName}_recycler_view.gone(true)
+
+                ${fragmentLayoutResName}_zero_state_view.setStubTitle("TODO: Error text")
+                ${fragmentLayoutResName}_zero_state_view.setMainAction("TODO: Retry text", TODO())
+            }
+
+            is AsyncRes.Loading -> {
+                ${fragmentLayoutResName}_progress_bar.gone(false)
+                ${fragmentLayoutResName}_zero_state_view.gone(true)
+                ${fragmentLayoutResName}_recycler_view.gone(true)
+            }
+        }
+        <#else>
         TODO("Render your state here")
+        </#if>
     }
 
     private fun handleEvent(event: ${uiEventName}) {

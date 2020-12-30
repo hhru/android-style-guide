@@ -14,22 +14,10 @@ widgets:
       default: Blank
 
   - booleanParameter:
-      id: needToolbar
-      name: Need toolbar?
-      help: If true, add toolbar to layout and fragment
-      default: false
-
-  - booleanParameter:
-      id: needZeroStateView
-      name: Need ZeroStateView?
-      help: If true, add ZeroStateView to layout
-      default: false
-
-  - booleanParameter:
-      id: needRecyclerView
-      name: Need RecyclerView?
-      help: If true, add RecyclerView and adapter delegate
-      default: false
+      id: needDesignSample
+      name: Need design sample?
+      help: If true, add Toolbar, RecyclerView and ZeroScrenView to layout and fragment
+      default: true
 
   - booleanParameter:
       id: useMviViewModel
@@ -85,10 +73,6 @@ globals:
       value: ${fragmentPrefix}ViewModel
 
 recipe:
-  - instantiate:
-      from: root/res/layout/fragment.xml.ftl
-      to: ${resOut}/layout/${fragmentLayoutResName}.xml
-
   - instantiateAndOpen:
       from: root/src/app_package/ViewModel.kt.ftl
       to: ${srcOut}/${fragmentPackage}/${viewModelName}.kt
@@ -113,6 +97,17 @@ recipe:
       from: root/src/app_package/model/UiState.kt.ftl
       to: ${srcOut}/${fragmentPackage}/model/${uiStateName}.kt
 
+  - predicate:
+      validIf: ${needDesignSample}
+      commands:
+        - instantiate:
+            from: root/res/layout/design_fragment.xml.ftl
+            to: ${resOut}/layout/${fragmentLayoutResName}.xml
+      elseCommands:
+        - instantiate:
+            from: root/res/layout/simple_fragment.xml.ftl
+            to: ${resOut}/layout/${fragmentLayoutResName}.xml
+
   - addDependencies:
       - implementation: :shared-core-ui
       - implementation: :shared-core-ui-design-system
@@ -133,7 +128,8 @@ recipe:
             - compileOnly: :shared-core-rx
 
   - predicate:
-      validIf: ${needRecyclerView}
+      validIf: ${needDesignSample}
       commands:
         - addDependencies:
+            - compileOnly: :shared-core-model
             - compileOnly: :delegation-adapter

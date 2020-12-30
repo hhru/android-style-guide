@@ -35,7 +35,9 @@ internal class ${viewModelName}(
 @InjectConstructor
 internal class ${viewModelName}(
     private val params: ${paramsName},
-) : ManualStateViewModel<${uiEventName}, ${uiStateName}>() {
+) : ManualStateViewModel<${uiEventName}, ${uiStateName}>(
+    initialState = TODO()
+) {
 
 }
 </#if>
