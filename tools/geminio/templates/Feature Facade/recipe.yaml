@@ -1,0 +1,66 @@
+requiredParams:
+  name: Feature Facade
+  description: Creates feature facade for interactions between modules
+
+widgets:
+  - stringParameter:
+      id: feature
+      name: Feature Name
+      help: The name of the feature class to create
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: Feature
+
+globals:
+  - stringParameter:
+      id: featureApi
+      value: ${feature}Api
+
+  - stringParameter:
+      id: featureApiImpl
+      value: ${featureApi}Impl
+
+  - stringParameter:
+      id: featureDefScreen
+      value: ${feature}NavScreen
+
+  - stringParameter:
+      id: featureDeps
+      value: ${feature}Deps
+
+  - stringParameter:
+      id: featureFacade
+      value: ${feature}Facade
+
+  - stringParameter:
+      id: featureModuleName
+      value: ${feature}Module
+
+recipe:
+  - instantiate:
+      from: root/src/app_package/FeatureApi.kt.ftl
+      to: ${srcOut}/${featureApi}.kt
+
+  - instantiate:
+      from: root/src/app_package/FeatureApiImpl.kt.ftl
+      to: ${srcOut}/${featureApi}Impl.kt
+
+  - instantiate:
+      from: root/src/app_package/FeatureDeps.kt.ftl
+      to: ${srcOut}/${featureDeps}.kt
+
+  - instantiateAndOpen:
+      from: root/src/app_package/FeatureFacade.kt.ftl
+      to: ${srcOut}/${featureFacade}.kt
+
+  - instantiate:
+      from: root/src/app_package/FeatureModule.kt.ftl
+      to: ${srcOut}/${featureModuleName}.kt
+
+  - addDependencies:
+      - compileOnly: Libs.support.appCompat
+      - compileOnly: :shared-core-di
+      - compileOnly: Libs.toothpick.core
+      - compileOnly: Libs.toothpick.ktp
