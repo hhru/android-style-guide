@@ -1,0 +1,35 @@
+requiredParams:
+  name: 'MVI: Compact Feature'
+  description: Creates ActorReducer feature in one file
+
+widgets:
+  - stringParameter:
+      id: featurePrefix
+      name: Feature Prefix
+      help: Prefix of the feature
+      constraints:
+        - nonempty
+        - unique
+        - class
+      default: Blank
+
+globals:
+  - stringParameter:
+      id: featureName
+      value: ${featurePrefix}Feature
+
+recipe:
+  - instantiateAndOpen:
+      from: root/src/app_package/Feature.kt.ftl
+      to: ${srcOut}/${featureName}.kt
+
+  - addDependencies:
+      - compileOnly: :core-mvi
+      - compileOnly: Libs.mviCore.binder
+      - compileOnly: Libs.rx.rxJava
+      - compileOnly: Libs.rx.rxKotlin
+      - compileOnly: :shared-core-rx
+      - compileOnly: Libs.toothpick.core
+      - compileOnly: Libs.toothpick.ktp
+      - kapt: Libs.toothpick.compiler
+
