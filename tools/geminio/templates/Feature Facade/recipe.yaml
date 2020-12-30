@@ -1,18 +1,6 @@
 requiredParams:
-  name: HeadHunter Feature API Base
-  description: Creates HeadHunter Feature API Base
-
-optionalParams:
-  revision: 1
-  category: fragment
-  formFactor: mobile
-  constraints:
-    - kotlin
-  screens:
-    - fragment_gallery
-    - menu_entry
-  minApi: 7
-  minBuildApi: 8
+  name: Feature Facade
+  description: Creates feature facade for interactions between modules
 
 widgets:
   - stringParameter:
@@ -31,6 +19,10 @@ globals:
       value: ${feature}Api
 
   - stringParameter:
+      id: featureApiImpl
+      value: ${featureApi}Impl
+
+  - stringParameter:
       id: featureDefScreen
       value: ${feature}NavScreen
 
@@ -47,18 +39,28 @@ globals:
       value: ${feature}Module
 
 recipe:
-  - instantiateAndOpen:
+  - instantiate:
       from: root/src/app_package/FeatureApi.kt.ftl
-      to: ${srcOut}/api/${featureApi}.kt
-  - instantiateAndOpen:
+      to: ${srcOut}/${featureApi}.kt
+
+  - instantiate:
       from: root/src/app_package/FeatureApiImpl.kt.ftl
-      to: ${srcOut}/api/${featureApi}Impl.kt
-  - instantiateAndOpen:
+      to: ${srcOut}/${featureApi}Impl.kt
+
+  - instantiate:
       from: root/src/app_package/FeatureDeps.kt.ftl
-      to: ${srcOut}/api/${featureDeps}.kt
+      to: ${srcOut}/${featureDeps}.kt
+
   - instantiateAndOpen:
       from: root/src/app_package/FeatureFacade.kt.ftl
-      to: ${srcOut}/api/${featureFacade}.kt
-  - instantiateAndOpen:
+      to: ${srcOut}/${featureFacade}.kt
+
+  - instantiate:
       from: root/src/app_package/FeatureModule.kt.ftl
-      to: ${srcOut}/api/${featureModuleName}.kt
+      to: ${srcOut}/${featureModuleName}.kt
+
+  - addDependencies:
+      - compileOnly: Libs.support.appCompat
+      - compileOnly: :shared-core-di
+      - compileOnly: Libs.toothpick.core
+      - compileOnly: Libs.toothpick.ktp
