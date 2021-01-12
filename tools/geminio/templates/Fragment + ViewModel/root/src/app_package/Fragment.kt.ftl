@@ -20,6 +20,7 @@ import ${packageName}.${fragmentPackage}.model.${uiEventName}
 import ${packageName}.${fragmentPackage}.model.${uiStateName}
 import ru.hh.shared_core_ui.fragment.BaseFragment
 import ru.hh.shared_core_ui.fragment.withParams
+import ru.hh.shared_core_ui.fragment.params
 import ru.hh.shared_core_ui.fragment_plugin.common.di.diPlugin
 import ru.hh.shared_core_ui.fragment_plugin.common.di.getInstance
 
@@ -30,7 +31,7 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
         fun newInstance(params: ${paramsName}) = ${fragmentName}().withParams(params)
     }
 
-    private val params by params()
+    private val params by params<${paramsName}>()
 
     private val di by diPlugin(
         parentScopeNameProvider = { TODO("Scope name of feature facade / Delete this for scope of parent fragment") },

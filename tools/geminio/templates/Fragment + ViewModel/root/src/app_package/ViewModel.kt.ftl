@@ -18,13 +18,16 @@ import toothpick.InjectConstructor
 internal class ${viewModelName}(
     override val schedulers: SchedulersProvider,
     private val params: ${paramsName},
+    private val uiConverter: ${uiConverterName}
 ) : MviViewModel<${uiEventName}, ${uiStateName}, ${mviStateName}, ${mviNewsName}>() {
 
-    override val featureStateObservable: Observable<${mviStateName}> = TODO()
+    override val featureStateObservable: Observable<${mviStateName}> = Observable.wrap(TODO())
 
-    override val featureNewsObservable: Observable<${mviNewsName}> = TODO()
+    override val featureNewsObservable: Observable<${mviNewsName}> = Observable.wrap(TODO())
 
-    override val uiStateConverter: (${mviStateName}) -> ${uiStateName} = TODO()
+    override val uiStateConverter: (${mviStateName}) -> ${uiStateName} = { state ->
+        uiConverter.convert(${mviStateName})
+    }
 
     override fun processNews(news: ${mviNewsName}) {
         TODO()
