@@ -2,7 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_search_filter_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/colorWhite">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/${fragmentLayoutResName}_app_bar"
