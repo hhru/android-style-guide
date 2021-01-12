@@ -16,8 +16,8 @@ apply plugin: 'de.mannodermaus.android-junit5'
 <#if needDbLibraries>
 moduleConfigPlugin {
     enableKotlinSourceDir = true
-    annotationProcessorOption "room.schemaLocation", "$projectDir/schemas".toString()
-    annotationProcessorOption "room.incremental", "true"
+    annotationProcessorOption 'room.schemaLocation', '$projectDir/schemas'.toString()
+    annotationProcessorOption 'room.incremental', 'true'
 }
 </#if>
 
@@ -37,13 +37,14 @@ dependencies {
     // RxJava
     compileOnly Libs.rx.rxJava
     compileOnly Libs.rx.rxAndroid
+    compileOnly project(':shared-core-rx')
     </#if>
 
     <#if needToothpick>
     // DI
     compileOnly Libs.toothpick.core
     kapt Libs.toothpick.compiler
-    compileOnly project(":shared-core-di")
+    compileOnly project(':shared-core-di')
     </#if>
 
     <#if needNetworkLibraries>
@@ -67,8 +68,8 @@ dependencies {
 
     <#if needUiLibraries>
     // UI
-    compileOnly project(":shared-core-ui")
-    compileOnly project(":core-mvvm")
+    compileOnly project(':shared-core-ui')
+    compileOnly project(':core-mvvm')
     compileOnly Libs.support.appCompat
     </#if>
 

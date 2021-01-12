@@ -72,6 +72,10 @@ globals:
       id: viewModelName
       value: ${fragmentPrefix}ViewModel
 
+  - stringParameter:
+      id: uiConverterName
+      value: ${fragmentPrefix}UiConverter
+
 recipe:
   - instantiateAndOpen:
       from: root/src/app_package/ViewModel.kt.ftl
@@ -96,6 +100,13 @@ recipe:
   - instantiate:
       from: root/src/app_package/model/UiState.kt.ftl
       to: ${srcOut}/${fragmentPackage}/model/${uiStateName}.kt
+
+  - predicate:
+      validIf: ${useMviViewModel}
+      commands:
+        - instantiate:
+            from: root/src/app_package/UiConverter.kt.ftl
+            to: ${srcOut}/${fragmentPackage}/${uiConverterName}.kt
 
   - predicate:
       validIf: ${needDesignSample}
