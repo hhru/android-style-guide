@@ -5,8 +5,8 @@ requiredParams:
 widgets:
   - stringParameter:
       id: feature
-      name: Feature Name
-      help: The name of the feature class to create
+      name: Feature Prefix
+      help: Prefix of the feature class to create
       constraints:
         - class
         - nonempty

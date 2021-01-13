@@ -26,7 +26,7 @@ internal class ${viewModelName}(
     override val featureNewsObservable: Observable<${mviNewsName}> = Observable.wrap(TODO())
 
     override val uiStateConverter: (${mviStateName}) -> ${uiStateName} = { state ->
-        uiConverter.convert(${mviStateName})
+        uiConverter.convert(state)
     }
 
     override fun processNews(news: ${mviNewsName}) {

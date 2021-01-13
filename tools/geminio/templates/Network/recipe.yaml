@@ -1,0 +1,74 @@
+requiredParams:
+  name: Network for some entity
+  description: Creates network boilerplate for some entity
+
+widgets:
+  - stringParameter:
+      id: entityPrefix
+      name: Entity Prefix
+      help: Prefix that will be used to create network-layer classes
+      constraints:
+        - class
+        - nonempty
+        - unique
+      default: Entity
+
+globals:
+  - stringParameter:
+      id: networkModelName
+      value: ${entityPrefix}Network
+
+  - stringParameter:
+      id: networkApiName
+      value: ${entityPrefix}HttpApi
+
+  - stringParameter:
+      id: repositoryName
+      value: ${entityPrefix}Repository
+
+  - stringParameter:
+      id: converterName
+      value: ${entityPrefix}NetworkConverter
+
+  - stringParameter:
+      id: apiProviderName
+      value: ${networkApiName}Provider
+
+  - stringParameter:
+      id: moduleName
+      value: ${entityPrefix}DataModule
+
+recipe:
+  - instantiate:
+      from: root/src/app_package/NetworkApi.kt.ftl
+      to: ${srcOut}/${networkApiName}.kt
+
+  - instantiate:
+      from: root/src/app_package/Repository.kt.ftl
+      to: ${srcOut}/${repositoryName}.kt
+
+  - instantiate:
+      from: root/src/app_package/converter/Converter.kt.ftl
+      to: ${srcOut}/converter/${converterName}.kt
+
+  - instantiate:
+      from: root/src/app_package/di/ApiProvider.kt.ftl
+      to: ${srcOut}/di/${apiProviderName}.kt
+
+  - instantiate:
+      from: root/src/app_package/di/DataModule.kt.ftl
+      to: ${srcOut}/di/${moduleName}.kt
+
+  - instantiate:
+      from: root/src/app_package/model/Model.kt.ftl
+      to: ${srcOut}/model/${networkModelName}.kt
+
+  - addDependencies:
+      - compileOnly: :shared-core-network
+      - compileOnly: :shared-core-network-model
+      - compileOnly: Libs.network.kotlinxSerializationJson
+      - compileOnly: Libs.network.retrofit
+      - compileOnly: Libs.network.retrofitKotlinxConverter
+      - compileOnly: Libs.toothpick.core
+      - compileOnly: Libs.toothpick.ktp
+      - kapt: Libs.toothpick.compiler
