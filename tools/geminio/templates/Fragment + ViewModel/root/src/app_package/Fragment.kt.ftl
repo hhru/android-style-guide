@@ -51,7 +51,7 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
     <#if needDesignSample == true>
     private val delegateAdapter by lazy { DelegationAdapter<Cell>() }
 
-    private val stateDelegate: LoadingStateDelegate by viewRetained(
+    private val stateDelegate: LoadingStateDelegate? by viewRetained(
             {
                 LoadingStateDelegate(
                     contentView = ${fragmentLayoutResName}_recycler_view,
@@ -75,7 +75,7 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
             addOnScrollListener(KeyboardRecyclerViewListener())
         }
 
-        ${fragmentLayoutResName}_swipe_refresh_layout.setOnRefreshListener(TODO())
+        ${fragmentLayoutResName}_swipe_refresh_layout.setOnRefreshListener { TODO() }
         <#else>
         TODO()
         </#if>
@@ -96,8 +96,6 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
             }
 
             is LCE.Error -> {
-                ${fragmentLayoutResName}_zero_state_view.gone(false)
-                ${fragmentLayoutResName}_recycler_view.gone(true)
                 stateDelegate?.showStub()
 
                 ${fragmentLayoutResName}_zero_state_view.setStubTitle("TODO: Error text")
