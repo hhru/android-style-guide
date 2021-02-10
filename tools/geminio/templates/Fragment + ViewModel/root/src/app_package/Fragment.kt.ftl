@@ -2,22 +2,25 @@ package ${packageName}.${fragmentPackage}
 
 import android.os.Bundle
 import android.view.View
-import ru.hh.android.mvvm.stateViewModel
 <#if applicationPackage??>
 import ${applicationPackage}.R
 </#if>
 <#if needDesignSample == true>
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.redmadrobot.lib.sd.LoadingStateDelegate
 import ru.hh.delegationadapter.DelegationAdapter
 import ru.hh.cells.interfaces.Cell
-import ru.hh.android.shared_core_model.AsyncRes
+import ru.hh.android.mvvm.LCE
 import ru.hh.android.design_system.utils.widget.toolbar.initBoldTitleLayout
 import ru.hh.android.design_system.utils.widget.gone
+import ru.hh.shared_core_ui.fragment_plugin.common.viewRetained
+import ru.hh.shared_core_ui.keyboard.KeyboardRecyclerViewListener
 </#if>
 import kotlinx.android.synthetic.main.${fragmentLayoutResName}.*
 import ${packageName}.${fragmentPackage}.model.${paramsName}
 import ${packageName}.${fragmentPackage}.model.${uiEventName}
 import ${packageName}.${fragmentPackage}.model.${uiStateName}
+import ru.hh.android.mvvm.plugin.viewModelPlugin
 import ru.hh.shared_core_ui.fragment.BaseFragment
 import ru.hh.shared_core_ui.fragment.withParams
 import ru.hh.shared_core_ui.fragment.params
@@ -38,16 +41,25 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
         modulesProvider = { arrayOf(${moduleName}(params)) }
     )
 
-    private val viewModel: ${viewModelName} by stateViewModel(
+    @Suppress("detekt.UnusedPrivateMember")
+    private val viewModel: ${viewModelName} by viewModelPlugin(
         renderState = this::renderState,
         handleEvent = this::handleEvent,
         viewModelProvider = { di.getInstance() }
     )
 
     <#if needDesignSample == true>
-    private val delegateAdapter by lazy {
-        DelegationAdapter<Cell>()
-    }
+    private val delegateAdapter by lazy { DelegationAdapter<Cell>() }
+
+    private val stateDelegate: LoadingStateDelegate by viewRetained(
+            {
+                LoadingStateDelegate(
+                    contentView = ${fragmentLayoutResName}_recycler_view,
+                    loadingView = null, // можно подставить что-то свое
+                    stubView = ${fragmentLayoutResName}_zero_state_view
+                )
+            }
+        )
     </#if>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,6 +72,7 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
         ${fragmentLayoutResName}_recycler_view.apply {
             adapter = delegateAdapter
             layoutManager = LinearLayoutManager(context)
+            addOnScrollListener(KeyboardRecyclerViewListener())
         }
 
         ${fragmentLayoutResName}_swipe_refresh_layout.setOnRefreshListener(TODO())
@@ -68,33 +81,31 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
         </#if>
     }
 
+    <#if needDesignSample == false>
+    @Suppress("detekt.UnusedPrivateMember")
+    </#if>
     private fun renderState(state: ${uiStateName}) {
         <#if needDesignSample == true>
+        ${fragmentLayoutResName}_swipe_refresh_layout.isRefreshing = false
+        ${fragmentLayoutResName}_swipe_refresh_layout.isEnabled = false
         when (val list = state.listCells) {
-            is AsyncRes.Data -> {
+            is LCE.Data -> {
                 ${fragmentLayoutResName}_swipe_refresh_layout.isEnabled = true
-                ${fragmentLayoutResName}_swipe_refresh_layout.isRefreshing = false
-                ${fragmentLayoutResName}_zero_state_view.gone(true)
-                ${fragmentLayoutResName}_recycler_view.gone(false)
-
+                stateDelegate?.showContent()
                 delegateAdapter.submitList(list.value)
             }
 
-            is AsyncRes.Error -> {
-                ${fragmentLayoutResName}_swipe_refresh_layout.isEnabled = false
-                ${fragmentLayoutResName}_swipe_refresh_layout.isRefreshing = false
+            is LCE.Error -> {
                 ${fragmentLayoutResName}_zero_state_view.gone(false)
                 ${fragmentLayoutResName}_recycler_view.gone(true)
+                stateDelegate?.showStub()
 
                 ${fragmentLayoutResName}_zero_state_view.setStubTitle("TODO: Error text")
                 ${fragmentLayoutResName}_zero_state_view.setMainAction("TODO: Retry text", TODO())
             }
 
-            is AsyncRes.Loading -> {
-                ${fragmentLayoutResName}_swipe_refresh_layout.isEnabled = true
-                ${fragmentLayoutResName}_swipe_refresh_layout.isRefreshing = true
-                ${fragmentLayoutResName}_zero_state_view.gone(true)
-                ${fragmentLayoutResName}_recycler_view.gone(true)
+            is LCE.Loading -> {
+                stateDelegate?.showLoading()
             }
         }
         <#else>
@@ -102,6 +113,7 @@ internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName})
         </#if>
     }
 
+    @Suppress("detekt.UnusedPrivateMember")
     private fun handleEvent(event: ${uiEventName}) {
         TODO("Handle your events here")
     }

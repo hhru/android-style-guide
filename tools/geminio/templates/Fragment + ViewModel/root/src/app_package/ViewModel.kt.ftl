@@ -42,5 +42,8 @@ internal class ${viewModelName}(
     initialState = TODO()
 ) {
 
+    override fun onFirstAttach() {
+        TODO()
+    }
 }
 </#if>

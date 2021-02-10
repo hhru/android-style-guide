@@ -9,6 +9,7 @@ internal class ${moduleName}(params: ${paramsName}) : Module() {
 
     init {
         bind<${paramsName}>().toInstance(params)
+        bind<${viewModelName}>().singleton()
     }
 
 }

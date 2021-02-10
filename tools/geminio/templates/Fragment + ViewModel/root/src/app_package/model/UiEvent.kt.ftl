@@ -1,6 +1,4 @@
 package ${packageName}.${fragmentPackage}.model
 
 
-internal sealed class ${uiEventName} {
-
-}
+internal sealed class ${uiEventName}
