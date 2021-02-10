@@ -8,13 +8,12 @@ import ru.hh.shared_core_ui.navigation.FixSupportFragmentNavigator
 
 
 internal class ${containerFragmentNavigatorName}(
-    activity: FragmentActivity,
-    fragmentManager: FragmentManager,
+    fragment: Fragment,
     containerId: Int
 ) : FixSupportFragmentNavigator(
-    activity,
-    fragmentManager,
-    containerId
+    activity = fragment.requireActivity(),
+    fragmentManager = fragment.childFragmentManager,
+    containerId = containerId
 ) {
 
     init {
