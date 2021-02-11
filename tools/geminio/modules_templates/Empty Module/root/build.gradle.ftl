@@ -26,10 +26,6 @@ dependencies {
     compileOnly project(':shared-core-logger')
     compileOnly project(':shared-core-utils')
 
-    <#list __librariesModules as module>
-    compileOnly project(':${module}')
-    </#list>
-
     // Kotlin
     compileOnly Libs.kotlin
 
