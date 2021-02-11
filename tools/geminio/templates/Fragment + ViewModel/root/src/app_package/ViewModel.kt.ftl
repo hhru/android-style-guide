@@ -33,6 +33,11 @@ internal class ${viewModelName}(
         TODO()
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        // TODO Here you need to dispose of features that belong only to the current screen
+    }
+
 }
 <#else>
 @InjectConstructor
