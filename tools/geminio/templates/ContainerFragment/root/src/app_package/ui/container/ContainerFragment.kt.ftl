@@ -14,7 +14,6 @@ import ru.terrakok.cicerone.NavigatorHolder
 import toothpick.Scope
 
 
-
 internal class ${containerFragmentName} : BaseFragment(R.layout.${containerFragmentLayoutName}), DiScopeOwner {
 
     companion object {
@@ -31,9 +30,8 @@ internal class ${containerFragmentName} : BaseFragment(R.layout.${containerFragm
         NavigationFragmentPlugin(
                 navigatorProvider = {
                     ${containerFragmentNavigatorName}(
-                            requireActivity(),
-                            childFragmentManager,
-                            R.id.${containerFragmentContainerId}
+                            fragment = this,
+                            containerId = R.id.${containerFragmentContainerId}
                     )
                 },
                 navigationHolderProvider = { di.scope.getInstance(NavigatorHolder::class.java) },

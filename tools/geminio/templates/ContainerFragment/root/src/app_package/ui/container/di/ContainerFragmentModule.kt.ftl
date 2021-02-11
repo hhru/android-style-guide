@@ -16,6 +16,6 @@ internal class ${containerFragmentModuleName}: Module() {
         bind<NavigatorHolder>().toInstance(cicerone.navigatorHolder)
         bind<AppRouter>.toInstance(cicerone.router)
 
-        bind<${containerFragmentVMName>()
+        bind<${containerFragmentVMName>().singleton()
     }
 }

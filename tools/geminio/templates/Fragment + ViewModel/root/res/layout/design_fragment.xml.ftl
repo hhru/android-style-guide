@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/fragment_search_filter_container"
+    android:id="@+id/${fragmentLayoutResName}_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorWhite">
@@ -9,6 +10,7 @@
         android:id="@+id/${fragmentLayoutResName}_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="@dimen/dp0"
         app:layout_behavior="ru.hh.android.design_system.utils.widget.toolbar.AppBarScrollAwareLayoutBehavior">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout

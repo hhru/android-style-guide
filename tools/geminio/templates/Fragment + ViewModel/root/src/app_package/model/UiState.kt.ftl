@@ -1,11 +1,13 @@
 package ${packageName}.${fragmentPackage}.model
 
-import ru.hh.android.shared_core_model.AsyncRes
+<#if needDesignSample == true>
+import ru.hh.android.mvvm.LCE
 import ru.hh.cells.interfaces.Cell
+</#if>
 
 internal data class ${uiStateName}(
     <#if needDesignSample == true>
-    val listCells: AsyncRes<List<Cell>>
+    val listCells: LCE<List<Cell>>
     <#else>
     val todo: Nothing
     </#if>

@@ -23,7 +23,7 @@ internal class ${className} : BaseFragment(R.layout.${fragmentName}) {
 
     @Suppress("unused")
     private val di by diPlugin(
-        parentScopeNameProvider = { SplashFacade().internalScope.name },
+        parentScopeNameProvider = { TODO("Scope name of feature facade / Delete this for scope of parent fragment") },
         <#if includeModule>modulesProvider = { arrayOf(${moduleName}()) }</#if>
     )
 

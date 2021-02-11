@@ -142,5 +142,6 @@ recipe:
       validIf: ${needDesignSample}
       commands:
         - addDependencies:
+            - compileOnly: Libs.ui.stateDelegator
             - compileOnly: :shared-core-model
             - compileOnly: :delegation-adapter
