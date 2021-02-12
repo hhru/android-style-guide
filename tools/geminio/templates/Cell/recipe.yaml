@@ -38,5 +38,4 @@ recipe:
     # projects
       - compileOnly: :shared-core-ui-design-system
     # libraries
-      - compileOnly: Libs.kotlin
       - compileOnly: Libs.support.recyclerView

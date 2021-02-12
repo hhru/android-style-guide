@@ -79,7 +79,6 @@ recipe:
       - compileOnly: :shared-core-rx
       - compileOnly: :shared-core-logger
       # libraries
-      - compileOnly: Libs.kotlin
       - compileOnly: Libs.toothpick.core
       - kapt: Libs.toothpick.compiler
       - compileOnly: Libs.ui.cicerone
