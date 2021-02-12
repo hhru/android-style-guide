@@ -26,9 +26,6 @@ dependencies {
     compileOnly project(':shared-core-logger')
     compileOnly project(':shared-core-utils')
 
-    // Kotlin
-    compileOnly Libs.kotlin
-
     <#if needRx>
     // RxJava
     compileOnly Libs.rx.rxJava
@@ -79,7 +76,6 @@ dependencies {
     // Tests
     testRuntimeOnly Libs.test.junit5Engine
     testImplementation Libs.test.junit5Api
-    testImplementation Libs.kotlin
     testImplementation project(':core-tests')
     <#if needRx>
     testImplementation Libs.rx.rxJava
