@@ -36,6 +36,7 @@ recipe:
   # dependencies
   - addDependencies:
     # projects
-      - compileOnly: :shared-core-ui-design-system
+      - compileOnly: :shared:core:ui:design-system
+      - compileOnly: :shared:core:ui:cells-framework
     # libraries
       - compileOnly: Libs.support.recyclerView

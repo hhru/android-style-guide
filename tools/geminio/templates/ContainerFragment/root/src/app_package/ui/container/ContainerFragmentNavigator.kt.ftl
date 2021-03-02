@@ -1,10 +1,8 @@
 package ${packageName}.ui.container
 
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.Fragment
-import ru.hh.shared_core_ui.fragment.addFragmentIfNotExist
-import ru.hh.shared_core_ui.navigation.FixSupportFragmentNavigator
+import ru.hh.shared.core.ui.framework.fragment.addFragmentIfNotExist
+import ru.hh.shared.core.ui.framework.navigation.FixSupportFragmentNavigator
 
 
 internal class ${containerFragmentNavigatorName}(

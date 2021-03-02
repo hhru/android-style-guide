@@ -1,6 +1,6 @@
 package ${packageName}.ui.container
 
-import ru.hh.android.mvvm.viewmodel.BaseViewModel
+import ru.hh.shared.core.mvvm.viewmodel.BaseViewModel
 import ru.hh.shared.core.rx.SchedulersProvider
 import ${packageName}.api.${featureDepsName}
 import toothpick.InjectConstructor

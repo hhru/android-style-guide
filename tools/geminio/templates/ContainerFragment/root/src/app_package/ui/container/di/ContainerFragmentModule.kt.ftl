@@ -1,11 +1,11 @@
 package ${packageName}.ui.container.di
 
-import ru.hh.shared_core_ui.navigation.AppRouter
+import ru.hh.shared.core.ui.framework.navigation.AppRouter
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.NavigatorHolder
 import toothpick.config.Module
 import toothpick.ktp.binding.bind
-import ${packageName}.container.${containerFragmentVMName}
+import ${packageName}.ui.container.${containerFragmentVMName}
 
 
 internal class ${containerFragmentModuleName}: Module() {
@@ -14,8 +14,8 @@ internal class ${containerFragmentModuleName}: Module() {
 
     init {
         bind<NavigatorHolder>().toInstance(cicerone.navigatorHolder)
-        bind<AppRouter>.toInstance(cicerone.router)
+        bind<AppRouter>().toInstance(cicerone.router)
 
-        bind<${containerFragmentVMName>().singleton()
+        bind<${containerFragmentVMName}>().singleton()
     }
 }
