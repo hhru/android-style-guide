@@ -4,9 +4,9 @@ package ${packageName}
 import ${applicationPackage}.R
 </#if>
 <#if includeModule??>import ${packageName}.di.${moduleName}</#if>
-import ru.hh.shared_core_ui.fragment.BaseFragment
-<#if includeFactory??>import ru.hh.shared_core_ui.fragment.withArgs</#if>
-import ru.hh.shared_core_ui.fragment_plugin.common.di.diPlugin
+import ru.hh.shared.core.ui.framework.fragment.BaseFragment
+<#if includeFactory??>import ru.hh.shared.core.ui.framework.fragment.withArgs</#if>
+import ru.hh.shared.core.ui.framework.fragment_plugin.common.di.diPlugin
 import toothpick.config.Module
 
 internal class ${className} : BaseFragment(R.layout.${fragmentName}) {
