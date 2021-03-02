@@ -2,10 +2,10 @@ package ${packageName}.${fragmentPackage}
 
 <#if useMviViewModel == true>
 import io.reactivex.Observable
-import ru.hh.android.mvvm.viewmodel.MviViewModel
-import ru.hh.core_rx.SchedulersProvider
+import ru.hh.shared.core.mvvm.viewmodel.MviViewModel
+import ru.hh.shared.core.rx.SchedulersProvider
 <#else>
-import ru.hh.android.mvvm.viewmodel.ManualStateViewModel
+import ru.hh.shared.core.mvvm.viewmodel.ManualStateViewModel
 </#if>
 import ${packageName}.${fragmentPackage}.model.${uiStateName}
 import ${packageName}.${fragmentPackage}.model.${uiEventName}

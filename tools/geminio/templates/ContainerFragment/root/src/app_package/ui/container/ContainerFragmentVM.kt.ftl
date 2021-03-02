@@ -1,7 +1,7 @@
 package ${packageName}.ui.container
 
-import ru.hh.android.mvvm.viewmodel.BaseViewModel
-import ru.hh.core_rx.SchedulersProvider
+import ru.hh.shared.core.mvvm.viewmodel.BaseViewModel
+import ru.hh.shared.core.rx.SchedulersProvider
 import ${packageName}.api.${featureDepsName}
 import toothpick.InjectConstructor
 import timber.log.Timber

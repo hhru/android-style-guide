@@ -24,11 +24,11 @@ recipe:
       to: ${srcOut}/${featureName}.kt
 
   - addDependencies:
-      - compileOnly: :core-mvi
+      - compileOnly: :shared:core:mvi-core
       - compileOnly: Libs.mviCore.binder
       - compileOnly: Libs.rx.rxJava
       - compileOnly: Libs.rx.rxKotlin
-      - compileOnly: :shared-core-rx
+      - compileOnly: :shared:core:rx-core
       - compileOnly: Libs.toothpick.core
       - compileOnly: Libs.toothpick.ktp
       - kapt: Libs.toothpick.compiler

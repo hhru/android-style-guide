@@ -23,27 +23,27 @@ moduleConfigPlugin {
 
 
 dependencies {
-    compileOnly project(':shared-core-logger')
-    compileOnly project(':shared-core-utils')
+    compileOnly project(':shared:core:logger')
+    compileOnly project(':shared:core:utils')
 
     <#if needRx>
     // RxJava
     compileOnly Libs.rx.rxJava
     compileOnly Libs.rx.rxAndroid
-    compileOnly project(':shared-core-rx')
+    compileOnly project(':shared:core:rx-core')
     </#if>
 
     <#if needToothpick>
     // DI
     compileOnly Libs.toothpick.core
     kapt Libs.toothpick.compiler
-    compileOnly project(':shared-core-di')
+    compileOnly project(':shared:core:di-core')
     </#if>
 
     <#if needNetworkLibraries>
     // Network
-    compileOnly project(':shared-core-network')
-    compileOnly project(':shared-core-network-model')
+    compileOnly project(':shared:core:network')
+    compileOnly project(':shared:core:network-model')
     compileOnly Libs.network.kotlinxSerializationJson
     compileOnly Libs.network.retrofit
     compileOnly Libs.network.retrofitKotlinxConverter
@@ -61,14 +61,14 @@ dependencies {
 
     <#if needUiLibraries>
     // UI
-    compileOnly project(':shared-core-ui')
-    compileOnly project(':core-mvvm')
+    compileOnly project(':shared:core:ui:framework')
+    compileOnly project(':shared:core:mvvm-core')
     compileOnly Libs.support.appCompat
     </#if>
 
     <#if needMvi>
     // MVI
-    compileOnly project(':core-mvi')
+    compileOnly project(':shared:core:mvi-core')
     compileOnly Libs.mviCore.binder
     </#if>
 
@@ -76,13 +76,13 @@ dependencies {
     // Tests
     testRuntimeOnly Libs.test.junit5Engine
     testImplementation Libs.test.junit5Api
-    testImplementation project(':core-tests')
+    testImplementation project(':shared:core:tests:base-logic')
     <#if needRx>
     testImplementation Libs.rx.rxJava
-    testImplementation project(':shared-core-rx')
+    testImplementation project(':shared:core:rx-core')
     </#if>
     <#if needMvi>
-    testImplementation project(':core-mvi')
+    testImplementation project(':shared:core:mvi-core')
     </#if>
     </#if>
 

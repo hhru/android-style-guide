@@ -74,10 +74,10 @@ recipe:
   # dependencies
   - addDependencies:
       # projects
-      - compileOnly: :shared-core-ui
-      - compileOnly: :core-mvvm
-      - compileOnly: :shared-core-rx
-      - compileOnly: :shared-core-logger
+      - compileOnly: :shared:core:ui:framework
+      - compileOnly: :shared:core:mvvm-core
+      - compileOnly: :shared:core:rx-core
+      - compileOnly: :shared:core:logger
       # libraries
       - compileOnly: Libs.toothpick.core
       - kapt: Libs.toothpick.compiler

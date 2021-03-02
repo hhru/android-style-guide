@@ -1,6 +1,6 @@
 package ${packageName}.ui.container
 
-import ru.hh.shared_core_ui.navigation.NavScreen
+import ru.hh.shared.core.ui.framework.navigation.NavScreen
 
 
 internal class ${containerFragmentNavScreenName} : NavScreen {

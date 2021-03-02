@@ -57,3 +57,6 @@ recipe:
         - instantiate:
             from: root/res/values/attrs.xml.ftl
             to: ${resOut}/values/${attrsName}.xml
+
+  - addDependencies:
+      - compileOnly: :shared:core:ui:design-system

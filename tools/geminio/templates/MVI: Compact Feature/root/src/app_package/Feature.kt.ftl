@@ -10,7 +10,7 @@ import ${packageName}.${featureName}.State
 import ${packageName}.${featureName}.Wish
 import ${packageName}.${featureName}.Effect
 import ${packageName}.${featureName}.News
-import ru.hh.core_rx.SchedulersProvider
+import ru.hh.shared.core.rx.SchedulersProvider
 import toothpick.InjectConstructor
 
 

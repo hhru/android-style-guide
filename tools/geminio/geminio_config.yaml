@@ -1,4 +1,6 @@
 templatesRootDirPath: /android-style-guide/tools/geminio/templates
+modulesTemplatesRootDirPath: /android-style-guide/tools/geminio/modules_templates
 
 groupsNames:
   forNewGroup: HH Templates
+  forNewModulesGroup: HH Modules Templates

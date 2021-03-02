@@ -120,12 +120,12 @@ recipe:
             to: ${resOut}/layout/${fragmentLayoutResName}.xml
 
   - addDependencies:
-      - implementation: :shared-core-ui
-      - implementation: :shared-core-ui-design-system
+      - implementation: :shared:core:ui:framework
+      - implementation: :shared:core:ui:design-system
       - compileOnly: Libs.support.materialComponents
-      - compileOnly: :core-mvvm
+      - compileOnly: :shared:core:mvvm-core
       - compileOnly: Libs.support.appCompat
-      - compileOnly: :shared-core-di
+      - compileOnly: :shared:core:di-core
       - compileOnly: Libs.toothpick.core
       - compileOnly: Libs.toothpick.ktp
       - kapt: Libs.toothpick.compiler
@@ -136,12 +136,13 @@ recipe:
         - addDependencies:
             - compileOnly: Libs.rx.rxJava
             - compileOnly: Libs.rx.rxKotlin
-            - compileOnly: :shared-core-rx
+            - compileOnly: :shared:core:rx-core
 
   - predicate:
       validIf: ${needDesignSample}
       commands:
         - addDependencies:
             - compileOnly: Libs.ui.stateDelegator
-            - compileOnly: :shared-core-model
-            - compileOnly: :delegation-adapter
+            - compileOnly: Libs.support.swipeRefreshLayout
+            - compileOnly: :shared:core:model
+            - compileOnly: :shared:core:ui:cells-framework

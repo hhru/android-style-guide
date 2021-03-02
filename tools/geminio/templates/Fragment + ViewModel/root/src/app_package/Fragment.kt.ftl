@@ -8,24 +8,24 @@ import ${applicationPackage}.R
 <#if needDesignSample == true>
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.redmadrobot.lib.sd.LoadingStateDelegate
-import ru.hh.delegationadapter.DelegationAdapter
-import ru.hh.cells.interfaces.Cell
-import ru.hh.android.mvvm.LCE
-import ru.hh.android.design_system.utils.widget.toolbar.initBoldTitleLayout
-import ru.hh.android.design_system.utils.widget.gone
-import ru.hh.shared_core_ui.fragment_plugin.common.viewRetained
-import ru.hh.shared_core_ui.keyboard.KeyboardRecyclerViewListener
+import ru.hh.shared.core.ui.cells_framework.delegationadapter.DelegationAdapter
+import ru.hh.shared.core.ui.cells_framework.cells.interfaces.Cell
+import ru.hh.shared.core.mvvm.LCE
+import ru.hh.shared.core.ui.design_system.utils.widget.toolbar.initBoldTitleLayout
+import ru.hh.shared.core.ui.design_system.utils.widget.gone
+import ru.hh.shared.core.ui.framework.fragment_plugin.common.viewRetained
+import ru.hh.shared.core.ui.framework.keyboard.KeyboardRecyclerViewListener
 </#if>
 import kotlinx.android.synthetic.main.${fragmentLayoutResName}.*
 import ${packageName}.${fragmentPackage}.model.${paramsName}
 import ${packageName}.${fragmentPackage}.model.${uiEventName}
 import ${packageName}.${fragmentPackage}.model.${uiStateName}
-import ru.hh.android.mvvm.plugin.viewModelPlugin
-import ru.hh.shared_core_ui.fragment.BaseFragment
-import ru.hh.shared_core_ui.fragment.withParams
-import ru.hh.shared_core_ui.fragment.params
-import ru.hh.shared_core_ui.fragment_plugin.common.di.diPlugin
-import ru.hh.shared_core_ui.fragment_plugin.common.di.getInstance
+import ru.hh.shared.core.mvvm.plugin.viewModelPlugin
+import ru.hh.shared.core.ui.framework.fragment.BaseFragment
+import ru.hh.shared.core.ui.framework.fragment.withParams
+import ru.hh.shared.core.ui.framework.fragment.params
+import ru.hh.shared.core.ui.framework.fragment_plugin.common.di.diPlugin
+import ru.hh.shared.core.ui.framework.fragment_plugin.common.di.getInstance
 
 
 internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName}) {

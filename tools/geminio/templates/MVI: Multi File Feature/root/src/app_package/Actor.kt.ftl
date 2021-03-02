@@ -5,7 +5,7 @@ import io.reactivex.Observable
 import ${packageName}.${featurePackage}.model.${stateName}
 import ${packageName}.${featurePackage}.model.${wishName}
 import ${packageName}.${featurePackage}.model.${effectName}
-import ru.hh.core_rx.SchedulersProvider
+import ru.hh.shared.core.rx.SchedulersProvider
 import toothpick.InjectConstructor
 
 
