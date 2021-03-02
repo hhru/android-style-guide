@@ -4,10 +4,10 @@ import ru.hh.android.mvvm.viewModelLazy
 import ${applicationPackage}.R
 import ${packageName}.api.${featureFacadeName}
 import ${packageName}.ui.container.di.${containerFragmentModuleName}
-import ru.hh.shared_core_ui.fragment.BaseFragment
+import ru.hh.shared.core.ui.framework.fragment.BaseFragment
 import ru.hh.shared_core_ui.fragment_plugin.common.NavigationFragmentPlugin
 import ru.hh.shared_core_ui.fragment_plugin.common.di.DiScopeOwner
-import ru.hh.shared_core_ui.fragment_plugin.common.di.diPlugin
+import ru.hh.shared.core.ui.framework.fragment_plugin.common.di.diPlugin
 import ru.hh.shared_core_ui.fragment_plugin.plugin
 import ru.hh.shared_core_ui.navigation.AppRouter
 import ru.terrakok.cicerone.NavigatorHolder

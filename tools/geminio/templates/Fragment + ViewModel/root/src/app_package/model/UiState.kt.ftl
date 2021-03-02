@@ -1,8 +1,8 @@
 package ${packageName}.${fragmentPackage}.model
 
 <#if needDesignSample == true>
-import ru.hh.android.mvvm.LCE
-import ru.hh.cells.interfaces.Cell
+import ru.hh.shared.core.mvvm.LCE
+import ru.hh.shared.core.ui.cells_framework.cells.interfaces.Cell
 </#if>
 
 internal data class ${uiStateName}(

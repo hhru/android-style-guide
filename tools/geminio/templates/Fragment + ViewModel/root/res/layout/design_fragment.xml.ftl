@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="@dimen/dp0"
-        app:layout_behavior="ru.hh.android.design_system.utils.widget.toolbar.AppBarScrollAwareLayoutBehavior">
+        app:layout_behavior="ru.hh.shared.core.ui.design_system.utils.widget.toolbar.AppBarScrollAwareLayoutBehavior">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/${fragmentLayoutResName}_collapsing_toolbar"
@@ -51,7 +51,7 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <ru.hh.android.design_system.organisms.zero_state.ZeroStateView
+            <ru.hh.shared.core.ui.design_system.organisms.zero_state.ZeroStateView
                 android:id="@+id/${fragmentLayoutResName}_zero_state_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

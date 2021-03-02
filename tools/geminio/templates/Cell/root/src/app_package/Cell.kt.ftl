@@ -2,7 +2,7 @@ package ${packageName}
 
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.${cellLayoutName}.view.*
-import ru.hh.cells.interfaces.Cell
+import ru.hh.shared.core.ui.cells_framework.cells.interfaces.Cell
 import ${applicationPackage}.R
 
 
