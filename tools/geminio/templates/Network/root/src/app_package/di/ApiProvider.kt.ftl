@@ -1,8 +1,8 @@
 package ${packageName}.di
 
 import ${packageName}.${networkApiName}
-import ru.hh.network_auth_source.AuthZoneApiFactory
-import ru.hh.network_source.ServerUrl
+import ru.hh.shared.core.network.auth_source.AuthZoneApiFactory
+import ru.hh.shared.core.network.network_source.ServerUrl
 import toothpick.InjectConstructor
 import javax.inject.Provider
 
