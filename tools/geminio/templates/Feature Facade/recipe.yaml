@@ -61,6 +61,6 @@ recipe:
 
   - addDependencies:
       - compileOnly: Libs.support.appCompat
-      - compileOnly: :shared-core-di
+      - compileOnly: :shared:core:di-core
       - compileOnly: Libs.toothpick.core
       - compileOnly: Libs.toothpick.ktp

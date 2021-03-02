@@ -1,6 +1,6 @@
 package ${packageName}
 
-import ru.hh.android.shared_core_di.FeatureFacade
+import ru.hh.shared.core.di.FeatureFacade
 
 
 class ${featureFacade} : FeatureFacade<${featureDeps}, ${featureApi}>(
