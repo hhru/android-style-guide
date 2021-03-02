@@ -92,7 +92,7 @@ recipe:
       to: ${srcOut}/${featurePackage}/${reducerName}.kt
 
   - addDependencies:
-      - compileOnly: :core-mvi
+      - compileOnly: :shared:core:mvi-core
       - compileOnly: Libs.mviCore.binder
       - compileOnly: Libs.rx.rxJava
       - compileOnly: Libs.rx.rxKotlin
