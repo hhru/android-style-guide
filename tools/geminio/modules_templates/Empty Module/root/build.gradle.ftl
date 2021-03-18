@@ -28,14 +28,14 @@ dependencies {
 
     <#if needRx>
     // RxJava
-    compileOnly Libs.rx.rxJava
-    compileOnly Libs.rx.rxAndroid
+    implementation Libs.rx.rxJava
+    implementation Libs.rx.rxAndroid
     implementation project(':shared:core:rx-core')
     </#if>
 
     <#if needToothpick>
     // DI
-    compileOnly Libs.toothpick.core
+    implementation Libs.toothpick.core
     kapt Libs.toothpick.compiler
     implementation project(':shared:core:di-core')
     </#if>
@@ -44,11 +44,11 @@ dependencies {
     // Network
     implementation project(':shared:core:network')
     implementation project(':shared:core:network-model')
-    compileOnly Libs.network.kotlinxSerializationJson
-    compileOnly Libs.network.retrofit
-    compileOnly Libs.network.retrofitKotlinxConverter
+    implementation Libs.network.kotlinxSerializationJson
+    implementation Libs.network.retrofit
+    implementation Libs.network.retrofitKotlinxConverter
     <#if needRx>
-    compileOnly Libs.network.adapterRxJava2
+    implementation Libs.network.adapterRxJava2
     </#if>
     </#if>
 
@@ -63,13 +63,13 @@ dependencies {
     // UI
     implementation project(':shared:core:ui:framework')
     implementation project(':shared:core:mvvm-core')
-    compileOnly Libs.support.appCompat
+    implementation Libs.support.appCompat
     </#if>
 
     <#if needMvi>
     // MVI
     implementation project(':shared:core:mvi-core')
-    compileOnly Libs.mviCore.binder
+    implementation Libs.mviCore.binder
     </#if>
 
     <#if needTests>
