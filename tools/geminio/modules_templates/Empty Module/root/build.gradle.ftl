@@ -23,27 +23,27 @@ moduleConfigPlugin {
 
 
 dependencies {
-    compileOnly project(':shared:core:logger')
-    compileOnly project(':shared:core:utils')
+    implementation project(':shared:core:logger')
+    implementation project(':shared:core:utils')
 
     <#if needRx>
     // RxJava
     compileOnly Libs.rx.rxJava
     compileOnly Libs.rx.rxAndroid
-    compileOnly project(':shared:core:rx-core')
+    implementation project(':shared:core:rx-core')
     </#if>
 
     <#if needToothpick>
     // DI
     compileOnly Libs.toothpick.core
     kapt Libs.toothpick.compiler
-    compileOnly project(':shared:core:di-core')
+    implementation project(':shared:core:di-core')
     </#if>
 
     <#if needNetworkLibraries>
     // Network
-    compileOnly project(':shared:core:network')
-    compileOnly project(':shared:core:network-model')
+    implementation project(':shared:core:network')
+    implementation project(':shared:core:network-model')
     compileOnly Libs.network.kotlinxSerializationJson
     compileOnly Libs.network.retrofit
     compileOnly Libs.network.retrofitKotlinxConverter
@@ -61,14 +61,14 @@ dependencies {
 
     <#if needUiLibraries>
     // UI
-    compileOnly project(':shared:core:ui:framework')
-    compileOnly project(':shared:core:mvvm-core')
+    implementation project(':shared:core:ui:framework')
+    implementation project(':shared:core:mvvm-core')
     compileOnly Libs.support.appCompat
     </#if>
 
     <#if needMvi>
     // MVI
-    compileOnly project(':shared:core:mvi-core')
+    implementation project(':shared:core:mvi-core')
     compileOnly Libs.mviCore.binder
     </#if>
 
