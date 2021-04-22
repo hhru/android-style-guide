@@ -85,8 +85,8 @@ recipe:
       to: ${rootOut}/.gitignore
 
   - instantiateAndOpen:
-      from: root/build.gradle.ftl
-      to: ${rootOut}/build.gradle
+      from: root/build.gradle.kts.ftl
+      to: ${rootOut}/build.gradle.kts
 
   - instantiateAndOpen:
       from: root/README.md
