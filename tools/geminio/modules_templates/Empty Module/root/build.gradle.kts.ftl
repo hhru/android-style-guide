@@ -26,6 +26,7 @@ dependencies {
     <#if needToothpick>
     // DI
     compileOnly(Libs.toothpick.core)
+    compileOnly(Libs.toothpick.ktp)
     kapt(Libs.toothpick.compiler)
     compileOnly(project(":shared:core:di-core"))
     </#if>
