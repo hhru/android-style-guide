@@ -1,4 +1,3 @@
 package ${packageName}
 
-
 interface ${featureDeps}

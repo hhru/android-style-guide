@@ -8,9 +8,10 @@ import ru.hh.shared.core.ui.design_system.utils.widget.inflateView
 import ${applicationPackage}.R
 </#if>
 
-
 internal class ${viewName} @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : ${baseViewName}(context, attrs, defStyleAttr) {
 
     init {

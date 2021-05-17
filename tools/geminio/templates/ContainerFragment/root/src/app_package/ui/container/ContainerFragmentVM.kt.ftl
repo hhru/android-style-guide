@@ -1,11 +1,10 @@
 package ${packageName}.ui.container
 
+import ${packageName}.api.${featureDepsName}
 import ru.hh.shared.core.mvvm.viewmodel.BaseViewModel
 import ru.hh.shared.core.rx.SchedulersProvider
-import ${packageName}.api.${featureDepsName}
-import toothpick.InjectConstructor
 import timber.log.Timber
-
+import toothpick.InjectConstructor
 
 @InjectConstructor
 internal class ${containerFragmentVMName}(

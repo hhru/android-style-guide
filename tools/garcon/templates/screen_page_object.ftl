@@ -1,6 +1,5 @@
 package ${package_name}
 
-
 class ${class_name} : com.agoda.kakao.screen.Screen<${class_name}>() {
 
     <#list properties_declarations_list as property_declaration>

@@ -6,7 +6,6 @@ import ru.hh.shared.core.network.network_source.ServerUrl
 import toothpick.InjectConstructor
 import javax.inject.Provider
 
-
 @InjectConstructor
 internal class ${apiProviderName}(
     private val authZoneApiFactory: AuthZoneApiFactory,

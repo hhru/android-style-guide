@@ -3,7 +3,6 @@ package ${packageName}.${fragmentPackage}
 import ${packageName}.${fragmentPackage}.model.${uiStateName}
 import toothpick.InjectConstructor
 
-
 @InjectConstructor
 internal class ${uiConverterName}() {
 

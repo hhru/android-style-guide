@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import ru.hh.shared.core.ui.framework.fragment.addFragmentIfNotExist
 import ru.hh.shared.core.ui.framework.navigation.FixSupportFragmentNavigator
 
-
 internal class ${containerFragmentNavigatorName}(
     fragment: Fragment,
     containerId: Int

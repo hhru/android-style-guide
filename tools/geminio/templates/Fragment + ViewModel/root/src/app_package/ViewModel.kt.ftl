@@ -12,7 +12,6 @@ import ${packageName}.${fragmentPackage}.model.${uiEventName}
 import ${packageName}.${fragmentPackage}.model.${paramsName}
 import toothpick.InjectConstructor
 
-
 <#if useMviViewModel == true>
 @InjectConstructor
 internal class ${viewModelName}(

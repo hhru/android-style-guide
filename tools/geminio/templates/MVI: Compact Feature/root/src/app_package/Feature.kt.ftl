@@ -6,13 +6,12 @@ import com.badoo.mvicore.element.NewsPublisher
 import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.feature.ActorReducerFeature
 import io.reactivex.Observable
-import ${packageName}.${featureName}.State
-import ${packageName}.${featureName}.Wish
 import ${packageName}.${featureName}.Effect
 import ${packageName}.${featureName}.News
+import ${packageName}.${featureName}.State
+import ${packageName}.${featureName}.Wish
 import ru.hh.shared.core.rx.SchedulersProvider
 import toothpick.InjectConstructor
-
 
 @InjectConstructor
 internal class ${featureName}(

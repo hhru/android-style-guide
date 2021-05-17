@@ -2,7 +2,6 @@ package ${packageName}.${fragmentPackage}.model
 
 import java.io.Serializable
 
-
 internal data class ${paramsName}(
     val todo: Nothing
 ) : Serializable {
