@@ -7,8 +7,7 @@ import toothpick.config.Module
 import toothpick.ktp.binding.bind
 import ${packageName}.ui.container.${containerFragmentVMName}
 
-
-internal class ${containerFragmentModuleName}: Module() {
+internal class ${containerFragmentModuleName} : Module() {
 
     private val cicerone = Cicerone.create(AppRouter())
 

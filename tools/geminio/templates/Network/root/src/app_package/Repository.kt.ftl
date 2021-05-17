@@ -5,7 +5,6 @@ import ${packageName}.converter.${converterName}
 import ${packageName}.model.${networkModelName}
 import toothpick.InjectConstructor
 
-
 @InjectConstructor
 internal class ${repositoryName}(
     private val api: ${networkApiName},

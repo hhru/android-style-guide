@@ -27,7 +27,6 @@ import ru.hh.shared.core.ui.framework.fragment.params
 import ru.hh.shared.core.ui.framework.fragment_plugin.common.di.diPlugin
 import ru.hh.shared.core.ui.framework.fragment_plugin.common.di.getInstance
 
-
 internal class ${fragmentName} : BaseFragment(R.layout.${fragmentLayoutResName}) {
 
     companion object {

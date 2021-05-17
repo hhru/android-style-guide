@@ -7,7 +7,6 @@ import ${applicationPackage}.R
 import ru.hh.shared.core.ui.framework.fragment.BaseFragment
 <#if includeFactory??>import ru.hh.shared.core.ui.framework.fragment.withArgs</#if>
 import ru.hh.shared.core.ui.framework.fragment_plugin.common.di.diPlugin
-import toothpick.config.Module
 
 internal class ${className} : BaseFragment(R.layout.${fragmentName}) {
     
@@ -19,7 +18,6 @@ internal class ${className} : BaseFragment(R.layout.${fragmentName}) {
     	fun newInstance() = ${className}().withArgs {  }
 </#if>
     }
-
 
     @Suppress("unused")
     private val di by diPlugin(

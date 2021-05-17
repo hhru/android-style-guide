@@ -5,7 +5,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import ${packageName}.model.${networkModelName}
 
-
 internal interface ${networkApiName} {
 
     @GET("path")

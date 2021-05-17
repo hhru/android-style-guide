@@ -1,11 +1,10 @@
 package ${packageName}.${featurePackage}
 
 import com.badoo.mvicore.element.NewsPublisher
-import ${packageName}.${featurePackage}.model.${stateName}
-import ${packageName}.${featurePackage}.model.${wishName}
 import ${packageName}.${featurePackage}.model.${effectName}
 import ${packageName}.${featurePackage}.model.${newsName}
-
+import ${packageName}.${featurePackage}.model.${stateName}
+import ${packageName}.${featurePackage}.model.${wishName}
 
 internal class ${newsPublisherName} : NewsPublisher<${wishName}, ${effectName}, ${stateName}, ${newsName}> {
 

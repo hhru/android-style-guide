@@ -1,11 +1,11 @@
 package ${packageName}.ui.container
 
-import ru.hh.shared.core.mvvm.plugin.viewModelPlugin
 <#if applicationPackage??>
 import ${applicationPackage}.R
 </#if>
 import ${packageName}.api.${featureFacadeName}
 import ${packageName}.ui.container.di.${containerFragmentModuleName}
+import ru.hh.shared.core.mvvm.plugin.viewModelPlugin
 import ru.hh.shared.core.ui.framework.fragment.BaseFragment
 import ru.hh.shared.core.ui.framework.fragment_plugin.common.NavigationFragmentPlugin
 import ru.hh.shared.core.ui.framework.fragment_plugin.common.di.DiScopeOwner
@@ -14,7 +14,6 @@ import ru.hh.shared.core.ui.framework.fragment_plugin.plugin
 import ru.hh.shared.core.ui.framework.navigation.AppRouter
 import ru.terrakok.cicerone.NavigatorHolder
 import toothpick.Scope
-
 
 internal class ${containerFragmentName} : BaseFragment(R.layout.${containerFragmentLayoutName}), DiScopeOwner {
 
