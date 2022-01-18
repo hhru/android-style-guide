@@ -10,4 +10,4 @@
 1. [Стандарты структуры файлов](style_guide_files_structure.md)
 1. [Стандарты оформления архитектурных компонентов](style_guide_architecture.md)
 1. [Стандарты оформления Composable-функций](style_guide_compose.md)
-4. [Правила настройки IDE](/code-cookbook/ide-settings/ide_settings.md)
+4. [Правила настройки IDE](docs/ide-settings/ide_settings.md)
