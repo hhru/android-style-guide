@@ -33,8 +33,6 @@
 # <a name='naming'>Правила именования</a>
 - Неизменяемые поля в (Companion) Object и compile-time константы именуются в стиле SCREAMING_SNAKE_CASE
 - Для полей View из Kotlin Extension используется стиль lower_snake_case
-- Для [backing-поля](https://kotlinlang.org/docs/coding-conventions.html#names-for-backing-properties) используем стиль 
-  lowerCamelCase с нижним подчеркивание в начале имени (_propertyName)
 - Любые другие поля именуются в стиле lowerCamelCase
 - Функции именуются в стиле lowerCamelCase
 - Классы именуются в стиле UpperCamelCase
