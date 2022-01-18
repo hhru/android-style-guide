@@ -8,4 +8,4 @@
 1. [Стандарт оформления кода на Android проектах](style_guide_android.md)
 1. [Стандарт оформления кода на языке XML](style_guide_xml.md)
 1. [Стандарты структуры файлов](style_guide_files_structure.md)
-4. [Правила настройки IDE](docs/ide-settings/ide_settings.md)
+4. [Правила настройки IDE](../ide-settings/ide_settings.md)
